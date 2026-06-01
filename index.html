@@ -1,13 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+
+<!-- ======================================================
+  CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES
+  Supabase統合版
+
+  使用前に以下2箇所を自分のSupabase情報に書き換えてください:
+    SUPABASE_URL  → SupabaseプロジェクトのURL
+    SUPABASE_ANON_KEY → Supabaseのanon公開キー
+====================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--blk:#000;--wht:#fff;--gry:#f0f0f0;--mgry:#888;--lgry:#ccc;--ln:#e0e0e0;--sans:'Helvetica Neue',Helvetica,Arial,sans-serif;--jp:'Noto Sans JP','Helvetica Neue',sans-serif}
+:root{
+  --blk:#000;--wht:#fff;--gry:#f0f0f0;--mgry:#888;--lgry:#ccc;--ln:#e0e0e0;
+  --sans:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  --jp:'Noto Sans JP','Helvetica Neue',sans-serif
+}
 body{background:var(--wht);color:var(--blk);font-family:var(--sans);min-height:100vh;font-size:13px}
+
+/* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;border-bottom:1px solid var(--blk);background:var(--wht);position:sticky;top:0;z-index:200}
-.logo-wrap{display:flex;flex-direction:column;line-height:1.15;cursor:pointer}
-.logo-main{font-size:11px;letter-spacing:.22em;font-weight:500;text-transform:uppercase}
-.logo-sub{font-size:8px;letter-spacing:.18em;color:var(--mgry)}
+.logo-wrap{display:flex;flex-direction:column;line-height:1.2;cursor:pointer}
+.logo-main{font-size:13px;letter-spacing:.18em;font-weight:600;text-transform:uppercase}
+.logo-sub{font-size:8px;letter-spacing:.15em;color:var(--mgry)}
 .navl{display:flex;gap:20px}
 .nl{font-size:9px;letter-spacing:.15em;color:var(--mgry);cursor:pointer;padding:2px 0;border-bottom:1px solid transparent;transition:all .15s;text-transform:uppercase}
 .nl:hover,.nl.active{color:var(--blk);border-bottom-color:var(--blk)}
@@ -17,12 +40,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .btn-primary{font-family:var(--sans);font-size:9px;letter-spacing:.15em;padding:7px 14px;background:var(--blk);color:var(--wht);border:none;cursor:pointer;text-transform:uppercase}
 .btn-primary:hover{opacity:.7}
 .btn-primary:disabled{opacity:.3;cursor:not-allowed}
+
 .page{display:none}.page.active{display:block}
 
+/* MODAL */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 20px}
 .modal-bg.open{display:flex}
 .modal{background:var(--wht);width:100%;max-width:440px;border:1px solid var(--blk);margin:auto}
-.modal-hd{padding:18px 22px 14px;border-bottom:1px solid var(--ln);display:flex;align-items:center;justify-content:space-between;background:var(--wht)}
+.modal-hd{padding:18px 22px 14px;border-bottom:1px solid var(--ln);display:flex;align-items:center;justify-content:space-between}
 .modal-ttl{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
 .modal-close{font-size:18px;cursor:pointer;color:var(--mgry);background:none;border:none;line-height:1}
 .modal-body{padding:22px}
@@ -39,21 +64,24 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .fta{resize:vertical;min-height:68px;line-height:1.75;font-family:var(--jp)}
 .sub-btn{width:100%;font-family:var(--sans);font-size:9px;letter-spacing:.22em;padding:12px;background:var(--blk);color:var(--wht);border:none;cursor:pointer;text-transform:uppercase;margin-top:4px}
 .sub-btn:hover{opacity:.7}
+.sub-btn:disabled{opacity:.4;cursor:not-allowed}
 .hint{font-size:9px;color:var(--mgry);margin-top:4px;font-family:var(--jp)}
+.err-msg{font-size:9px;color:#c00;margin-top:6px;font-family:var(--jp);display:none}
 .login-alt{font-size:9px;color:var(--mgry);text-align:center;margin-top:12px;font-family:var(--jp)}
 .login-alt span{cursor:pointer;text-decoration:underline;color:var(--blk)}
-.err-msg{font-size:9px;color:#c00;margin-top:6px;font-family:var(--jp);display:none}
 
+/* AVATAR */
 .av-upload-wrap{display:flex;align-items:center;gap:16px;margin-bottom:18px}
 .av-preview{width:64px;height:64px;border-radius:50%;background:var(--blk);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--wht);overflow:hidden;flex-shrink:0;cursor:pointer;border:2px solid transparent;transition:border-color .15s;position:relative}
 .av-preview:hover{border-color:var(--blk)}
 .av-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.av-preview .av-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s}
+.av-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;font-size:18px}
 .av-preview:hover .av-overlay{opacity:1}
 .av-upload-info{font-size:10px;color:var(--mgry);line-height:1.8;font-family:var(--jp)}
 .av-upload-btn{font-family:var(--sans);font-size:8px;letter-spacing:.15em;padding:5px 12px;border:1px solid var(--blk);background:transparent;cursor:pointer;text-transform:uppercase;display:inline-block;margin-top:6px;transition:all .15s}
 .av-upload-btn:hover{background:var(--blk);color:var(--wht)}
 
+/* FOLLOW LIST */
 .follow-item{display:flex;align-items:center;justify-content:space-between;padding:11px 22px;border-bottom:1px solid var(--ln);cursor:pointer}
 .follow-item:last-child{border-bottom:none}
 .follow-item:hover{background:var(--gry)}
@@ -66,6 +94,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .fol-btn:hover,.fol-btn.following{background:var(--blk);color:var(--wht)}
 .fol-btn.following:hover{background:var(--wht);color:var(--blk)}
 
+/* FEED */
 .feed-toolbar{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--ln);gap:12px;flex-wrap:wrap}
 .sort-wrap{display:flex;align-items:center;gap:6px}
 .sort-lbl{font-size:8px;letter-spacing:.2em;color:var(--mgry);text-transform:uppercase}
@@ -86,9 +115,19 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .chip:hover,.chip.active{background:var(--blk);color:var(--wht);border-color:var(--blk)}
 .color-chip{width:20px;height:20px;border:1px solid var(--ln);cursor:pointer;flex-shrink:0;position:relative}
 .color-chip.active::after{content:'';position:absolute;inset:-3px;border:2px solid var(--blk)}
+/* 投稿フォーム内のカラー選択 */
+.color-sel-item{display:flex;align-items:center;gap:5px;padding:4px 10px 4px 6px;border:1px solid var(--ln);cursor:pointer;transition:all .15s;user-select:none}
+.color-sel-item:hover{border-color:var(--blk)}
+.color-sel-item.selected{border-color:var(--blk);background:var(--gry)}
+.color-sel-item .color-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0}
+.color-sel-item .color-lbl{font-size:9px;letter-spacing:.1em}
+.color-sel-check{font-size:10px;margin-left:2px;opacity:0}
+.color-sel-item.selected .color-sel-check{opacity:1}
 .feed-hd{padding:16px 20px 8px;display:flex;align-items:baseline;justify-content:space-between}
 .feed-t{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
 .feed-c{font-size:10px;color:var(--mgry)}
+
+/* GRID */
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--ln)}
 .card{background:var(--wht);cursor:pointer;overflow:hidden}
 .card:hover .cov{opacity:1}
@@ -103,6 +142,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .ccard-sea{font-size:9px;color:var(--mgry)}
 .ccard-lk{font-size:9px;color:var(--mgry)}
 
+/* DETAIL */
 .bk{font-size:9px;letter-spacing:.12em;color:var(--mgry);cursor:pointer;padding:11px 20px;display:inline-flex;align-items:center;gap:5px;border-bottom:1px solid var(--ln);text-transform:uppercase}
 .bk:hover{color:var(--blk)}
 .dw{display:grid;grid-template-columns:1fr 1fr}
@@ -152,12 +192,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .cmt-inp{flex:1;font-family:var(--jp);font-size:10px;padding:8px 9px;border:none;outline:none;background:transparent}
 .cmt-sub{font-family:var(--sans);font-size:8px;letter-spacing:.1em;padding:8px 11px;background:var(--blk);color:var(--wht);border:none;cursor:pointer;text-transform:uppercase}
 
+/* PROFILE */
 .prof-wrap{max-width:900px;margin:0 auto;padding:28px 20px 0}
 .prof-hd{display:grid;grid-template-columns:100px 1fr;gap:24px;padding-bottom:22px;border-bottom:1px solid var(--ln)}
 .prof-av-lg{width:80px;height:80px;border-radius:50%;background:var(--blk);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--wht);overflow:hidden;cursor:pointer;position:relative;border:2px solid transparent;transition:border-color .15s}
 .prof-av-lg:hover{border-color:var(--blk)}
 .prof-av-lg img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.prof-av-lg .av-ov{position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;font-size:11px;color:var(--wht);letter-spacing:.05em;flex-direction:column;gap:2px}
+.prof-av-lg .av-ov{position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;font-size:16px;color:var(--wht);flex-direction:column;gap:2px}
 .prof-av-lg:hover .av-ov{opacity:1}
 .prof-name{font-size:17px;margin-bottom:2px}
 .prof-handle{font-size:9px;letter-spacing:.1em;color:var(--mgry);margin-bottom:12px}
@@ -177,6 +218,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .vprof-wrap{max-width:900px;margin:0 auto;padding:24px 20px 0}
 .vprof-hd{display:grid;grid-template-columns:80px 1fr;gap:22px;padding-bottom:18px;border-bottom:1px solid var(--ln)}
 
+/* POST */
 .pw{max-width:580px;margin:0 auto;padding:28px 20px}
 .pttl{font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:22px;padding-bottom:12px;border-bottom:1px solid var(--blk)}
 .fr2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
@@ -188,21 +230,29 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .photo-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .photo-rm{position:absolute;top:2px;right:2px;background:var(--blk);color:var(--wht);border:none;width:17px;height:17px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .ibldr{border:1px solid var(--ln);padding:11px}
-.ibldr-hd{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:5px;margin-bottom:5px;border-bottom:1px solid var(--ln);padding-bottom:5px}
-.ir{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:5px;align-items:end;margin-bottom:6px}
+.ibldr-hd{display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr 0.8fr 0.8fr 0.7fr auto;gap:5px;margin-bottom:5px;border-bottom:1px solid var(--ln);padding-bottom:5px}
+.ir{display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr 0.8fr 0.8fr 0.7fr auto;gap:5px;align-items:end;margin-bottom:6px}
 .add-r{font-family:var(--sans);font-size:8px;letter-spacing:.13em;padding:5px 0;color:var(--mgry);cursor:pointer;border:none;background:none;border-top:1px solid var(--ln);width:100%;text-align:left;margin-top:3px;text-transform:uppercase}
 .add-r:hover{color:var(--blk)}
 .rm{font-size:13px;color:var(--lgry);cursor:pointer;border:none;background:none;padding:7px 3px;align-self:end;line-height:1}
 .rm:hover{color:var(--blk)}
 
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:48px;font-size:10px;color:var(--mgry);letter-spacing:.12em}
+.spinner{width:18px;height:18px;border:2px solid var(--ln);border-top-color:var(--blk);border-radius:50%;animation:spin .8s linear infinite;margin-right:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--blk);color:var(--wht);font-size:10px;letter-spacing:.12em;padding:10px 20px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast.show{opacity:1}
 </style>
+</head>
+<body>
 
 <nav>
   <div class="logo-wrap" onclick="goNav('feed',document.querySelector('.nl'))">
-    <div class="logo-main">CDG LOA</div>
-    <div class="logo-sub">Comme Des Garcons Lovers' Outfit Archives</div>
+    <div class="logo-main">CDGLOA</div>
+    <div class="logo-sub">COMME des GARÇONS LOVERS' OUTFIT ARCHIVES</div>
   </div>
   <div class="navl">
     <span class="nl active" onclick="goNav('feed',this)">フィード</span>
@@ -227,8 +277,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       <div class="tab-pane active" id="tab-login">
         <div class="fg"><label class="flbl">メールアドレス</label><input class="fi" type="email" id="login-email" placeholder="example@email.com"></div>
         <div class="fg"><label class="flbl">パスワード</label><input class="fi" type="password" id="login-pass" placeholder="••••••••"></div>
-        <div class="err-msg" id="login-err">メールアドレスまたはパスワードが正しくありません。</div>
-        <button class="sub-btn" onclick="doLogin()">ログイン</button>
+        <div class="err-msg" id="login-err"></div>
+        <button class="sub-btn" id="login-btn" onclick="doLogin()">ログイン</button>
         <div class="login-alt">アカウントをお持ちでない方は<span onclick="switchAuthTab('register',document.querySelectorAll('.m-tab')[1])">新規登録</span></div>
       </div>
       <div class="tab-pane" id="tab-register">
@@ -238,7 +288,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
           <div class="av-upload-wrap">
             <div class="av-preview" id="reg-av-preview" onclick="document.getElementById('reg-av-file').click()">
               <span id="reg-av-initial">?</span>
-              <div class="av-overlay"><span style="font-size:18px;color:#fff">📷</span></div>
+              <div class="av-overlay">📷</div>
             </div>
             <div class="av-upload-info">JPG / PNG 推奨<br>円形にトリミングされます<br><button class="av-upload-btn" onclick="document.getElementById('reg-av-file').click()">写真を選択</button></div>
           </div>
@@ -256,8 +306,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         </div>
         <div class="fg"><label class="flbl">身長 (cm) *</label><input class="fi" type="text" id="reg-height" placeholder="168" inputmode="numeric" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')"></div>
         <div class="fg"><label class="flbl">自己紹介</label><textarea class="fi fta" id="reg-bio" placeholder="HOMME PLUSを中心にコレクション。DSM銀座常連。"></textarea></div>
-        <div class="err-msg" id="reg-err">このメールアドレスはすでに登録されています。</div>
-        <button class="sub-btn" onclick="doRegister()">登録してログイン</button>
+        <div class="err-msg" id="reg-err"></div>
+        <button class="sub-btn" id="reg-btn" onclick="doRegister()">登録してログイン</button>
       </div>
     </div>
   </div>
@@ -273,9 +323,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <div class="av-upload-wrap">
           <div class="av-preview" id="ep-av-preview" onclick="document.getElementById('ep-av-file').click()">
             <span id="ep-av-initial"></span>
-            <div class="av-overlay"><span style="font-size:18px;color:#fff">📷</span></div>
+            <div class="av-overlay">📷</div>
           </div>
-          <div class="av-upload-info">プロフィール写真を変更<br><button class="av-upload-btn" onclick="document.getElementById('ep-av-file').click()">写真を選択</button></div>
+          <div class="av-upload-info">写真を変更<br><button class="av-upload-btn" onclick="document.getElementById('ep-av-file').click()">写真を選択</button></div>
         </div>
         <input type="file" id="ep-av-file" accept="image/*" style="display:none" onchange="previewEditAv(event)">
       </div>
@@ -288,7 +338,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       </div>
       <div class="fg"><label class="flbl">身長 (cm)</label><input class="fi" type="text" id="ep-height" inputmode="numeric" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')"></div>
       <div class="fg"><label class="flbl">自己紹介</label><textarea class="fi fta" id="ep-bio"></textarea></div>
-      <button class="sub-btn" onclick="saveEditProfile()">保存する</button>
+      <button class="sub-btn" id="ep-save-btn" onclick="saveEditProfile()">保存する</button>
     </div>
   </div>
 </div>
@@ -303,7 +353,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px">
         <div class="fg" style="margin-bottom:0"><label class="flbl">ライン</label>
           <select class="fi" id="epost-line" style="appearance:none;cursor:pointer">
-            <option>COMME des GARÇONS</option><option>COMME des GARÇONS COMME des GARÇONS</option><option>COMME des GARÇONS GIRL</option><option>COMME des GARÇONS HOMME</option><option>COMME des GARÇONS HOMME PLUS</option><option>COMME des GARÇONS HOMME DEUX</option><option>COMME des GARÇONS SHIRT</option><option>BLACK COMME des GARÇONS</option><option>JUNYA WATANABE</option><option>JUNYA WATANABE MAN</option><option>tao COMME des GARÇONS</option><option>noir kei ninomiya</option><option>CDG</option><option>PLAY COMME des GARÇONS</option><option>THE BEATLES COMME des GARÇONS</option><option>Wallet COMME des GARÇONS</option><option>COMME des GARÇONS parfums</option>
+            <option>COMME des GARÇONS</option><option>COMME des GARÇONS COMME des GARÇONS</option><option>COMME des GARÇONS GIRL</option>
+            <option>COMME des GARÇONS HOMME</option><option>COMME des GARÇONS HOMME PLUS</option><option>COMME des GARÇONS HOMME DEUX</option>
+            <option>COMME des GARÇONS SHIRT</option><option>BLACK COMME des GARÇONS</option>
+            <option>JUNYA WATANABE</option><option>JUNYA WATANABE MAN</option>
+            <option>tao COMME des GARÇONS</option><option>noir kei ninomiya</option>
+            <option>CDG</option><option>PLAY COMME des GARÇONS</option><option>THE BEATLES COMME des GARÇONS</option>
+            <option>Wallet COMME des GARÇONS</option><option>COMME des GARÇONS parfums</option>
           </select>
         </div>
         <div class="fg" style="margin-bottom:0"><label class="flbl">シーズン</label>
@@ -314,19 +370,30 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       </div>
       <div class="fg"><label class="flbl">購入店舗</label>
         <select class="fi" id="epost-store" style="appearance:none;cursor:pointer">
-          <option value="">選択</option><option>COMME des GARÇONS 青山店（東京）</option><option>COMME des GARÇONS HOMME PLUS 青山店（東京）</option><option>Dover Street Market Ginza（東京）</option><option>Dover Street Market London</option><option>伊勢丹新宿店</option><option>三越銀座店</option><option>髙島屋新宿店</option><option>阪急うめだ本店</option><option>松屋銀座</option><option>COMME des GARÇONS 公式オンラインストア</option><option>SSENSE</option><option>ヤフオク（古着）</option><option>メルカリ（古着）</option>
+          <option value="">選択</option><option>COMME des GARÇONS 青山店（東京）</option><option>COMME des GARÇONS HOMME PLUS 青山店（東京）</option>
+          <option>Dover Street Market Ginza（東京）</option><option>Dover Street Market London</option><option>伊勢丹新宿店</option>
+          <option>三越銀座店</option><option>髙島屋新宿店</option><option>阪急うめだ本店</option><option>松屋銀座</option>
+          <option>COMME des GARÇONS 公式オンラインストア</option><option>SSENSE</option><option>ヤフオク（古着）</option><option>メルカリ（古着）</option>
         </select>
       </div>
       <div class="fg">
         <label class="flbl">着用アイテム</label>
         <div class="ibldr">
-          <div class="ibldr-hd"><span class="flbl" style="margin-bottom:0">アイテム名</span><span class="flbl" style="margin-bottom:0">シーズン</span><span class="flbl" style="margin-bottom:0">サイズ</span><span class="flbl" style="margin-bottom:0">品番</span><span></span></div>
+          <div class="ibldr-hd" style="display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr 0.8fr 0.8fr 0.7fr auto;gap:5px;margin-bottom:5px;border-bottom:1px solid var(--ln);padding-bottom:5px">
+            <span class="flbl" style="margin-bottom:0">アイテム名</span>
+            <span class="flbl" style="margin-bottom:0">ライン</span>
+            <span class="flbl" style="margin-bottom:0">シーズン</span>
+            <span class="flbl" style="margin-bottom:0">購入店舗</span>
+            <span class="flbl" style="margin-bottom:0">サイズ</span>
+            <span class="flbl" style="margin-bottom:0">品番</span>
+            <span></span>
+          </div>
           <div id="epost-ilist"></div>
           <button class="add-r" onclick="addItemEdit()">＋ アイテムを追加</button>
         </div>
-        <div class="hint">※ 品番はハイフンなしで入力（自動で大文字・半角に変換）</div>
+        <div class="hint">※ 品番はハイフンなし・自動大文字・半角</div>
       </div>
-      <button class="sub-btn" onclick="saveEditPost()">変更を保存する</button>
+      <button class="sub-btn" id="epost-save-btn" onclick="saveEditPost()">変更を保存する</button>
     </div>
   </div>
 </div>
@@ -339,7 +406,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   </div>
 </div>
 
-<!-- FEED -->
+<!-- FEED PAGE -->
 <div id="page-feed" class="page active">
   <div class="search-wrap">
     <div class="search-inner"><input type="text" id="srch" placeholder="品番で検索（例：HJJ050）" onkeydown="if(event.key==='Enter')doSearch()" oninput="this.value=normalizeRef(this.value)"><button class="search-btn" onclick="doSearch()">検索</button></div>
@@ -361,7 +428,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <span class="chip" onclick="setFilt('line','JUNYA WATANABE',this)">JUNYA WATANABE</span>
         <span class="chip" onclick="setFilt('line','JUNYA WATANABE MAN',this)">JUNYA MAN</span>
         <span class="chip" onclick="setFilt('line','tao COMME des GARÇONS',this)">TAO</span>
-        <span class="chip" onclick="setFilt('line','noir kei ninomiya',this)">NOIR KEI</span>
+        <span class="chip" onclick="setFilt('line','noir kei ninomiya',this)">NOIR KEI NINOMIYA</span>
         <span class="chip" onclick="setFilt('line','CDG',this)">CDG (logo)</span>
         <span class="chip" onclick="setFilt('line','PLAY COMME des GARÇONS',this)">PLAY</span>
         <span class="chip" onclick="setFilt('line','THE BEATLES COMME des GARÇONS',this)">THE BEATLES</span>
@@ -374,13 +441,17 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <span class="chip active" onclick="setFilt('sea','all',this)">ALL</span>
         <span class="chip" onclick="setFilt('sea','SS',this)">SS</span>
         <span class="chip" onclick="setFilt('sea','AW',this)">AW</span>
-        <span class="chip" onclick="setFilt('sea','SS26',this)">SS26</span>
-        <span class="chip" onclick="setFilt('sea','AW25',this)">AW25</span>
-        <span class="chip" onclick="setFilt('sea','SS25',this)">SS25</span>
-        <span class="chip" onclick="setFilt('sea','AW24',this)">AW24</span>
-        <span class="chip" onclick="setFilt('sea','SS24',this)">SS24</span>
-        <span class="chip" onclick="setFilt('sea','AW23',this)">AW23</span>
-        <span class="chip" onclick="setFilt('sea','アーカイブ',this)">アーカイブ</span>
+        <span class="chip" onclick="setFilt('sea','26SS',this)">26SS</span>
+        <span class="chip" onclick="setFilt('sea','26AW',this)">26AW</span>
+        <span class="chip" onclick="setFilt('sea','25SS',this)">25SS</span>
+        <span class="chip" onclick="setFilt('sea','25AW',this)">25AW</span>
+        <span class="chip" onclick="setFilt('sea','24SS',this)">24SS</span>
+        <span class="chip" onclick="setFilt('sea','24AW',this)">24AW</span>
+        <span class="chip" onclick="setFilt('sea','23SS',this)">23SS</span>
+        <span class="chip" onclick="setFilt('sea','23AW',this)">23AW</span>
+        <span class="chip" onclick="setFilt('sea','22SS',this)">22SS</span>
+        <span class="chip" onclick="setFilt('sea','22AW',this)">22AW</span>
+        <span class="chip" onclick="setFilt('sea','アーカイブ（2000年以前）',this)">アーカイブ</span>
       </div>
     </div>
     <div class="filter-row"><span class="filter-lbl">カラー</span>
@@ -399,14 +470,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   <div class="grid" id="feed-grid"></div>
 </div>
 
-<!-- DETAIL -->
+<!-- DETAIL PAGE -->
 <div id="page-detail" class="page">
   <div class="bk" onclick="goBack()">← BACK</div>
   <div class="dw">
     <div class="dim"><div class="img-main" id="d-main-img"></div><div class="img-thumbs" id="d-thumbs"></div></div>
     <div class="dinfo">
       <div class="dmeta">
-        <div class="duser" onclick="openUserProfile(curPost&&curPost.userId)"><div class="av" id="d-av"></div><div><div class="uname" id="d-un"></div><div style="font-size:9px;color:var(--mgry)" id="d-handle"></div></div></div>
+        <div class="duser" onclick="openUserProfile(curPost&&curPost.user_id)"><div class="av" id="d-av"></div><div><div class="uname" id="d-un"></div><div style="font-size:9px;color:var(--mgry)" id="d-handle"></div></div></div>
         <button class="fbtn-d" id="detail-fol-btn" onclick="toggleFollowDetail()">フォロー</button>
       </div>
       <div class="dsea" id="d-sea"></div><div class="dline" id="d-line"></div><div class="dttl" id="d-ttl"></div><div class="dcap" id="d-cap"></div>
@@ -414,7 +485,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       <div class="store-row" id="d-store"></div>
       <div class="dact">
         <button class="abtn" id="lbtn" onclick="doLike()">♡ <span id="lcnt">0</span></button>
-        <button class="abtn" onclick="this.classList.toggle('liked')">□ 保存</button>
+        <button class="abtn" id="save-btn" onclick="toggleSave()">□ 保存</button>
         <button class="abtn" id="edit-post-btn" style="display:none" onclick="openEditPost()">✎ 編集</button>
         <button class="abtn danger" id="del-post-btn" style="display:none" onclick="deletePost()">✕ 削除</button>
       </div>
@@ -440,7 +511,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <div>
           <div class="prof-av-lg" id="my-av" onclick="document.getElementById('my-av-file').click()">
             <span id="my-av-initial"></span>
-            <div class="av-ov"><span style="font-size:16px">📷</span><span style="font-size:8px;margin-top:2px">変更</span></div>
+            <div class="av-ov">📷<span style="font-size:8px;margin-top:2px">変更</span></div>
           </div>
           <input type="file" id="my-av-file" accept="image/*" style="display:none" onchange="updateMyAvatar(event)">
         </div>
@@ -484,7 +555,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         </div>
         <div class="prof-info-row"><div class="prof-info-item">着用歴：<strong id="vp-history"></strong></div><div class="prof-info-item">身長：<strong id="vp-height"></strong>cm</div></div>
         <div class="prof-bio" id="vp-bio"></div>
-        <button class="fol-btn" id="vp-fol-btn" style="margin-top:10px" onclick="toggleFollowUser(curVisitedUser)">フォロー</button>
+        <button class="fol-btn" id="vp-fol-btn" style="margin-top:10px" onclick="toggleFollowUser(curVisitedUserId)">フォロー</button>
       </div>
     </div>
   </div>
@@ -492,7 +563,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   <div class="grid" id="vprof-grid"></div>
 </div>
 
-<!-- POST -->
+<!-- POST PAGE -->
 <div id="page-post" class="page">
   <div class="pw">
     <div class="pttl">新しいコーデを投稿</div>
@@ -503,51 +574,36 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <input type="file" id="fi-up" accept="image/*" multiple style="display:none" onchange="addPhotos(event)">
       </div>
     </div>
+    <div class="fg">
+      <label class="flbl">コーデのカラー（複数選択可）</label>
+      <div id="color-picker" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
+      <div class="hint">メインカラーを選んでください（フィード絞り込みに使用）</div>
+    </div>
     <div class="fg"><label class="flbl">タイトル</label><input class="fi" type="text" id="p-ttl" placeholder="例：AW24 非対称シルエット"></div>
     <div class="fg"><label class="flbl">説明</label><textarea class="fi fta" id="p-cap" placeholder="インスピレーションや着用シーンなど..."></textarea></div>
-    <div class="fr2" style="margin-bottom:14px">
-      <div class="fg" style="margin-bottom:0"><label class="flbl">ライン</label>
-        <select class="fi" id="p-line" style="appearance:none;cursor:pointer">
-          <option value="">ラインを選択</option>
-          <optgroup label="── COMME des GARÇONS ──"><option>COMME des GARÇONS</option><option>COMME des GARÇONS COMME des GARÇONS</option><option>COMME des GARÇONS GIRL</option></optgroup>
-          <optgroup label="── HOMME ──"><option>COMME des GARÇONS HOMME</option><option>COMME des GARÇONS HOMME PLUS</option><option>COMME des GARÇONS HOMME DEUX</option></optgroup>
-          <optgroup label="── SHIRT / BLACK ──"><option>COMME des GARÇONS SHIRT</option><option>BLACK COMME des GARÇONS</option></optgroup>
-          <optgroup label="── JUNYA WATANABE ──"><option>JUNYA WATANABE</option><option>JUNYA WATANABE MAN</option></optgroup>
-          <optgroup label="── TAO / NOIR ──"><option>tao COMME des GARÇONS</option><option>noir kei ninomiya</option></optgroup>
-          <optgroup label="── CDG / PLAY ──"><option>CDG</option><option>PLAY COMME des GARÇONS</option></optgroup>
-          <optgroup label="── コラボ / その他 ──"><option>THE BEATLES COMME des GARÇONS</option><option>Wallet COMME des GARÇONS</option><option>COMME des GARÇONS parfums</option></optgroup>
-        </select>
-      </div>
-      <div class="fg" style="margin-bottom:0"><label class="flbl">シーズン</label>
-        <select class="fi" id="p-sea" style="appearance:none;cursor:pointer">
-          <option value="">シーズンを選択</option>
-          <option>SS26</option><option>AW25</option><option>SS25</option><option>AW24</option><option>SS24</option><option>AW23</option><option>SS23</option><option>AW22</option><option>アーカイブ（2020年以前）</option>
-        </select>
-      </div>
-    </div>
-    <div class="fg"><label class="flbl">購入店舗</label>
-      <select class="fi" id="p-store" style="appearance:none;cursor:pointer">
-        <option value="">店舗を選択</option>
-        <optgroup label="── 直営店 ──"><option>COMME des GARÇONS 青山店（東京）</option><option>COMME des GARÇONS HOMME PLUS 青山店（東京）</option><option>noir kei ninomiya 青山店（東京）</option><option>COMME des GARÇONS 大阪店</option><option>COMME des GARÇONS 京都店</option></optgroup>
-        <optgroup label="── Dover Street Market ──"><option>Dover Street Market Ginza（東京）</option><option>Dover Street Market London</option><option>Dover Street Market New York</option><option>Dover Street Market Los Angeles</option><option>Dover Street Market Paris</option></optgroup>
-        <optgroup label="── 百貨店 ──"><option>伊勢丹新宿店</option><option>三越銀座店</option><option>髙島屋新宿店</option><option>阪急うめだ本店</option><option>松屋銀座</option><option>大丸東京店</option></optgroup>
-        <optgroup label="── オンライン / 古着 ──"><option>COMME des GARÇONS 公式オンラインストア</option><option>Dover Street Market オンライン</option><option>SSENSE</option><option>ヤフオク（古着）</option><option>メルカリ（古着）</option></optgroup>
-      </select>
-    </div>
+
     <div class="fg">
       <label class="flbl">着用アイテム</label>
       <div class="ibldr">
-        <div class="ibldr-hd"><span class="flbl" style="margin-bottom:0">アイテム名</span><span class="flbl" style="margin-bottom:0">シーズン</span><span class="flbl" style="margin-bottom:0">サイズ</span><span class="flbl" style="margin-bottom:0">品番</span><span></span></div>
-        <div id="ilist"><div class="ir"><input class="fi" type="text" placeholder="コート"><input class="fi" type="text" placeholder="AW24"><input class="fi" type="text" placeholder="M"><input class="fi" type="text" placeholder="HJJ050" oninput="this.value=normalizeRef(this.value)" style="text-transform:uppercase"><button class="rm" onclick="rmItem(this)">×</button></div></div>
+        <div class="ibldr-hd" style="display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr 0.8fr 0.8fr 0.7fr auto;gap:5px;margin-bottom:5px;border-bottom:1px solid var(--ln);padding-bottom:5px">
+          <span class="flbl" style="margin-bottom:0">アイテム名</span>
+          <span class="flbl" style="margin-bottom:0">ライン</span>
+          <span class="flbl" style="margin-bottom:0">シーズン</span>
+          <span class="flbl" style="margin-bottom:0">購入店舗</span>
+          <span class="flbl" style="margin-bottom:0">サイズ</span>
+          <span class="flbl" style="margin-bottom:0">品番</span>
+          <span></span>
+        </div>
+        <div id="ilist"></div>
         <button class="add-r" onclick="addItem()">＋ アイテムを追加</button>
       </div>
-      <div class="hint">※ 品番はハイフンなしで入力（自動で大文字・半角に変換）</div>
+      <div class="hint">※ 品番はハイフンなし・自動大文字・半角</div>
     </div>
-    <button class="sub-btn" onclick="doSubmit()">アーカイブに投稿する</button>
+    <button class="sub-btn" id="submit-post-btn" onclick="doSubmit()">アーカイブに投稿する</button>
   </div>
 </div>
 
-<!-- SAVED -->
+<!-- SAVED PAGE -->
 <div id="page-saved" class="page">
   <div style="padding:16px 20px 8px;display:flex;align-items:baseline;justify-content:space-between"><span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500">保存済み</span><span id="saved-cnt" style="font-size:10px;color:var(--mgry)"></span></div>
   <div class="grid" id="saved-grid"></div>
@@ -556,46 +612,29 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 <div class="toast" id="toast"></div>
 
 <script>
-/* ===== UTILS ===== */
+/* =====================================================
+   Supabase 接続設定
+   ↓ここを自分のSupabase情報に書き換えてください
+===================================================== */
+const SUPABASE_URL     = 'https://gzvfjzixkjbdwbzrhbdd.supabase.co';   // ← 書き換え
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dmZqeml4a2piZHdienJoYmRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMDQ5OTEsImV4cCI6MjA5NTU4MDk5MX0.oEk8K5angcmu-tR5AOF3lTYOzmI_9o01Y7qxidtzPAY'; // ← 書き換え
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* =====================================================
+   UTILS
+===================================================== */
 function toHankaku(s){return s.replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0));}
 function normalizeRef(s){return toHankaku(s).toUpperCase().replace(/-/g,'');}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
-
-/* ===== STORAGE ===== */
-async function storageSave(key,val){
-  try{await window.storage.set(key,JSON.stringify(val));}catch(e){console.warn('storage.set failed',e);}
+function showToast(msg,dur=2400){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
 }
-async function storageLoad(key){
-  try{const r=await window.storage.get(key);return r?JSON.parse(r.value):null;}
-  catch(e){return null;}
+function setLoading(btnId,on,text=''){
+  const b=document.getElementById(btnId);if(!b)return;
+  b.disabled=on;if(text)b.textContent=on?'処理中...':text;
 }
 
-/* ===== PERSISTENT STATE ===== */
-// registered users DB: { email -> {password, profile} }
-let usersDB = {};
-let myProfile = null;   // currently logged-in profile object
-let myPosts   = [];     // posts by 'me' (persisted)
-
-async function persistSave(){
-  await storageSave('cdg_usersDB', usersDB);
-  await storageSave('cdg_loggedIn', myProfile ? myProfile.email : null);
-  if(myProfile) await storageSave('cdg_myPosts', myPosts);
-}
-
-async function persistLoad(){
-  const db = await storageLoad('cdg_usersDB');
-  if(db) usersDB = db;
-  const loggedEmail = await storageLoad('cdg_loggedIn');
-  if(loggedEmail && usersDB[loggedEmail]){
-    myProfile = usersDB[loggedEmail].profile;
-    const savedPosts = await storageLoad('cdg_myPosts');
-    if(savedPosts) myPosts = savedPosts;
-    // merge my saved posts into global posts array (prepend, avoid duplicates)
-    myPosts.forEach(mp=>{if(!posts.find(p=>p.id===mp.id))posts.unshift(mp);});
-  }
-}
-
-/* ===== DATA ===== */
 const PALS=[['#d8d4cc','#a8a29a'],['#c4c0b8','#949088'],['#dcdad4','#aca8a0'],['#b8b4ac','#888480'],['#d0cec8','#a0a09a'],['#c8c4bc','#989490'],['#bfbdb8','#8a8884'],['#d2d0ca','#a2a09a']];
 const COLOR_PALETTE=[
   {id:'black',label:'ブラック',hex:'#111'},{id:'white',label:'ホワイト',hex:'#f5f5f5',border:true},
@@ -605,368 +644,1004 @@ const COLOR_PALETTE=[
   {id:'blue',label:'ブルー',hex:'#2a5caa'},{id:'yellow',label:'イエロー',hex:'#d4aa1a'},
   {id:'pink',label:'ピンク',hex:'#d47a9a'},{id:'purple',label:'パープル',hex:'#6a3a8a'},
 ];
-function hexToRgb(h){const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return[r,g,b];}
-function colorDist(r1,g1,b1,r2,g2,b2){return Math.sqrt((r1-r2)**2+(g1-g2)**2+(b1-b2)**2);}
-function detectColors(src){
-  return new Promise(res=>{
-    if(!src){res([]);return;}
-    const img=new Image();img.crossOrigin='anonymous';
-    img.onload=()=>{
-      try{
-        const c=document.createElement('canvas');c.width=80;c.height=80;
-        const ctx=c.getContext('2d');ctx.drawImage(img,0,0,80,80);
-        const d=ctx.getImageData(0,0,80,80).data;const bk={};
-        for(let i=0;i<d.length;i+=16){const r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];if(a<100)continue;let best=null,bd=Infinity;COLOR_PALETTE.forEach(cp=>{const[pr,pg,pb]=hexToRgb(cp.hex);const dist=colorDist(r,g,b,pr,pg,pb);if(dist<bd){bd=dist;best=cp.id;}});if(best&&bd<100)bk[best]=(bk[best]||0)+1;}
-        res(Object.entries(bk).sort((a,b)=>b[1]-a[1]).slice(0,3).map(e=>e[0]));
-      }catch(e){res([]);}
+
+/* =====================================================
+   カラーピッカー（手動選択）
+===================================================== */
+let selectedColors=[];
+
+function buildColorPicker(){
+  const wrap=document.getElementById('color-picker');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  COLOR_PALETTE.forEach(cp=>{
+    const item=document.createElement('div');
+    item.className='color-sel-item';
+    item.dataset.id=cp.id;
+    item.innerHTML=`<div class="color-dot" style="background:${cp.hex};${cp.border?'border:1px solid #ccc':''}"></div><span class="color-lbl">${cp.label}</span><span class="color-sel-check">✓</span>`;
+    item.onclick=()=>{
+      const idx=selectedColors.indexOf(cp.id);
+      if(idx>=0){
+        selectedColors.splice(idx,1);
+        item.classList.remove('selected');
+      }else{
+        if(selectedColors.length>=3){showToast('カラーは最大3色まで選択できます');return;}
+        selectedColors.push(cp.id);
+        item.classList.add('selected');
+      }
     };
-    img.onerror=()=>res([]);img.src=src;
+    wrap.appendChild(item);
   });
 }
 
-const sampleUsers=[
-  {id:'u2',nick:'Kaoru DSM',handle:'kaoru_dsm',history:'6〜10年',height:174,bio:'BLACK CDG中心。DSM銀座にて定期購入。',avatar:null,following:['u3','u4'],followers:['u3']},
-  {id:'u3',nick:'Ryu Mode',handle:'ryu_mode',history:'3〜5年',height:180,bio:'JUNYA MAN専門。ワークウェアの解体が好き。',avatar:null,following:['u2'],followers:['u2']},
-  {id:'u4',nick:'Hana Play',handle:'hana_play',history:'1〜2年',height:158,bio:'PLAYから入門。Tシャツのコレクター。',avatar:null,following:['u2'],followers:['u2']},
-  {id:'u5',nick:'Sora Noir',handle:'sora_noir',history:'11〜15年',height:162,bio:'noir kei ninomiya obsessed。',avatar:null,following:['u2','u3'],followers:['u3']},
-];
+function resetColorPicker(){
+  selectedColors=[];
+  document.querySelectorAll('.color-sel-item').forEach(el=>el.classList.remove('selected'));
+}
 
-let posts=[
-  {id:1,ttl:'非対称シルエット',userId:'u2',line:'COMME des GARÇONS HOMME PLUS',sea:'AW24',cap:'ウールフェルトのデコンストラクテッドジャケット。非対称を哲学として纏う。',imgs:[],colors:['black','gray'],items:[{n:'非対称ジャケット',sea:'AW24',sz:'M',ref:'HJJ050'},{n:'ワイドパンツ',sea:'AW24',sz:'S',ref:'HJP200'}],store:'Dover Street Market Ginza（東京）',likes:312,cmts:[{userId:'u3',txt:'ジャケットが素晴らしい。どのシーズン？',dt:'2日前'}],pal:0,createdAt:1700000000},
-  {id:2,ttl:'建築的なブラック',userId:'u2',line:'BLACK COMME des GARÇONS',sea:'SS25',cap:'クレープとオーガンザの重ね着。',imgs:[],colors:['black'],items:[{n:'レイヤードドレス',sea:'SS25',sz:'S',ref:'GRD100'}],store:'COMME des GARÇONS 青山店（東京）',likes:489,cmts:[],pal:1,createdAt:1710000000},
-  {id:3,ttl:'ジュンヤ リコンストラクト',userId:'u3',line:'JUNYA WATANABE MAN',sea:'AW23',cap:'デニムの再解釈。キルティングとパッチワーク。',imgs:[],colors:['navy','gray'],items:[{n:'キルティングジャケット',sea:'AW23',sz:'L',ref:'WMJ001'}],store:'Dover Street Market London',likes:201,cmts:[],pal:2,createdAt:1690000000},
-  {id:4,ttl:'PLAYの白',userId:'u4',line:'PLAY COMME des GARÇONS',sea:'SS25',cap:'原点回帰。純白にハートマーク一つ。',imgs:[],colors:['white','red'],items:[{n:'ハートTシャツ',sea:'SS25',sz:'S',ref:'PLT001'}],store:'伊勢丹新宿店',likes:178,cmts:[],pal:3,createdAt:1715000000},
-  {id:5,ttl:'抽象的なフォルム',userId:'u2',line:'COMME des GARÇONS HOMME PLUS',sea:'AW23',cap:'極限のボリューム。パデッドバックのジャケット。',imgs:[],colors:['black','beige'],items:[{n:'パデッドバックジャケット',sea:'AW23',sz:'M',ref:'HJJ099'}],store:'COMME des GARÇONS HOMME PLUS 青山店（東京）',likes:567,cmts:[],pal:4,createdAt:1705000000},
-  {id:6,ttl:'noir kei — 立体的な花',userId:'u5',line:'noir kei ninomiya',sea:'SS24',cap:'チュールとオーガンザで三次元の花。',imgs:[],colors:['black','white'],items:[{n:'3Dフラワートップ',sea:'SS24',sz:'2',ref:'NKT020'}],store:'noir kei ninomiya 青山店（東京）',likes:423,cmts:[],pal:5,createdAt:1695000000},
-  {id:7,ttl:'SHIRTのオックスフォード',userId:'u3',line:'COMME des GARÇONS SHIRT',sea:'SS25',cap:'シャツをアートオブジェクトとして。',imgs:[],colors:['white','beige'],items:[{n:'プリーツ構造シャツ',sea:'SS25',sz:'M',ref:'FZB002'}],store:'松屋銀座',likes:134,cmts:[],pal:6,createdAt:1712000000},
-  {id:8,ttl:'tao — ドレープジャージー',userId:'u4',line:'tao COMME des GARÇONS',sea:'AW24',cap:'ジャージーを彫刻のように。',imgs:[],colors:['black','gray'],items:[{n:'ジャージードレス',sea:'AW24',sz:'S',ref:'TCD001'}],store:'伊勢丹新宿店',likes:289,cmts:[],pal:7,createdAt:1708000000},
-];
-
-/* ===== STATE ===== */
-let filtLine='all',filtSea='all',filtColor='all',srchQ='',curSort='popular';
-let curPost=null,curVisitedUser=null,prevPage=null;
-let uploadedPhotos=[];
+/* =====================================================
+   STATE
+===================================================== */
+let myUser    = null;  // Supabase auth user
+let myProfile = null;  // profiles テーブルのレコード
+let posts     = [];
+let filtLine='all', filtSea='all', filtColor='all', srchQ='', curSort='popular';
+let curPost=null, curVisitedUserId=null, prevPage=null;
+let uploadedPhotos=[];   // { file, dataUrl }
 let editingPostId=null;
-let pendingRegAvatar=null,pendingEditAvatar=null;
+let pendingRegAvatar=null, pendingEditAvatar=null;
+let likedPostIds=new Set();
+let savedPostIds=new Set();
 
-/* ===== HELPERS ===== */
-const getUser=id=>{if(myProfile&&id===myProfile.id)return myProfile;return sampleUsers.find(u=>u.id===id)||null;};
-const getUserPosts=id=>posts.filter(p=>p.userId===id);
-const isFollowing=id=>{if(!myProfile)return false;return(myProfile.following||[]).includes(id);};
-const userInitial=uid=>{const u=getUser(uid);return u?u.nick.charAt(0).toUpperCase():'?';};
-const userNick=uid=>{const u=getUser(uid);return u?u.nick:'Unknown';};
-const userHandle=uid=>{const u=getUser(uid);return u?'@'+u.handle:'';};
-const userAvatar=uid=>{const u=getUser(uid);return u?u.avatar:null;};
-function calcFollowers(uid){const u=sampleUsers.find(u=>u.id===uid);if(!u)return 0;let cnt=u.followers.length;if(myProfile){const was=u.followers.includes(myProfile.id);const is=isFollowing(uid);if(is&&!was)cnt++;if(!is&&was)cnt--;}return cnt;}
+/* =====================================================
+   SUPABASE HELPERS
+===================================================== */
+async function fetchProfile(userId){
+  const {data}=await sb.from('profiles').select('*').eq('id',userId).single();
+  return data;
+}
 
-/* ===== FIG ===== */
-function fig(p){const c=PALS[p.pal%PALS.length];return`<div style="width:100%;height:100%;background:${c[0]};display:flex;align-items:center;justify-content:center"><svg width="74%" height="74%" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="48" rx="18" ry="20" fill="${c[1]}"/><path d="M72 68 Q100 58 128 68 L136 172 Q100 182 64 172 Z" fill="${c[1]}"/><path d="M72 70 Q50 88 44 132 Q56 134 62 132 Q67 98 76 86 Z" fill="${c[1]}"/><path d="M128 70 Q150 88 156 132 Q144 134 138 132 Q133 98 124 86 Z" fill="${c[1]}"/><path d="M68 172 Q82 177 94 172 L90 265 Q80 267 72 265 Z" fill="${c[0]}" stroke="${c[1]}" stroke-width="1.5"/><path d="M132 172 Q118 177 106 172 L110 265 Q120 270 128 265 Z" fill="${c[0]}" stroke="${c[1]}" stroke-width="1.5"/></svg></div>`;}
+async function fetchPosts(opts={}){
+  let q=sb.from('posts')
+    .select(`*, profiles(id,nickname,handle,avatar_url,cdg_history,height), post_images(url,position), post_items(name,season,size,ref_number), likes(count), comments(count)`)
+    .order('created_at',{ascending:false});
+  if(opts.userId) q=q.eq('user_id',opts.userId);
+  if(opts.refSearch) q=q.ilike('post_items.ref_number','%'+opts.refSearch+'%');
+  const {data,error}=await q;
+  if(error){console.error(error);return[];}
+  return data||[];
+}
 
-/* ===== COLOR CHIPS ===== */
+/* =====================================================
+   画像圧縮ユーティリティ
+   maxW/maxH: リサイズ上限px  quality: JPEG品質 0〜1
+   コーデ写真 → 1200px / 0.82  アバター → 400px / 0.85
+===================================================== */
+function compressImage(file, maxW=1200, maxH=1200, quality=0.82){
+  return new Promise((resolve, reject)=>{
+    const img=new Image();
+    const url=URL.createObjectURL(file);
+    img.onload=()=>{
+      URL.revokeObjectURL(url);
+      let {width:w, height:h}=img;
+      if(w>maxW||h>maxH){
+        const ratio=Math.min(maxW/w, maxH/h);
+        w=Math.round(w*ratio);
+        h=Math.round(h*ratio);
+      }
+      const canvas=document.createElement('canvas');
+      canvas.width=w; canvas.height=h;
+      const ctx=canvas.getContext('2d');
+      ctx.fillStyle='#ffffff';
+      ctx.fillRect(0,0,w,h);
+      ctx.drawImage(img,0,0,w,h);
+      canvas.toBlob(blob=>{
+        if(!blob){reject(new Error('compression failed'));return;}
+        resolve(blob);
+      },'image/jpeg', quality);
+    };
+    img.onerror=reject;
+    img.src=url;
+  });
+}
+
+async function uploadImage(file, bucket='post-images'){
+  const isAvatar = bucket==='avatars';
+  const blob = await compressImage(
+    file,
+    isAvatar ? 400 : 1200,
+    isAvatar ? 400 : 1200,
+    isAvatar ? 0.85 : 0.82
+  );
+  const path=`${myUser.id}/${Date.now()}.jpg`;
+  const {error}=await sb.storage.from(bucket).upload(path, blob, {
+    cacheControl:'3600', upsert:false, contentType:'image/jpeg'
+  });
+  if(error)throw error;
+  const {data}=sb.storage.from(bucket).getPublicUrl(path);
+  return data.publicUrl;
+}
+
+async function fetchLikes(){
+  if(!myUser)return;
+  const {data}=await sb.from('likes').select('post_id').eq('user_id',myUser.id);
+  likedPostIds=new Set((data||[]).map(r=>r.post_id));
+}
+async function fetchSaves(){
+  if(!myUser)return;
+  const {data}=await sb.from('saves').select('post_id').eq('user_id',myUser.id);
+  savedPostIds=new Set((data||[]).map(r=>r.post_id));
+}
+async function fetchFollowCounts(userId){
+  const [{count:fc},{count:ing}]=await Promise.all([
+    sb.from('follows').select('*',{count:'exact',head:true}).eq('following_id',userId),
+    sb.from('follows').select('*',{count:'exact',head:true}).eq('follower_id',userId),
+  ]);
+  return{followers:fc||0,following:ing||0};
+}
+async function isFollowing(targetId){
+  if(!myUser)return false;
+  const {data}=await sb.from('follows').select('id').eq('follower_id',myUser.id).eq('following_id',targetId).maybeSingle();
+  return!!data;
+}
+
+/* =====================================================
+   FIGURE PLACEHOLDER (写真なしのとき表示)
+===================================================== */
+function fig(p){
+  const idx=p.id?parseInt(String(p.id).slice(-1)):0;
+  const c=PALS[idx%PALS.length];
+  return`<div style="width:100%;height:100%;background:${c[0]};display:flex;align-items:center;justify-content:center"><svg width="74%" height="74%" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="48" rx="18" ry="20" fill="${c[1]}"/><path d="M72 68 Q100 58 128 68 L136 172 Q100 182 64 172 Z" fill="${c[1]}"/><path d="M72 70 Q50 88 44 132 Q56 134 62 132 Q67 98 76 86 Z" fill="${c[1]}"/><path d="M128 70 Q150 88 156 132 Q144 134 138 132 Q133 98 124 86 Z" fill="${c[1]}"/><path d="M68 172 Q82 177 94 172 L90 265 Q80 267 72 265 Z" fill="${c[0]}" stroke="${c[1]}" stroke-width="1.5"/><path d="M132 172 Q118 177 106 172 L110 265 Q120 270 128 265 Z" fill="${c[0]}" stroke="${c[1]}" stroke-width="1.5"/></svg></div>`;
+}
+
+/* =====================================================
+   COLOR CHIPS
+===================================================== */
 function buildColorChips(){
   const wrap=document.getElementById('chips-color');
   wrap.innerHTML='<span class="chip active" onclick="setFilt(\'color\',\'all\',this)">ALL</span>';
-  COLOR_PALETTE.forEach(cp=>{const s=document.createElement('div');s.className='color-chip'+(filtColor===cp.id?' active':'');s.title=cp.label;s.style.background=cp.hex;if(cp.border)s.style.border='1px solid #ccc';s.onclick=()=>{document.querySelectorAll('.color-chip').forEach(c=>c.classList.remove('active'));document.querySelectorAll('#chips-color .chip').forEach(c=>c.classList.remove('active'));s.classList.add('active');filtColor=cp.id;updateFeed();};wrap.appendChild(s);});
+  COLOR_PALETTE.forEach(cp=>{
+    const s=document.createElement('div');
+    s.className='color-chip'+(filtColor===cp.id?' active':'');
+    s.title=cp.label;s.style.background=cp.hex;
+    if(cp.border)s.style.border='1px solid #ccc';
+    s.onclick=()=>{
+      document.querySelectorAll('.color-chip').forEach(c=>c.classList.remove('active'));
+      document.querySelectorAll('#chips-color .chip').forEach(c=>c.classList.remove('active'));
+      s.classList.add('active');filtColor=cp.id;updateFeed();
+    };
+    wrap.appendChild(s);
+  });
 }
 
-/* ===== CARD / GRID ===== */
-function card(p){const imgHtml=p.imgs&&p.imgs[0]?`<img src="${p.imgs[0]}" style="width:100%;height:100%;object-fit:cover;display:block;">`:fig(p);return`<div class="card" onclick="openPost(${p.id})"><div class="cph">${imgHtml}<div class="cov"><div class="cov-line">${p.line}</div><div class="cov-ttl">${p.ttl}</div></div></div><div class="ccard-info"><div class="ccard-line">${p.line}</div><div class="ccard-ttl">${p.ttl}</div><div class="ccard-meta"><span class="ccard-sea">${p.sea}</span><span class="ccard-lk">♡ ${p.likes}</span></div></div></div>`;}
-function rg(id,arr){const el=document.getElementById(id);if(!arr||!arr.length){el.innerHTML='<div style="grid-column:1/-1;padding:28px 20px;font-size:10px;color:var(--mgry);font-family:var(--jp)">該当するコーデが見つかりません</div>';return;}el.innerHTML=arr.map(card).join('');}
+/* =====================================================
+   CARD / GRID
+===================================================== */
+function card(p){
+  const imgs=p.post_images||[];
+  imgs.sort((a,b)=>a.position-b.position);
+  const imgHtml=imgs[0]?`<img src="${imgs[0].url}" style="width:100%;height:100%;object-fit:cover;display:block;">`  :fig(p);
+  const likeCnt=(p.likes&&p.likes[0])?p.likes[0].count:0;
+  return`<div class="card" onclick="openPost('${p.id}')"><div class="cph">${imgHtml}<div class="cov"><div class="cov-line">${p.line||''}</div><div class="cov-ttl">${p.title||''}</div></div></div><div class="ccard-info"><div class="ccard-line">${p.line||''}</div><div class="ccard-ttl">${p.title||''}</div><div class="ccard-meta"><span class="ccard-sea">${p.season||''}</span><span class="ccard-lk">♡ ${likeCnt}</span></div></div></div>`;
+}
+
+function rg(id,arr){
+  const el=document.getElementById(id);
+  if(!arr||!arr.length){el.innerHTML='<div style="grid-column:1/-1;padding:28px 20px;font-size:10px;color:var(--mgry);font-family:var(--jp)">該当するコーデが見つかりません</div>';return;}
+  el.innerHTML=arr.map(card).join('');
+}
 
 function getFiltered(){
-  let res=posts.filter(p=>{
-    const lineOk=filtLine==='all'||p.line===filtLine;
-    let seaOk=filtSea==='all';if(!seaOk){if(filtSea==='SS')seaOk=p.sea.startsWith('SS');else if(filtSea==='AW')seaOk=p.sea.startsWith('AW');else seaOk=p.sea===filtSea;}
-    const colorOk=filtColor==='all'||(p.colors&&p.colors.includes(filtColor));
-    let qOk=true;if(srchQ){const q=normalizeRef(srchQ);qOk=p.items.some(i=>normalizeRef(i.ref).includes(q));}
-    return lineOk&&seaOk&&colorOk&&qOk;
-  });
-  if(curSort==='popular')res.sort((a,b)=>b.likes-a.likes);
-  else if(curSort==='new')res.sort((a,b)=>b.createdAt-a.createdAt);
-  else if(curSort==='following'){if(!myProfile)res.sort((a,b)=>b.likes-a.likes);else{const fi=myProfile.following||[];res=res.filter(p=>fi.includes(p.userId)||p.userId===myProfile.id);}}
+  let res=[...posts];
+  if(filtLine!=='all') res=res.filter(p=>p.line===filtLine);
+  if(filtSea!=='all'){
+    if(filtSea==='SS') res=res.filter(p=>p.season&&p.season.includes('SS'));
+    else if(filtSea==='AW') res=res.filter(p=>p.season&&p.season.includes('AW'));
+    else res=res.filter(p=>p.season===filtSea);
+  }
+  if(filtColor!=='all') res=res.filter(p=>p.colors&&p.colors.includes(filtColor));
+  if(srchQ){
+    const q=normalizeRef(srchQ);
+    res=res.filter(p=>(p.post_items||[]).some(i=>normalizeRef(i.ref_number||'').includes(q)));
+  }
+  if(curSort==='popular') res.sort((a,b)=>((b.likes&&b.likes[0]?b.likes[0].count:0)-(a.likes&&a.likes[0]?a.likes[0].count:0)));
+  else if(curSort==='new') res.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+  else if(curSort==='following'){
+    if(!myUser) res.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+  }
   return res;
 }
-function updateFeed(){const res=getFiltered();rg('feed-grid',res);document.getElementById('feed-cnt').textContent=res.length+'件';}
+
+async function updateFeed(){
+  document.getElementById('feed-grid').innerHTML='<div class="loading" style="grid-column:1/-1"><div class="spinner"></div>読み込み中...</div>';
+  posts=await fetchPosts();
+  const res=getFiltered();
+  rg('feed-grid',res);
+  document.getElementById('feed-cnt').textContent=res.length+'件';
+}
+
 function setFilt(type,val,el){
   if(type==='line'){filtLine=val;document.querySelectorAll('#chips-line .chip').forEach(c=>c.classList.remove('active'));}
   else if(type==='sea'){filtSea=val;document.querySelectorAll('#chips-sea .chip').forEach(c=>c.classList.remove('active'));}
   else if(type==='color'){filtColor=val;document.querySelectorAll('#chips-color .chip').forEach(c=>c.classList.remove('active'));document.querySelectorAll('.color-chip').forEach(c=>c.classList.remove('active'));}
-  if(el)el.classList.add('active');updateFeed();
+  if(el)el.classList.add('active');
+  const res=getFiltered();rg('feed-grid',res);document.getElementById('feed-cnt').textContent=res.length+'件';
 }
-function setSort(val,el){curSort=val;document.querySelectorAll('.sort-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');if(val==='following'&&!myProfile){alert('フォロー中で絞り込むにはログインが必要です。');return;}updateFeed();}
-function doSearch(){srchQ=document.getElementById('srch').value.trim();document.getElementById('srch-msg').textContent=srchQ?`品番「${normalizeRef(srchQ)}」の検索結果`:'';updateFeed();}
-
-/* ===== DETAIL ===== */
-function renderAvInEl(el,uid,size){
-  if(!el)return;const av=userAvatar(uid);const ini=userInitial(uid);
-  el.innerHTML=av?`<img src="${av}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`<span style="font-size:${Math.round((size||28)*.38)}px">${ini}</span>`;
+function setSort(val,el){
+  curSort=val;document.querySelectorAll('.sort-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');
+  if(val==='following'&&!myUser){alert('フォロー中で絞り込むにはログインが必要です。');return;}
+  const res=getFiltered();rg('feed-grid',res);
+}
+function doSearch(){
+  srchQ=document.getElementById('srch').value.trim();
+  document.getElementById('srch-msg').textContent=srchQ?`品番「${normalizeRef(srchQ)}」の検索結果`:'';
+  const res=getFiltered();rg('feed-grid',res);document.getElementById('feed-cnt').textContent=res.length+'件';
 }
 
-function openPost(id){
-  curPost=posts.find(p=>p.id===id);if(!curPost)return;
+/* =====================================================
+   POST DETAIL
+===================================================== */
+async function openPost(id){
+  const {data:p}=await sb.from('posts')
+    .select(`*, profiles(id,nickname,handle,avatar_url,cdg_history,height), post_images(url,position), post_items(name,season,size,ref_number), likes(count), comments(id,user_id,content,created_at,profiles(nickname,handle,avatar_url))`)
+    .eq('id',id).single();
+  if(!p)return;
+  curPost=p;
   prevPage=document.querySelector('.page.active').id;
-  const mainEl=document.getElementById('d-main-img');mainEl.style.aspectRatio='3/4';
-  mainEl.innerHTML=curPost.imgs&&curPost.imgs[0]?`<img src="${curPost.imgs[0]}" style="width:100%;height:100%;object-fit:cover;">`:fig(curPost);
-  document.getElementById('d-thumbs').innerHTML=curPost.imgs&&curPost.imgs.length>1?curPost.imgs.map((s,i)=>`<div class="img-thumb ${i===0?'active':''}" onclick="switchImg('${s}',this)"><img src="${s}" style="width:100%;height:100%;object-fit:cover;"></div>`).join(''):'';
-  renderAvInEl(document.getElementById('d-av'),curPost.userId,28);
-  document.getElementById('d-un').textContent=userNick(curPost.userId);
-  document.getElementById('d-handle').textContent=userHandle(curPost.userId);
-  document.getElementById('d-sea').textContent=curPost.sea;document.getElementById('d-line').textContent=curPost.line;
-  document.getElementById('d-ttl').textContent=curPost.ttl;document.getElementById('d-cap').textContent=curPost.cap;
-  document.getElementById('lcnt').textContent=curPost.likes;document.getElementById('lbtn').classList.remove('liked');
-  const isMine=myProfile&&curPost.userId===myProfile.id;
+
+  const imgs=(p.post_images||[]).sort((a,b)=>a.position-b.position);
+  const mainEl=document.getElementById('d-main-img');
+  mainEl.style.aspectRatio='3/4';
+  mainEl.innerHTML=imgs[0]?`<img src="${imgs[0].url}" style="width:100%;height:100%;object-fit:cover;">`:fig(p);
+  document.getElementById('d-thumbs').innerHTML=imgs.length>1?imgs.map((img,i)=>`<div class="img-thumb ${i===0?'active':''}" onclick="switchImg('${img.url}',this)"><img src="${img.url}" style="width:100%;height:100%;object-fit:cover;"></div>`).join(''):'';
+
+  const prof=p.profiles||{};
+  const avEl=document.getElementById('d-av');
+  avEl.innerHTML=prof.avatar_url?`<img src="${prof.avatar_url}">`:`<span>${(prof.nickname||'?').charAt(0).toUpperCase()}</span>`;
+  document.getElementById('d-un').textContent=prof.nickname||'';
+  document.getElementById('d-handle').textContent='@'+(prof.handle||'');
+  document.getElementById('d-sea').textContent=p.season||'';
+  document.getElementById('d-line').textContent=p.line||'';
+  document.getElementById('d-ttl').textContent=p.title||'';
+  document.getElementById('d-cap').textContent=p.caption||'';
+
+  const likeCnt=(p.likes&&p.likes[0])?p.likes[0].count:0;
+  document.getElementById('lcnt').textContent=likeCnt;
+  const isLiked=likedPostIds.has(p.id);
+  document.getElementById('lbtn').classList.toggle('liked',isLiked);
+  const isSaved=savedPostIds.has(p.id);
+  document.getElementById('save-btn').classList.toggle('liked',isSaved);
+  document.getElementById('save-btn').textContent=isSaved?'★ 保存済み':'□ 保存';
+
+  document.getElementById('d-items').innerHTML=(p.post_items||[]).map(i=>`
+    <div class="irow" style="display:flex;flex-wrap:wrap;gap:4px;padding:8px 0;border-bottom:1px solid var(--ln);align-items:center">
+      <span class="iname" style="font-size:11px;flex:1;min-width:80px">${i.name||''}</span>
+      ${i.line?`<span class="ibadge" style="font-size:8px">${i.line}</span>`:''}
+      ${i.season?`<span class="ibadge">${i.season}</span>`:''}
+      ${i.store?`<span class="ibadge" style="font-size:8px;color:var(--mgry)">${i.store}</span>`:''}
+      ${i.size?`<span class="isz">${i.size}</span>`:''}
+      ${i.ref_number?`<span class="ibadge" style="font-family:var(--sans)">${i.ref_number}</span>`:''}
+    </div>`).join('');
+  document.getElementById('d-store').innerHTML=p.store?`<span>📍</span><span>${p.store}</span>`:'';
+
+  const isMine=myUser&&p.user_id===myUser.id;
   const fBtn=document.getElementById('detail-fol-btn');
-  if(isMine){fBtn.style.display='none';}else{fBtn.style.display='';const fol=isFollowing(curPost.userId);fBtn.textContent=fol?'フォロー中':'フォロー';fBtn.classList.toggle('following',fol);}
+  if(isMine){fBtn.style.display='none';}
+  else{
+    fBtn.style.display='';
+    const fol=await isFollowing(p.user_id);
+    fBtn.textContent=fol?'フォロー中':'フォロー';
+    fBtn.classList.toggle('following',fol);
+  }
   document.getElementById('edit-post-btn').style.display=isMine?'':'none';
   document.getElementById('del-post-btn').style.display=isMine?'':'none';
-  document.getElementById('d-items').innerHTML=curPost.items.map(i=>`<div class="irow"><span class="iname">${i.n}</span><span class="ibadge">${i.sea}</span><span class="isz">${i.sz}</span><span class="ibadge" style="font-family:var(--sans)">${i.ref}</span></div>`).join('');
-  document.getElementById('d-store').innerHTML=curPost.store?`<span>📍</span><span>${curPost.store}</span>`:'';
-  renderCmts();goNav('detail',null);
+
+  renderCmts(p.comments||[]);
+  goNav('detail',null);
 }
+
 function switchImg(src,el){document.getElementById('d-main-img').innerHTML=`<img src="${src}" style="width:100%;height:100%;object-fit:cover;">`;document.querySelectorAll('.img-thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
-function renderCmts(){
-  document.getElementById('cmt-list').innerHTML=curPost.cmts.length
-    ?curPost.cmts.map(c=>{const av=userAvatar(c.userId);const ini=userInitial(c.userId);const avH=av?`<img src="${av}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`<span style="font-size:8px">${ini}</span>`;return`<div class="cmt"><div class="cmt-hd"><div class="cmt-av">${avH}</div><span class="cmt-un">${userNick(c.userId)}</span><span class="cmt-dt">${c.dt}</span></div><div class="cmt-txt">${c.txt}</div></div>`;}).join('')
+
+function renderCmts(cmts){
+  document.getElementById('cmt-list').innerHTML=cmts.length
+    ?cmts.map(c=>{const prof=c.profiles||{};const av=prof.avatar_url?`<img src="${prof.avatar_url}">`:`<span style="font-size:8px">${(prof.nickname||'?').charAt(0).toUpperCase()}</span>`;return`<div class="cmt"><div class="cmt-hd"><div class="cmt-av">${av}</div><span class="cmt-un">${prof.nickname||''}</span><span class="cmt-dt">${new Date(c.created_at).toLocaleDateString('ja')}</span></div><div class="cmt-txt">${c.content}</div></div>`;}).join('')
     :'<div style="font-size:10px;color:var(--mgry);padding:7px 0;font-family:var(--jp)">コメントはまだありません。</div>';
 }
-function addCmt(){const inp=document.getElementById('cmt-in');const txt=inp.value.trim();if(!txt||!curPost)return;curPost.cmts.push({userId:myProfile?myProfile.id:'guest',txt,dt:'たった今'});renderCmts();inp.value='';}
-function doLike(){const b=document.getElementById('lbtn');const c=document.getElementById('lcnt');if(b.classList.contains('liked')){b.classList.remove('liked');c.textContent=parseInt(c.textContent)-1;}else{b.classList.add('liked');c.textContent=parseInt(c.textContent)+1;}}
-function toggleFollowDetail(){if(!curPost)return;toggleFollowUser(curPost.userId);const fol=isFollowing(curPost.userId);const b=document.getElementById('detail-fol-btn');b.textContent=fol?'フォロー中':'フォロー';b.classList.toggle('following',fol);}
 
-/* ===== EDIT/DELETE POST ===== */
+async function addCmt(){
+  if(!myUser){alert('コメントするにはログインが必要です。');return;}
+  const inp=document.getElementById('cmt-in');const txt=inp.value.trim();if(!txt||!curPost)return;
+  await sb.from('comments').insert({post_id:curPost.id,user_id:myUser.id,content:txt});
+  inp.value='';
+  const{data:cmts}=await sb.from('comments').select('*,profiles(nickname,handle,avatar_url)').eq('post_id',curPost.id).order('created_at');
+  renderCmts(cmts||[]);
+}
+
+async function doLike(){
+  if(!myUser){alert('いいねするにはログインが必要です。');openLoginModal();return;}
+  const btn=document.getElementById('lbtn');
+  const cnt=document.getElementById('lcnt');
+  if(likedPostIds.has(curPost.id)){
+    await sb.from('likes').delete().eq('post_id',curPost.id).eq('user_id',myUser.id);
+    likedPostIds.delete(curPost.id);
+    btn.classList.remove('liked');
+    cnt.textContent=Math.max(0,parseInt(cnt.textContent)-1);
+  }else{
+    await sb.from('likes').insert({post_id:curPost.id,user_id:myUser.id});
+    likedPostIds.add(curPost.id);
+    btn.classList.add('liked');
+    cnt.textContent=parseInt(cnt.textContent)+1;
+  }
+}
+
+async function toggleSave(){
+  if(!myUser){alert('保存するにはログインが必要です。');openLoginModal();return;}
+  const btn=document.getElementById('save-btn');
+  if(savedPostIds.has(curPost.id)){
+    await sb.from('saves').delete().eq('post_id',curPost.id).eq('user_id',myUser.id);
+    savedPostIds.delete(curPost.id);
+    btn.classList.remove('liked');btn.textContent='□ 保存';showToast('保存を解除しました');
+  }else{
+    await sb.from('saves').insert({post_id:curPost.id,user_id:myUser.id});
+    savedPostIds.add(curPost.id);
+    btn.classList.add('liked');btn.textContent='★ 保存済み';showToast('保存しました');
+  }
+}
+
+async function toggleFollowDetail(){
+  if(!curPost)return;
+  await toggleFollowUser(curPost.user_id);
+  const fol=await isFollowing(curPost.user_id);
+  const b=document.getElementById('detail-fol-btn');
+  b.textContent=fol?'フォロー中':'フォロー';b.classList.toggle('following',fol);
+}
+
+/* =====================================================
+   EDIT / DELETE POST
+===================================================== */
 function openEditPost(){
   if(!curPost)return;editingPostId=curPost.id;
-  document.getElementById('epost-ttl').value=curPost.ttl;document.getElementById('epost-cap').value=curPost.cap;
-  document.getElementById('epost-line').value=curPost.line;document.getElementById('epost-sea').value=curPost.sea;document.getElementById('epost-store').value=curPost.store||'';
+  document.getElementById('epost-ttl').value=curPost.title||'';
+  document.getElementById('epost-cap').value=curPost.caption||'';
+  document.getElementById('epost-line').value=curPost.line||'';
+  document.getElementById('epost-sea').value=curPost.season||'';
+  document.getElementById('epost-store').value=curPost.store||'';
   const el=document.getElementById('epost-ilist');el.innerHTML='';
-  curPost.items.forEach(i=>{const d=document.createElement('div');d.className='ir';d.innerHTML=`<input class="fi" type="text" value="${i.n}"><input class="fi" type="text" value="${i.sea}"><input class="fi" type="text" value="${i.sz}"><input class="fi" type="text" value="${i.ref}" oninput="this.value=normalizeRef(this.value)" style="text-transform:uppercase"><button class="rm" onclick="rmItemEdit(this)">×</button>`;el.appendChild(d);});
+  (curPost.post_items||[]).forEach(i=>{el.appendChild(makeEditItemRow(i));});
+  if(!(curPost.post_items||[]).length) el.appendChild(makeEditItemRow());
   openModal('modal-edit-post');
 }
-function addItemEdit(){const d=document.createElement('div');d.className='ir';d.innerHTML=`<input class="fi" type="text" placeholder="アイテム名"><input class="fi" type="text" placeholder="AW24"><input class="fi" type="text" placeholder="サイズ"><input class="fi" type="text" placeholder="HJJ050" oninput="this.value=normalizeRef(this.value)" style="text-transform:uppercase"><button class="rm" onclick="rmItemEdit(this)">×</button>`;document.getElementById('epost-ilist').appendChild(d);}
-function rmItemEdit(b){if(document.querySelectorAll('#epost-ilist .ir').length>1)b.closest('.ir').remove();}
-async function saveEditPost(){
-  const p=posts.find(p=>p.id===editingPostId);if(!p)return;
-  p.ttl=document.getElementById('epost-ttl').value||p.ttl;p.cap=document.getElementById('epost-cap').value;
-  p.line=document.getElementById('epost-line').value||p.line;p.sea=document.getElementById('epost-sea').value||p.sea;p.store=document.getElementById('epost-store').value;
-  p.items=[...document.querySelectorAll('#epost-ilist .ir')].map(r=>{const ins=[...r.querySelectorAll('input')];return{n:ins[0].value||'—',sea:ins[1].value||'—',sz:ins[2].value||'—',ref:normalizeRef(ins[3].value)||'—'};});
-  // sync myPosts
-  myPosts=posts.filter(p=>p.userId===myProfile?.id);
-  await persistSave();
-  closeModal('modal-edit-post');openPost(editingPostId);updateFeed();renderMyPage();showToast('投稿を更新しました');
+function makeEditItemRow(i={}){
+  const d=document.createElement('div');
+  d.className='ir';
+  d.style.cssText='display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr 0.8fr 0.8fr 0.7fr auto;gap:5px;align-items:end;margin-bottom:6px';
+  const selVal=(opts,val)=>opts.includes(val)?`selected`:'';
+  const lineOpts=['COMME des GARÇONS','COMME des GARÇONS COMME des GARÇONS','COMME des GARÇONS GIRL','COMME des GARÇONS HOMME','COMME des GARÇONS HOMME PLUS','COMME des GARÇONS HOMME DEUX','COMME des GARÇONS SHIRT','BLACK COMME des GARÇONS','JUNYA WATANABE','JUNYA WATANABE MAN','tao COMME des GARÇONS','noir kei ninomiya','CDG','PLAY COMME des GARÇONS','THE BEATLES COMME des GARÇONS','Wallet COMME des GARÇONS','COMME des GARÇONS parfums'];
+  const seaOpts=['26AW','26SS','25AW','25SS','24AW','24SS','23AW','23SS','22AW','22SS','21AW','21SS','20AW','20SS','19AW','19SS','18AW','18SS','17AW','17SS','16AW','16SS','15AW','15SS','14AW','14SS','13AW','13SS','12AW','12SS','11AW','11SS','10AW','10SS','09AW','09SS','08AW','08SS','07AW','07SS','06AW','06SS','05AW','05SS','04AW','04SS','03AW','03SS','02AW','02SS','01AW','01SS','00AW','00SS','アーカイブ（2000年以前）'];
+  const storeOpts=['COMME des GARÇONS 青山店（東京）','COMME des GARÇONS HOMME PLUS 青山店（東京）','noir kei ninomiya 青山店（東京）','COMME des GARÇONS 大阪店','COMME des GARÇONS 京都店','Dover Street Market Ginza（東京）','Dover Street Market London','Dover Street Market New York','Dover Street Market Los Angeles','Dover Street Market Paris','伊勢丹新宿店','三越銀座店','髙島屋新宿店','阪急うめだ本店','松屋銀座','大丸東京店','COMME des GARÇONS 公式オンラインストア','Dover Street Market オンライン','SSENSE','ヤフオク（古着）','メルカリ（古着）'];
+  const nameOpts=['シャツ','Tシャツ','ジャケット','パンツ','スカート','靴下','シューズ','その他トップス','その他ボトムス','アクセサリー','その他'];
+  d.innerHTML=`
+    <select class="fi" style="appearance:none;cursor:pointer;font-size:10px">
+      <option value="">アイテム名</option>
+      ${nameOpts.map(n=>`<option ${i.name===n?'selected':''}>${n}</option>`).join('')}
+    </select>
+    <select class="fi" style="appearance:none;cursor:pointer;font-size:10px">
+      <option value="">ライン</option>
+      ${lineOpts.map(l=>`<option ${i.line===l?'selected':''}>${l}</option>`).join('')}
+    </select>
+    <select class="fi" style="appearance:none;cursor:pointer;font-size:10px">
+      <option value="">シーズン</option>
+      ${seaOpts.map(s=>`<option ${i.season===s?'selected':''}>${s}</option>`).join('')}
+    </select>
+    <select class="fi" style="appearance:none;cursor:pointer;font-size:10px">
+      <option value="">購入店舗</option>
+      ${storeOpts.map(s=>`<option ${i.store===s?'selected':''}>${s}</option>`).join('')}
+    </select>
+    <input class="fi" type="text" placeholder="サイズ" value="${i.size||''}" style="font-size:10px">
+    <input class="fi" type="text" placeholder="品番" value="${i.ref_number||''}" oninput="this.value=normalizeRef(this.value)" style="text-transform:uppercase;font-size:10px">
+    <button class="rm" onclick="rmItemEdit(this)">×</button>
+  `;
+  return d;
 }
+function addItemEdit(){document.getElementById('epost-ilist').appendChild(makeEditItemRow());}
+function rmItemEdit(b){if(document.querySelectorAll('#epost-ilist .ir').length>1)b.closest('.ir').remove();}
+
+async function saveEditPost(){
+  setLoading('epost-save-btn',true);
+  const rows=[...document.querySelectorAll('#epost-ilist .ir')];
+  const items=rows.map(r=>{const ins=[...r.querySelectorAll('input')];return{post_id:editingPostId,name:ins[0].value||'—',season:ins[1].value||'—',size:ins[2].value||'—',ref_number:normalizeRef(ins[3].value)||'—'};});
+  await sb.from('posts').update({
+    title:document.getElementById('epost-ttl').value,
+    caption:document.getElementById('epost-cap').value,
+    line:document.getElementById('epost-line').value,
+    season:document.getElementById('epost-sea').value,
+    store:document.getElementById('epost-store').value,
+  }).eq('id',editingPostId);
+  await sb.from('post_items').delete().eq('post_id',editingPostId);
+  const editRows=[...document.querySelectorAll('#epost-ilist .ir')];
+  const newItems=editRows.map(r=>{
+    const sels=[...r.querySelectorAll('select')];
+    const ins=[...r.querySelectorAll('input')];
+    return{
+      post_id:editingPostId,
+      name:sels[0]?.value||'',
+      line:sels[1]?.value||'',
+      season:sels[2]?.value||'',
+      store:sels[3]?.value||'',
+      size:ins[0]?.value||'',
+      ref_number:normalizeRef(ins[1]?.value||'')
+    };
+  }).filter(i=>i.name);
+  if(newItems.length)await sb.from('post_items').insert(newItems);
+  setLoading('epost-save-btn',false);
+  closeModal('modal-edit-post');
+  await openPost(editingPostId);
+  updateFeed();showToast('投稿を更新しました');
+}
+
 async function deletePost(){
   if(!curPost)return;if(!confirm('この投稿を削除しますか？'))return;
-  posts=posts.filter(p=>p.id!==curPost.id);
-  myPosts=posts.filter(p=>p.userId===myProfile?.id);
-  await persistSave();
-  curPost=null;updateFeed();renderMyPage();goNav('feed',document.querySelector('.nl'));showToast('投稿を削除しました');
+  await sb.from('posts').delete().eq('id',curPost.id);
+  curPost=null;goNav('feed',document.querySelector('.nl'));updateFeed();showToast('投稿を削除しました');
 }
 
-/* ===== AVATAR UPLOAD ===== */
-function previewRegAv(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{pendingRegAvatar=ev.target.result;const p=document.getElementById('reg-av-preview');p.innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-overlay"><span style="font-size:18px;color:#fff">📷</span></div>`;};r.readAsDataURL(f);}
-function previewEditAv(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{pendingEditAvatar=ev.target.result;const p=document.getElementById('ep-av-preview');p.innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-overlay"><span style="font-size:18px;color:#fff">📷</span></div>`;};r.readAsDataURL(f);}
-function updateMyAvatar(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=async ev=>{if(myProfile){myProfile.avatar=ev.target.result;if(myProfile.email&&usersDB[myProfile.email])usersDB[myProfile.email].profile=myProfile;await persistSave();renderMyAvEl();showToast('プロフィール写真を更新しました');}};r.readAsDataURL(f);}
-function renderMyAvEl(){
-  const el=document.getElementById('my-av');if(!el||!myProfile)return;
-  const ini=myProfile.nick.charAt(0).toUpperCase();
-  el.innerHTML=myProfile.avatar?`<img src="${myProfile.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-ov"><span style="font-size:16px">📷</span><span style="font-size:8px;margin-top:2px">変更</span></div>`:`<span id="my-av-initial">${ini}</span><div class="av-ov"><span style="font-size:16px">📷</span><span style="font-size:8px;margin-top:2px">変更</span></div>`;
-}
-
-/* ===== AUTH ===== */
-function openLoginModal(){pendingRegAvatar=null;resetRegAvPreview();openModal('modal-auth');}
-function resetRegAvPreview(){const p=document.getElementById('reg-av-preview');if(p){p.innerHTML=`<span id="reg-av-initial">?</span><div class="av-overlay"><span style="font-size:18px;color:#fff">📷</span></div>`;}}
+/* =====================================================
+   AUTH
+===================================================== */
+function openLoginModal(){openModal('modal-auth');}
 function switchAuthTab(name,el){
   document.querySelectorAll('.m-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-pane').forEach(t=>t.classList.remove('active'));
   if(el)el.classList.add('active');document.getElementById('tab-'+name).classList.add('active');
   document.getElementById('login-err').style.display='none';document.getElementById('reg-err').style.display='none';
 }
+function showErr(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';}
 
 async function doLogin(){
-  const email=document.getElementById('login-email').value.trim().toLowerCase();
+  setLoading('login-btn',true,'ログイン');
+  document.getElementById('login-err').style.display='none';
+  const email=document.getElementById('login-email').value.trim();
   const pass=document.getElementById('login-pass').value;
-  const errEl=document.getElementById('login-err');
-  if(!email||!pass){errEl.style.display='block';errEl.textContent='メールアドレスとパスワードを入力してください。';return;}
-  const rec=usersDB[email];
-  if(!rec||rec.password!==pass){errEl.style.display='block';errEl.textContent='メールアドレスまたはパスワードが正しくありません。';return;}
-  errEl.style.display='none';
-  myProfile=rec.profile;
-  const savedPosts=await storageLoad('cdg_myPosts_'+email);
-  if(savedPosts){
-    myPosts=savedPosts;
-    myPosts.forEach(mp=>{if(!posts.find(p=>p.id===mp.id))posts.unshift(mp);});
+  if(!email||!pass){showErr('login-err','メールアドレスとパスワードを入力してください。');setLoading('login-btn',false,'ログイン');return;}
+  try{
+    const timeout=new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),10000));
+    const login=sb.auth.signInWithPassword({email,password:pass});
+    const{data,error}=await Promise.race([login,timeout]);
+    if(error){
+      const msg=error.message==='Invalid login credentials'?'メールアドレスまたはパスワードが正しくありません。':error.message;
+      showErr('login-err',msg);setLoading('login-btn',false,'ログイン');return;
+    }
+    setLoading('login-btn',false,'ログイン');
+    closeModal('modal-auth');
+  }catch(e){
+    if(e.message==='timeout'){
+      showErr('login-err','接続がタイムアウトしました。ページを再読み込みして再度お試しください。');
+    }else{
+      showErr('login-err','エラーが発生しました: '+e.message);
+    }
+    setLoading('login-btn',false,'ログイン');
   }
-  await storageSave('cdg_loggedIn',email);
-  closeModal('modal-auth');updateAuthUI();renderMyPage();updateFeed();showToast(`ようこそ、${myProfile.nick}さん`);
 }
 
 async function doRegister(){
+  setLoading('reg-btn',true,'登録');
   const nick=document.getElementById('reg-nick').value.trim();
   const handle=document.getElementById('reg-handle').value.trim();
   const history=document.getElementById('reg-history').value;
   const height=document.getElementById('reg-height').value;
-  const email=document.getElementById('reg-email').value.trim().toLowerCase();
+  const email=document.getElementById('reg-email').value.trim();
   const pass=document.getElementById('reg-pass').value;
-  const errEl=document.getElementById('reg-err');
-  if(!nick||!handle||!history||!height||!email||!pass){errEl.style.display='block';errEl.textContent='必須項目をすべて入力してください。';return;}
-  if(usersDB[email]){errEl.style.display='block';errEl.textContent='このメールアドレスはすでに登録されています。';return;}
-  errEl.style.display='none';
-  const profile={id:'me',nick,handle,email,history,height,bio:document.getElementById('reg-bio').value.trim(),avatar:pendingRegAvatar||null,following:[],followers:[]};
-  usersDB[email]={password:pass,profile};
-  myProfile=profile;myPosts=[];
-  await persistSave();
-  pendingRegAvatar=null;closeModal('modal-auth');updateAuthUI();renderMyPage();updateFeed();showToast(`登録完了。ようこそ、${nick}さん`);
+  if(!nick||!handle||!history||!height||!email||!pass){showErr('reg-err','必須項目をすべて入力してください。');setLoading('reg-btn',false,'登録');return;}
+
+  const{data,error}=await sb.auth.signUp({email,password:pass});
+  if(error){showErr('reg-err',error.message);setLoading('reg-btn',false,'登録');return;}
+
+  let avatarUrl=null;
+  if(pendingRegAvatar&&data.user){
+    try{
+      const blob=await(await fetch(pendingRegAvatar)).blob();
+      const file=new File([blob],'avatar.jpg',{type:'image/jpeg'});
+      avatarUrl=await uploadImage(file,'avatars');
+    }catch(e){console.warn('avatar upload failed',e);}
+  }
+
+  if(data.user){
+    await sb.from('profiles').upsert({
+      id:data.user.id,nickname:nick,handle,cdg_history:history,
+      height:parseInt(height),bio:document.getElementById('reg-bio').value.trim(),
+      avatar_url:avatarUrl
+    });
+  }
+  setLoading('reg-btn',false,'登録');
+  closeModal('modal-auth');
+  showToast('登録完了！メール確認後ログインしてください。',4000);
 }
 
 async function doLogout(){
   if(!confirm('ログアウトしますか？'))return;
-  // save posts before logout
-  if(myProfile&&myProfile.email){await storageSave('cdg_myPosts_'+myProfile.email,myPosts);}
-  await storageSave('cdg_loggedIn',null);
-  myProfile=null;myPosts=[];
-  // remove my posts from the global list
-  posts=posts.filter(p=>p.userId!=='me');
-  updateAuthUI();renderMyPage();updateFeed();goNav('feed',document.querySelector('.nl'));showToast('ログアウトしました');
+  await sb.auth.signOut();
+  myUser=null;myProfile=null;likedPostIds=new Set();savedPostIds=new Set();
+  updateAuthUI();renderMyPage();updateFeed();
+  goNav('feed',document.querySelector('.nl'));showToast('ログアウトしました');
 }
 
 function updateAuthUI(){
   const lb=document.getElementById('nav-login-btn');const pb=document.getElementById('nav-post-btn');
-  if(myProfile){lb.style.display='none';pb.disabled=false;}else{lb.style.display='';pb.disabled=true;}
+  if(myUser){lb.style.display='none';pb.disabled=false;}else{lb.style.display='';pb.disabled=true;}
 }
 
-/* ===== MY PAGE ===== */
-function renderMyPage(){
-  if(!myProfile){document.getElementById('mypage-unregistered').style.display='block';document.getElementById('mypage-registered').style.display='none';return;}
+/* =====================================================
+   PROFILE
+===================================================== */
+async function renderMyPage(){
+  if(!myUser){document.getElementById('mypage-unregistered').style.display='block';document.getElementById('mypage-registered').style.display='none';return;}
   document.getElementById('mypage-unregistered').style.display='none';document.getElementById('mypage-registered').style.display='block';
-  renderMyAvEl();
-  document.getElementById('my-name').textContent=myProfile.nick;document.getElementById('my-handle').textContent='@'+myProfile.handle;
-  document.getElementById('my-history').textContent=myProfile.history;document.getElementById('my-height').textContent=myProfile.height;
+  if(!myProfile)myProfile=await fetchProfile(myUser.id);
+  if(!myProfile)return;
+  const avEl=document.getElementById('my-av');
+  if(myProfile.avatar_url){avEl.innerHTML=`<img src="${myProfile.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-ov">📷<span style="font-size:8px;margin-top:2px">変更</span></div>`;}
+  else{avEl.innerHTML=`<span id="my-av-initial">${(myProfile.nickname||'?').charAt(0).toUpperCase()}</span><div class="av-ov">📷<span style="font-size:8px;margin-top:2px">変更</span></div>`;}
+  document.getElementById('my-name').textContent=myProfile.nickname||'';
+  document.getElementById('my-handle').textContent='@'+(myProfile.handle||'');
+  document.getElementById('my-history').textContent=myProfile.cdg_history||'';
+  document.getElementById('my-height').textContent=myProfile.height||'';
   document.getElementById('my-bio').textContent=myProfile.bio||'';
-  const mp=posts.filter(p=>p.userId==='me');
-  document.getElementById('my-posts').textContent=mp.length;
-  document.getElementById('my-following').textContent=(myProfile.following||[]).length;
-  document.getElementById('my-followers').textContent=(myProfile.followers||[]).length;
-  rg('my-grid',mp);
+  const{data:myPostsData}=await sb.from('posts').select('*,post_images(url,position),post_items(ref_number),likes(count)').eq('user_id',myUser.id).order('created_at',{ascending:false});
+  document.getElementById('my-posts').textContent=(myPostsData||[]).length;
+  const{count:fwing}=await sb.from('follows').select('*',{count:'exact',head:true}).eq('follower_id',myUser.id);
+  const{count:fwers}=await sb.from('follows').select('*',{count:'exact',head:true}).eq('following_id',myUser.id);
+  document.getElementById('my-following').textContent=fwing||0;
+  document.getElementById('my-followers').textContent=fwers||0;
+  rg('my-grid',myPostsData||[]);
 }
+
 function openEditProfileModal(){
+  if(!myProfile)return;
   pendingEditAvatar=null;
   const p=document.getElementById('ep-av-preview');
-  p.innerHTML=myProfile.avatar?`<img src="${myProfile.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-overlay"><span style="font-size:18px;color:#fff">📷</span></div>`:`<span id="ep-av-initial">${myProfile.nick.charAt(0).toUpperCase()}</span><div class="av-overlay"><span style="font-size:18px;color:#fff">📷</span></div>`;
-  document.getElementById('ep-nick').value=myProfile.nick;document.getElementById('ep-handle').value=myProfile.handle;
-  document.getElementById('ep-history').value=myProfile.history;document.getElementById('ep-height').value=myProfile.height;
-  document.getElementById('ep-bio').value=myProfile.bio||'';openModal('modal-edit-profile');
+  p.innerHTML=myProfile.avatar_url?`<img src="${myProfile.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-overlay">📷</div>`:`<span id="ep-av-initial">${(myProfile.nickname||'?').charAt(0).toUpperCase()}</span><div class="av-overlay">📷</div>`;
+  document.getElementById('ep-nick').value=myProfile.nickname||'';
+  document.getElementById('ep-handle').value=myProfile.handle||'';
+  document.getElementById('ep-history').value=myProfile.cdg_history||'';
+  document.getElementById('ep-height').value=myProfile.height||'';
+  document.getElementById('ep-bio').value=myProfile.bio||'';
+  openModal('modal-edit-profile');
 }
+
 async function saveEditProfile(){
-  myProfile.nick=document.getElementById('ep-nick').value.trim()||myProfile.nick;
-  myProfile.handle=document.getElementById('ep-handle').value.trim()||myProfile.handle;
-  myProfile.history=document.getElementById('ep-history').value||myProfile.history;
-  myProfile.height=document.getElementById('ep-height').value||myProfile.height;
-  myProfile.bio=document.getElementById('ep-bio').value.trim();
-  if(pendingEditAvatar)myProfile.avatar=pendingEditAvatar;
-  pendingEditAvatar=null;
-  // persist updated profile
-  if(myProfile.email&&usersDB[myProfile.email])usersDB[myProfile.email].profile=myProfile;
-  await persistSave();
+  setLoading('ep-save-btn',true,'保存する');
+  let avatarUrl=myProfile.avatar_url;
+  if(pendingEditAvatar){
+    try{
+      const blob=await(await fetch(pendingEditAvatar)).blob();
+      const file=new File([blob],'avatar.jpg',{type:'image/jpeg'});
+      avatarUrl=await uploadImage(file,'avatars');
+    }catch(e){console.warn(e);}
+  }
+  const upd={
+    nickname:document.getElementById('ep-nick').value.trim()||myProfile.nickname,
+    handle:document.getElementById('ep-handle').value.trim()||myProfile.handle,
+    cdg_history:document.getElementById('ep-history').value||myProfile.cdg_history,
+    height:parseInt(document.getElementById('ep-height').value)||myProfile.height,
+    bio:document.getElementById('ep-bio').value.trim(),
+    avatar_url:avatarUrl,
+  };
+  await sb.from('profiles').update(upd).eq('id',myUser.id);
+  myProfile={...myProfile,...upd};
+  setLoading('ep-save-btn',false,'保存する');
   closeModal('modal-edit-profile');renderMyPage();showToast('プロフィールを保存しました');
 }
 
-/* ===== FOLLOW ===== */
-function toggleFollowUser(uid){
-  if(!myProfile){alert('フォローするにはログインが必要です。');openLoginModal();return;}
-  if(!myProfile.following)myProfile.following=[];
-  const idx=myProfile.following.indexOf(uid);if(idx>=0)myProfile.following.splice(idx,1);else myProfile.following.push(uid);
-  if(myProfile.email&&usersDB[myProfile.email])usersDB[myProfile.email].profile=myProfile;
-  persistSave();renderMyPage();
-  if(curVisitedUser===uid){const b=document.getElementById('vp-fol-btn');const fol=isFollowing(uid);b.textContent=fol?'フォロー中':'フォロー';b.classList.toggle('following',fol);document.getElementById('vp-followers').textContent=calcFollowers(uid);}
+async function previewRegAv(e){
+  const f=e.target.files[0];if(!f)return;
+  try{
+    const blob=await compressImage(f,400,400,0.85);
+    const r=new FileReader();
+    r.onload=ev=>{
+      pendingRegAvatar=ev.target.result;
+      const p=document.getElementById('reg-av-preview');
+      p.innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-overlay">📷</div>`;
+    };
+    r.readAsDataURL(blob);
+  }catch(err){
+    const r=new FileReader();
+    r.onload=ev=>{pendingRegAvatar=ev.target.result;};
+    r.readAsDataURL(f);
+  }
 }
-function openFollowModal(type){
-  if(!myProfile)return;document.getElementById('fol-modal-ttl').textContent=type==='following'?'フォロー中':'フォロワー';
-  const ids=type==='following'?(myProfile.following||[]):(myProfile.followers||[]);
-  const users=ids.map(id=>sampleUsers.find(u=>u.id===id)).filter(Boolean);
-  document.getElementById('fol-list-body').innerHTML=users.length?users.map(u=>followItemHTML(u)).join(''):'<div style="padding:22px;font-size:10px;color:var(--mgry);font-family:var(--jp)">まだいません。</div>';
-  openModal('modal-follow');
+async function previewEditAv(e){
+  const f=e.target.files[0];if(!f)return;
+  try{
+    const blob=await compressImage(f,400,400,0.85);
+    const r=new FileReader();
+    r.onload=ev=>{
+      pendingEditAvatar=ev.target.result;
+      const p=document.getElementById('ep-av-preview');
+      p.innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-overlay">📷</div>`;
+    };
+    r.readAsDataURL(blob);
+  }catch(err){
+    const r=new FileReader();
+    r.onload=ev=>{pendingEditAvatar=ev.target.result;};
+    r.readAsDataURL(f);
+  }
 }
-function openFollowModalFor(type){
-  const u=sampleUsers.find(u=>u.id===curVisitedUser);if(!u)return;
+async function updateMyAvatar(e){
+  const f=e.target.files[0];if(!f||!myUser)return;
+  try{
+    const url=await uploadImage(f,'avatars');
+    await sb.from('profiles').update({avatar_url:url}).eq('id',myUser.id);
+    myProfile.avatar_url=url;renderMyPage();showToast('プロフィール写真を更新しました');
+  }catch(err){showToast('アップロードに失敗しました');}
+}
+
+/* =====================================================
+   FOLLOW
+===================================================== */
+async function toggleFollowUser(targetId){
+  if(!myUser){alert('フォローするにはログインが必要です。');openLoginModal();return;}
+  const fol=await isFollowing(targetId);
+  if(fol){await sb.from('follows').delete().eq('follower_id',myUser.id).eq('following_id',targetId);}
+  else{await sb.from('follows').insert({follower_id:myUser.id,following_id:targetId});}
+  renderMyPage();
+  if(curVisitedUserId===targetId){
+    const newFol=await isFollowing(targetId);
+    const b=document.getElementById('vp-fol-btn');b.textContent=newFol?'フォロー中':'フォロー';b.classList.toggle('following',newFol);
+    const{count}=await sb.from('follows').select('*',{count:'exact',head:true}).eq('following_id',targetId);
+    document.getElementById('vp-followers').textContent=count||0;
+  }
+}
+
+async function openFollowModal(type){
+  if(!myUser||!myProfile)return;
   document.getElementById('fol-modal-ttl').textContent=type==='following'?'フォロー中':'フォロワー';
-  const ids=type==='following'?(u.following||[]):(u.followers||[]);
-  const users=ids.map(id=>sampleUsers.find(u=>u.id===id)).filter(Boolean);
-  document.getElementById('fol-list-body').innerHTML=users.length?users.map(u=>followItemHTML(u)).join(''):'<div style="padding:22px;font-size:10px;color:var(--mgry);font-family:var(--jp)">まだいません。</div>';
+  let userIds=[];
+  if(type==='following'){const{data}=await sb.from('follows').select('following_id').eq('follower_id',myUser.id);userIds=(data||[]).map(r=>r.following_id);}
+  else{const{data}=await sb.from('follows').select('follower_id').eq('following_id',myUser.id);userIds=(data||[]).map(r=>r.follower_id);}
+  if(!userIds.length){document.getElementById('fol-list-body').innerHTML='<div style="padding:22px;font-size:10px;color:var(--mgry);font-family:var(--jp)">まだいません。</div>';openModal('modal-follow');return;}
+  const{data:users}=await sb.from('profiles').select('*').in('id',userIds);
+  document.getElementById('fol-list-body').innerHTML=(users||[]).map(u=>followItemHTML(u)).join('');
   openModal('modal-follow');
 }
+
+async function openFollowModalFor(type){
+  if(!curVisitedUserId)return;
+  document.getElementById('fol-modal-ttl').textContent=type==='following'?'フォロー中':'フォロワー';
+  let userIds=[];
+  if(type==='following'){const{data}=await sb.from('follows').select('following_id').eq('follower_id',curVisitedUserId);userIds=(data||[]).map(r=>r.following_id);}
+  else{const{data}=await sb.from('follows').select('follower_id').eq('following_id',curVisitedUserId);userIds=(data||[]).map(r=>r.follower_id);}
+  if(!userIds.length){document.getElementById('fol-list-body').innerHTML='<div style="padding:22px;font-size:10px;color:var(--mgry);font-family:var(--jp)">まだいません。</div>';openModal('modal-follow');return;}
+  const{data:users}=await sb.from('profiles').select('*').in('id',userIds);
+  document.getElementById('fol-list-body').innerHTML=(users||[]).map(u=>followItemHTML(u)).join('');
+  openModal('modal-follow');
+}
+
 function followItemHTML(u){
-  const fol=isFollowing(u.id);const avH=u.avatar?`<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;">`:`${u.nick.charAt(0).toUpperCase()}`;
-  return`<div class="follow-item" onclick="openUserProfile('${u.id}');closeModal('modal-follow')"><div class="fi-left"><div class="fi-av">${avH}</div><div><div class="fi-name">${u.nick}</div><div class="fi-handle">@${u.handle}</div></div></div><div style="display:flex;align-items:center;gap:7px"><span style="font-size:9px;color:var(--mgry)">${u.history}</span><button class="fol-btn ${fol?'following':''}" onclick="event.stopPropagation();toggleFollowUser('${u.id}');this.textContent=isFollowing('${u.id}')?'フォロー中':'フォロー';this.classList.toggle('following',isFollowing('${u.id}'))">${fol?'フォロー中':'フォロー'}</button></div></div>`;
+  const fol=myUser&&(myProfile?.following||[]).includes(u.id);
+  const avH=u.avatar_url?`<img src="${u.avatar_url}">`:`${(u.nickname||'?').charAt(0).toUpperCase()}`;
+  return`<div class="follow-item" onclick="openUserProfile('${u.id}');closeModal('modal-follow')"><div class="fi-left"><div class="fi-av">${avH}</div><div><div class="fi-name">${u.nickname||''}</div><div class="fi-handle">@${u.handle||''}</div></div></div><div style="display:flex;align-items:center;gap:7px"><span style="font-size:9px;color:var(--mgry)">${u.cdg_history||''}</span><button class="fol-btn ${fol?'following':''}" onclick="event.stopPropagation();toggleFollowUser('${u.id}').then(()=>{this.textContent=this.classList.contains('following')?'フォロー':'フォロー中';this.classList.toggle('following')})">${fol?'フォロー中':'フォロー'}</button></div></div>`;
 }
 
-/* ===== VISITED PROFILE ===== */
-function openUserProfile(uid){
-  if(!uid)return;if(myProfile&&uid===myProfile.id){goNav('mypage',document.querySelectorAll('.nl')[1]);return;}
-  prevPage=document.querySelector('.page.active').id;curVisitedUser=uid;
-  const u=sampleUsers.find(u=>u.id===uid);if(!u)return;
-  const vpAv=document.getElementById('vp-av');vpAv.innerHTML=u.avatar?`<img src="${u.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`<span style="font-size:22px">${u.nick.charAt(0).toUpperCase()}</span>`;
-  document.getElementById('vp-name').textContent=u.nick;document.getElementById('vp-handle').textContent='@'+u.handle;
-  document.getElementById('vp-history').textContent=u.history;document.getElementById('vp-height').textContent=u.height;document.getElementById('vp-bio').textContent=u.bio;
-  document.getElementById('vp-posts').textContent=getUserPosts(uid).length;document.getElementById('vp-following').textContent=(u.following||[]).length;document.getElementById('vp-followers').textContent=calcFollowers(uid);
-  const fol=isFollowing(uid);const vb=document.getElementById('vp-fol-btn');vb.textContent=fol?'フォロー中':'フォロー';vb.classList.toggle('following',fol);
-  rg('vprof-grid',getUserPosts(uid));goNav('vprofile',null);
+/* =====================================================
+   VISITED PROFILE
+===================================================== */
+async function openUserProfile(uid){
+  if(!uid)return;
+  if(myUser&&uid===myUser.id){goNav('mypage',document.querySelectorAll('.nl')[1]);return;}
+  prevPage=document.querySelector('.page.active').id;
+  curVisitedUserId=uid;
+  const u=await fetchProfile(uid);if(!u)return;
+  const vpAv=document.getElementById('vp-av');
+  vpAv.innerHTML=u.avatar_url?`<img src="${u.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`<span style="font-size:22px">${(u.nickname||'?').charAt(0).toUpperCase()}</span>`;
+  document.getElementById('vp-name').textContent=u.nickname||'';
+  document.getElementById('vp-handle').textContent='@'+(u.handle||'');
+  document.getElementById('vp-history').textContent=u.cdg_history||'';
+  document.getElementById('vp-height').textContent=u.height||'';
+  document.getElementById('vp-bio').textContent=u.bio||'';
+  const{data:vPosts}=await sb.from('posts').select('*,post_images(url,position),likes(count)').eq('user_id',uid).order('created_at',{ascending:false});
+  document.getElementById('vp-posts').textContent=(vPosts||[]).length;
+  const{count:fwing}=await sb.from('follows').select('*',{count:'exact',head:true}).eq('follower_id',uid);
+  const{count:fwers}=await sb.from('follows').select('*',{count:'exact',head:true}).eq('following_id',uid);
+  document.getElementById('vp-following').textContent=fwing||0;
+  document.getElementById('vp-followers').textContent=fwers||0;
+  const fol=await isFollowing(uid);
+  const vb=document.getElementById('vp-fol-btn');vb.textContent=fol?'フォロー中':'フォロー';vb.classList.toggle('following',fol);
+  rg('vprof-grid',vPosts||[]);
+  goNav('vprofile',null);
 }
 
-/* ===== POST ===== */
-function tryPost(){if(!myProfile){openLoginModal();return;}goNav('post',null);}
-function addPhotos(e){const files=[...e.target.files];files.forEach(f=>{const r=new FileReader();r.onload=ev=>{uploadedPhotos.push(ev.target.result);renderPhotoZone();};r.readAsDataURL(f);});e.target.value='';}
-function renderPhotoZone(){document.getElementById('photo-zone').innerHTML=uploadedPhotos.map((s,i)=>`<div class="photo-thumb"><img src="${s}"><button class="photo-rm" onclick="removePhoto(${i})">×</button></div>`).join('')+`<div class="photo-add" onclick="document.getElementById('fi-up2').click()"><span style="font-size:22px">＋</span><span>写真を追加</span></div><input type="file" id="fi-up2" accept="image/*" multiple style="display:none" onchange="addPhotos(event)">`;}
+/* =====================================================
+   POST SUBMIT
+===================================================== */
+function tryPost(){if(!myUser){openLoginModal();return;}goNav('post',null);}
+
+async function addPhotos(e){
+  const files=[...e.target.files];
+  for(const f of files){
+    try{
+      // プレビュー用に圧縮Blobを作り、それをFileとして保持
+      const blob=await compressImage(f,1200,1200,0.82);
+      const compressed=new File([blob], f.name.replace(/\.[^.]+$/, '.jpg'), {type:'image/jpeg'});
+      const dataUrl=await new Promise(res=>{
+        const r=new FileReader();r.onload=ev=>res(ev.target.result);r.readAsDataURL(blob);
+      });
+      // 圧縮前後のサイズを表示
+      const savedKB=Math.round((f.size-blob.size)/1024);
+      const pct=Math.round((1-blob.size/f.size)*100);
+      uploadedPhotos.push({file:compressed, dataUrl, origSize:f.size, compSize:blob.size, pct});
+    }catch(err){
+      console.warn('compress failed, using original',err);
+      const dataUrl=await new Promise(res=>{
+        const r=new FileReader();r.onload=ev=>res(ev.target.result);r.readAsDataURL(f);
+      });
+      uploadedPhotos.push({file:f, dataUrl, origSize:f.size, compSize:f.size, pct:0});
+    }
+    renderPhotoZone();
+  }
+  e.target.value='';
+}
+function renderPhotoZone(){
+  document.getElementById('photo-zone').innerHTML=
+    uploadedPhotos.map((p,i)=>{
+      const badge=p.pct>0
+        ?`<span style="position:absolute;bottom:2px;left:2px;background:rgba(0,0,0,.65);color:#fff;font-size:8px;padding:1px 5px;letter-spacing:.05em;">-${p.pct}%</span>`
+        :'';
+      return`<div class="photo-thumb" style="position:relative"><img src="${p.dataUrl}">${badge}<button class="photo-rm" onclick="removePhoto(${i})">×</button></div>`;
+    }).join('')+
+    `<div class="photo-add" onclick="document.getElementById('fi-up2').click()"><span style="font-size:22px">＋</span><span>写真を追加</span></div><input type="file" id="fi-up2" accept="image/*" multiple style="display:none" onchange="addPhotos(event)">`;
+}
 function removePhoto(i){uploadedPhotos.splice(i,1);renderPhotoZone();}
-function addItem(){const d=document.createElement('div');d.className='ir';d.innerHTML=`<input class="fi" type="text" placeholder="アイテム名"><input class="fi" type="text" placeholder="AW24"><input class="fi" type="text" placeholder="サイズ"><input class="fi" type="text" placeholder="HJJ050" oninput="this.value=normalizeRef(this.value)" style="text-transform:uppercase"><button class="rm" onclick="rmItem(this)">×</button>`;document.getElementById('ilist').appendChild(d);}
+function makeItemLineOptions(){
+  return [
+    'COMME des GARÇONS','COMME des GARÇONS COMME des GARÇONS','COMME des GARÇONS GIRL',
+    'COMME des GARÇONS HOMME','COMME des GARÇONS HOMME PLUS','COMME des GARÇONS HOMME DEUX',
+    'COMME des GARÇONS SHIRT','BLACK COMME des GARÇONS',
+    'JUNYA WATANABE','JUNYA WATANABE MAN',
+    'tao COMME des GARÇONS','noir kei ninomiya',
+    'CDG','PLAY COMME des GARÇONS','THE BEATLES COMME des GARÇONS',
+    'Wallet COMME des GARÇONS','COMME des GARÇONS parfums'
+  ].map(l=>`<option value="${l}">${l}</option>`).join('');
+}
+function makeItemStoreOptions(){
+  return [
+    'COMME des GARÇONS 青山店（東京）','COMME des GARÇONS HOMME PLUS 青山店（東京）',
+    'noir kei ninomiya 青山店（東京）','COMME des GARÇONS 大阪店','COMME des GARÇONS 京都店',
+    'Dover Street Market Ginza（東京）','Dover Street Market London','Dover Street Market New York',
+    'Dover Street Market Los Angeles','Dover Street Market Paris',
+    '伊勢丹新宿店','三越銀座店','髙島屋新宿店','阪急うめだ本店','松屋銀座','大丸東京店',
+    'COMME des GARÇONS 公式オンラインストア','Dover Street Market オンライン',
+    'SSENSE','ヤフオク（古着）','メルカリ（古着）'
+  ].map(s=>`<option value="${s}">${s}</option>`).join('');
+}
+function makeItemRow(){
+  const d=document.createElement('div');
+  d.className='ir';
+  d.innerHTML=`
+    <select class="fi" style="appearance:none;cursor:pointer;font-size:10px">
+      <option value="">アイテム名</option>
+      <option>シャツ</option>
+      <option>Tシャツ</option>
+      <option>ジャケット</option>
+      <option>パンツ</option>
+      <option>スカート</option>
+      <option>靴下</option>
+      <option>シューズ</option>
+      <option>その他トップス</option>
+      <option>その他ボトムス</option>
+      <option>アクセサリー</option>
+      <option>その他</option>
+    </select>
+    <select class="fi" style="appearance:none;cursor:pointer;font-size:10px">
+      <option value="">ライン</option>
+      ${makeItemLineOptions()}
+    </select>
+    <select class="fi" style="appearance:none;cursor:pointer;font-size:10px">
+      <option value="">シーズン</option>
+      <option>26AW</option>
+      <option>26SS</option>
+      <option>25AW</option>
+      <option>25SS</option>
+      <option>24AW</option>
+      <option>24SS</option>
+      <option>23AW</option>
+      <option>23SS</option>
+      <option>22AW</option>
+      <option>22SS</option>
+      <option>21AW</option>
+      <option>21SS</option>
+      <option>20AW</option>
+      <option>20SS</option>
+      <option>19AW</option>
+      <option>19SS</option>
+      <option>18AW</option>
+      <option>18SS</option>
+      <option>17AW</option>
+      <option>17SS</option>
+      <option>16AW</option>
+      <option>16SS</option>
+      <option>15AW</option>
+      <option>15SS</option>
+      <option>14AW</option>
+      <option>14SS</option>
+      <option>13AW</option>
+      <option>13SS</option>
+      <option>12AW</option>
+      <option>12SS</option>
+      <option>11AW</option>
+      <option>11SS</option>
+      <option>10AW</option>
+      <option>10SS</option>
+      <option>09AW</option>
+      <option>09SS</option>
+      <option>08AW</option>
+      <option>08SS</option>
+      <option>07AW</option>
+      <option>07SS</option>
+      <option>06AW</option>
+      <option>06SS</option>
+      <option>05AW</option>
+      <option>05SS</option>
+      <option>04AW</option>
+      <option>04SS</option>
+      <option>03AW</option>
+      <option>03SS</option>
+      <option>02AW</option>
+      <option>02SS</option>
+      <option>01AW</option>
+      <option>01SS</option>
+      <option>00AW</option>
+      <option>00SS</option>
+      <option>アーカイブ（2000年以前）</option>
+    </select>
+    <select class="fi" style="appearance:none;cursor:pointer;font-size:10px">
+      <option value="">購入店舗</option>
+      ${makeItemStoreOptions()}
+    </select>
+    <input class="fi" type="text" placeholder="サイズ" style="font-size:10px">
+    <input class="fi" type="text" placeholder="品番" oninput="this.value=normalizeRef(this.value)" style="text-transform:uppercase;font-size:10px">
+    <button class="rm" onclick="rmItem(this)">×</button>
+  `;
+  return d;
+}
+function addItem(){
+  document.getElementById('ilist').appendChild(makeItemRow());
+}
 function rmItem(b){if(document.querySelectorAll('#ilist .ir').length>1)b.closest('.ir').remove();}
 
 async function doSubmit(){
-  if(!myProfile){openLoginModal();return;}
-  const ttl=document.getElementById('p-ttl').value||'無題';
-  const cap=document.getElementById('p-cap').value||'';
-  const line=document.getElementById('p-line').value||'COMME des GARÇONS';
-  const sea=document.getElementById('p-sea').value||'—';
-  const store=document.getElementById('p-store').value||'';
-  const rows=[...document.querySelectorAll('#ilist .ir')];
-  const items=rows.map(r=>{const ins=[...r.querySelectorAll('input')];return{n:ins[0].value||'アイテム',sea:ins[1].value||'—',sz:ins[2].value||'—',ref:normalizeRef(ins[3].value)||'—'};}).filter(i=>i.n!=='アイテム');
-  const imgs=[...uploadedPhotos];
-  const dc=imgs.length?await detectColors(imgs[0]):[];
-  const fc=line.toLowerCase().includes('play')?['white','red']:['black'];
-  const np={id:Date.now(),ttl,userId:'me',line,sea,cap,imgs,colors:dc.length?dc:fc,items:items.length?items:[{n:'アイテム',sea:'—',sz:'—',ref:'—'}],store,likes:0,cmts:[],pal:Math.floor(Math.random()*PALS.length),createdAt:Math.floor(Date.now()/1000)};
-  posts.unshift(np);
-  myPosts.unshift(np);
-  // persist
-  if(myProfile.email&&usersDB[myProfile.email])usersDB[myProfile.email].profile=myProfile;
-  await storageSave('cdg_myPosts_'+myProfile.email,myPosts);
-  await persistSave();
-  uploadedPhotos=[];
-  document.getElementById('photo-zone').innerHTML='<div class="photo-add" onclick="document.getElementById(\'fi-up\').click()"><span style="font-size:22px">＋</span><span>写真を追加</span></div><input type="file" id="fi-up" accept="image/*" multiple style="display:none" onchange="addPhotos(event)">';
-  document.getElementById('p-ttl').value='';document.getElementById('p-cap').value='';
-  document.getElementById('ilist').innerHTML='<div class="ir"><input class="fi" type="text" placeholder="コート"><input class="fi" type="text" placeholder="AW24"><input class="fi" type="text" placeholder="M"><input class="fi" type="text" placeholder="HJJ050" oninput="this.value=normalizeRef(this.value)" style="text-transform:uppercase"><button class="rm" onclick="rmItem(this)">×</button></div>';
-  updateFeed();renderMyPage();goNav('feed',document.querySelector('.nl'));showToast('投稿しました！');
+  if(!myUser){openLoginModal();return;}
+  setLoading('submit-post-btn',true,'アーカイブに投稿する');
+  try{
+    const ttl=document.getElementById('p-ttl').value||'無題';
+    const cap=document.getElementById('p-cap').value||'';
+    // ライン・シーズン・購入店舗はアイテム行から取得
+    const line='';
+    const sea='';
+    const store='';
+
+    // 写真アップロード
+    const imageUrls=[];
+    for(const p of uploadedPhotos){
+      try{const url=await uploadImage(p.file,'post-images');imageUrls.push(url);}
+      catch(e){console.warn('image upload failed',e);}
+    }
+
+    // 手動選択したカラーを使用
+    const colors=selectedColors.length>0?[...selectedColors]:['black'];
+
+    // 投稿作成
+    // アイテム行から代表ライン・シーズンを取得してpostsに記録
+    const firstRow=document.querySelector('#ilist .ir');
+    const firstSels=firstRow?[...firstRow.querySelectorAll('select')]:[];
+    const repLine=firstSels[1]?.value||'';
+    const repSea=firstSels[2]?.value||'';
+    const{data:newPost,error}=await sb.from('posts').insert({
+      user_id:myUser.id,title:ttl,caption:cap,line:repLine,season:repSea,store:'',colors
+    }).select().single();
+    if(error)throw error;
+
+    // 画像保存
+    if(imageUrls.length){
+      await sb.from('post_images').insert(imageUrls.map((url,i)=>({post_id:newPost.id,url,position:i})));
+    }
+
+    // アイテム保存
+    const rows=[...document.querySelectorAll('#ilist .ir')];
+    const items=rows.map(r=>{
+      const sels=[...r.querySelectorAll('select')];
+      const ins=[...r.querySelectorAll('input')];
+      return{
+        post_id:newPost.id,
+        name:sels[0]?.value||'',
+        line:sels[1]?.value||'',
+        season:sels[2]?.value||'',
+        store:sels[3]?.value||'',
+        size:ins[0]?.value||'',
+        ref_number:normalizeRef(ins[1]?.value||'')
+      };
+    }).filter(i=>i.name);
+    if(items.length)await sb.from('post_items').insert(items);
+
+    // フォームリセット
+    uploadedPhotos=[];
+    document.getElementById('photo-zone').innerHTML='<div class="photo-add" onclick="document.getElementById(\'fi-up\').click()"><span style="font-size:22px">＋</span><span>写真を追加</span></div><input type="file" id="fi-up" accept="image/*" multiple style="display:none" onchange="addPhotos(event)">';
+    document.getElementById('p-ttl').value='';document.getElementById('p-cap').value='';
+    document.getElementById('ilist').innerHTML='';
+    document.getElementById('ilist').appendChild(makeItemRow());
+    resetColorPicker();
+
+    setLoading('submit-post-btn',false,'アーカイブに投稿する');
+    updateFeed();renderMyPage();goNav('feed',document.querySelector('.nl'));showToast('投稿しました！');
+  }catch(err){
+    console.error(err);setLoading('submit-post-btn',false,'アーカイブに投稿する');showToast('投稿に失敗しました。もう一度お試しください。');
+  }
 }
 
-/* ===== MODAL ===== */
+/* =====================================================
+   SAVED PAGE
+===================================================== */
+async function loadSavedPage(){
+  if(!myUser){document.getElementById('saved-grid').innerHTML='<div style="grid-column:1/-1;padding:28px 20px;font-size:10px;color:var(--mgry);font-family:var(--jp)">ログインすると保存済みコーデを見られます。</div>';document.getElementById('saved-cnt').textContent='';return;}
+  const{data:saves}=await sb.from('saves').select('post_id').eq('user_id',myUser.id);
+  const ids=(saves||[]).map(s=>s.post_id);
+  if(!ids.length){rg('saved-grid',[]);document.getElementById('saved-cnt').textContent='0件';return;}
+  const{data}=await sb.from('posts').select('*,post_images(url,position),likes(count)').in('id',ids).order('created_at',{ascending:false});
+  rg('saved-grid',data||[]);document.getElementById('saved-cnt').textContent=(data||[]).length+'件';
+}
+
+/* =====================================================
+   MODAL
+===================================================== */
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
 
-/* ===== NAV ===== */
+/* =====================================================
+   NAV
+===================================================== */
 function goBack(){if(prevPage)showPage(prevPage);else goNav('feed',document.querySelector('.nl'));}
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function goNav(name,el){
   document.querySelectorAll('.nl').forEach(l=>l.classList.remove('active'));
   if(el&&el.classList&&el.classList.contains('nl'))el.classList.add('active');
   showPage('page-'+name);
-  if(name==='feed')updateFeed();if(name==='mypage')renderMyPage();
-  if(name==='saved'){rg('saved-grid',posts.slice(0,4));document.getElementById('saved-cnt').textContent='4件';}
+  if(name==='feed')updateFeed();
+  if(name==='mypage')renderMyPage();
+  if(name==='saved')loadSavedPage();
 }
 
-/* ===== INIT ===== */
-async function init(){
-  buildColorChips();
-  await persistLoad();
-  updateAuthUI();renderMyPage();updateFeed();
-  if(myProfile) showToast(`おかえりなさい、${myProfile.nick}さん`);
-}
-init();
+/* =====================================================
+   SUPABASE AUTH STATE CHANGE (自動ログイン維持)
+===================================================== */
+sb.auth.onAuthStateChange(async(event,session)=>{
+  myUser=session?.user||null;
+  if(myUser){
+    // プロフィールと認証状態を先に更新してUIを即反映
+    updateAuthUI();
+    // バックグラウンドで非同期に取得
+    fetchProfile(myUser.id).then(p=>{
+      myProfile=p;
+      renderMyPage();
+      if(event==='SIGNED_IN') showToast(`ようこそ、${myProfile?.nickname||''}さん`);
+    });
+    fetchLikes();
+    fetchSaves();
+  }else{
+    myProfile=null;likedPostIds=new Set();savedPostIds=new Set();
+    updateAuthUI();renderMyPage();
+  }
+});
+
+/* =====================================================
+   INIT
+===================================================== */
+buildColorChips();
+buildColorPicker();
+updateFeed();
+// 投稿フォームの初期アイテム行を生成
+(function(){
+  const list=document.getElementById('ilist');
+  if(list&&list.children.length===0) list.appendChild(makeItemRow());
+})();
 </script>
+</body>
+</html>
