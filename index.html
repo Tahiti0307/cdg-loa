@@ -4,6 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES</title>
+<meta name="description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
+
+<!-- OGP -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cdg-loa.vercel.app/">
+<meta property="og:title" content="CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES">
+<meta property="og:description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
+<meta property="og:image" content="https://cdg-loa.vercel.app/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="CDGLOA">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@tttaichi___">
+<meta name="twitter:creator" content="@tttaichi___">
+<meta name="twitter:title" content="CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES">
+<meta name="twitter:description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
+<meta name="twitter:image" content="https://cdg-loa.vercel.app/og-image.svg">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='white'/%3E%3Ctext x='40' y='50' text-anchor='middle' font-family='Helvetica Neue,Helvetica,Arial,sans-serif' font-size='26' font-weight='600' letter-spacing='4' fill='black'%3ELOA%3C/text%3E%3C/svg%3E">
 <link rel="alternate icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
@@ -180,6 +200,33 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .ccard-lk{font-size:9px;color:var(--mgry);display:flex;align-items:center;gap:2px}
 
 
+/* PICKUP SECTION */
+.pickup-section{padding:16px 20px;border-bottom:1px solid var(--ln)}
+.section-lbl{font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--mgry);margin-bottom:10px}
+.pickup-card{display:grid;grid-template-columns:120px 1fr;gap:0;border:1px solid var(--ln);cursor:pointer;transition:box-shadow .18s;overflow:hidden}
+.pickup-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.pickup-img{width:120px;height:160px;object-fit:cover;display:block;background:var(--gry)}
+.pickup-body{padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between}
+.pickup-badge{font-size:7px;letter-spacing:.2em;text-transform:uppercase;background:var(--blk);color:var(--wht);padding:3px 8px;display:inline-block;margin-bottom:8px;align-self:flex-start}
+.pickup-ttl{font-size:15px;line-height:1.4;margin-bottom:6px}
+.pickup-meta{font-size:9px;color:var(--mgry)}
+/* SUGGEST USERS */
+.suggest-section{padding:14px 20px 16px;border-bottom:1px solid var(--ln)}
+.suggest-list{display:flex;gap:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.suggest-list::-webkit-scrollbar{height:3px}
+.suggest-list::-webkit-scrollbar-thumb{background:var(--ln)}
+.suggest-user{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;flex-shrink:0;width:60px}
+.suggest-av{width:48px;height:48px;border-radius:50%;background:var(--blk);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--wht);overflow:hidden;flex-shrink:0;border:2px solid transparent;transition:border-color .15s}
+.suggest-av img{width:100%;height:100%;object-fit:cover}
+.suggest-user:hover .suggest-av{border-color:var(--blk)}
+.suggest-handle{font-size:8px;color:var(--mgry);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;letter-spacing:.04em}
+@media(max-width:600px){
+  .pickup-card{grid-template-columns:96px 1fr}
+  .pickup-img{width:96px;height:128px}
+  .pickup-ttl{font-size:13px}
+  .pickup-section{padding:12px}
+  .suggest-section{padding:12px 12px 14px}
+}
 /* RANKING PAGE */
 .rank-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 10px;border-bottom:1px solid var(--ln)}
 .rank-ttl{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
@@ -436,6 +483,15 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   .bk{padding:10px 12px;font-size:8px}
 }
 
+/* 店舗カード */
+.store-card{padding:12px 0;border-bottom:1px solid var(--ln);display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
+.store-card:last-child{border-bottom:none}
+.store-name{font-size:11px;margin-bottom:3px}
+.store-line-tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:4px}
+.store-line-tag{font-size:7px;letter-spacing:.1em;padding:2px 6px;border:1px solid var(--ln);color:var(--mgry);text-transform:uppercase}
+.store-addr{font-size:9px;color:var(--mgry);line-height:1.7;font-family:var(--jp)}
+.store-tel{font-size:9px;color:var(--mgry);text-align:right;white-space:nowrap}
+.store-count{font-size:9px;color:var(--mgry);margin-bottom:8px}
 /* タブレット対応 (601px〜900px) */
 @media (min-width:601px) and (max-width:900px){
   .grid{grid-template-columns:repeat(2,1fr)}
@@ -713,6 +769,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <div class="srch-tabs">
       <button class="srch-tab active" id="tab-ref-btn" onclick="switchSrchTab('ref')">品番検索</button>
       <button class="srch-tab" id="tab-user-btn" onclick="switchSrchTab('user')">ユーザー検索</button>
+      <button class="srch-tab" id="tab-store-btn" onclick="switchSrchTab('store')">店舗検索</button>
     </div>
     <!-- 品番検索 -->
     <div id="srch-pane-ref" class="srch-pane active">
@@ -757,6 +814,36 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       </div>
     </div>
   </div>
+    <!-- 店舗検索 -->
+    <div id="srch-pane-store" class="srch-pane">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:center">
+        <span class="sort-lbl">エリア</span>
+        <span class="sort-chip active" id="sarea-all" onclick="setStoreFilter('area','all',this)">ALL</span>
+        <span class="sort-chip" onclick="setStoreFilter('area','東京',this)">東京</span>
+        <span class="sort-chip" onclick="setStoreFilter('area','北海道・東北',this)">北海道・東北</span>
+        <span class="sort-chip" onclick="setStoreFilter('area','中部・東海',this)">中部・東海</span>
+        <span class="sort-chip" onclick="setStoreFilter('area','関西',this)">関西</span>
+        <span class="sort-chip" onclick="setStoreFilter('area','九州・中国',this)">九州・中国</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center">
+        <span class="sort-lbl">ライン</span>
+        <span class="sort-chip active" id="sline-all" onclick="setStoreFilter('line','all',this)">ALL</span>
+        <span class="sort-chip" onclick="setStoreFilter('line','CDG',this)">CDG</span>
+        <span class="sort-chip" onclick="setStoreFilter('line','DSM',this)">Dover Street Market</span>
+        <span class="sort-chip" onclick="setStoreFilter('line','BLACK',this)">BLACK</span>
+        <span class="sort-chip" onclick="setStoreFilter('line','JUNYA',this)">JUNYA WATANABE</span>
+        <span class="sort-chip" onclick="setStoreFilter('line','HOMME',this)">HOMME</span>
+        <span class="sort-chip" onclick="setStoreFilter('line','GIRL',this)">GIRL</span>
+        <span class="sort-chip" onclick="setStoreFilter('line','TAO',this)">TAO</span>
+        <span class="sort-chip" onclick="setStoreFilter('line','NOIR',this)">NOIR KEI NINOMIYA</span>
+        <span class="sort-chip" onclick="setStoreFilter('line','PLAY',this)">PLAY</span>
+        <span class="sort-chip" onclick="setStoreFilter('line','PARFUMS',this)">PARFUMS</span>
+        <span class="sort-chip" onclick="setStoreFilter('line','TRADING',this)">TRADING MUSEUM</span>
+      </div>
+      <div id="store-list"></div>
+    </div>
+  </div>
+
   <div class="filter-wrap" id="filter-wrap-area">
     <div class="filter-row"><span class="filter-lbl">ライン</span>
       <div class="chips" id="chips-line">
@@ -809,6 +896,17 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       </div>
     </div>
   </div>
+  <!-- 今週のピックアップ -->
+  <div class="pickup-section" id="pickup-section" style="display:none">
+    <div class="section-lbl">今週のピックアップ</div>
+    <div id="pickup-content"></div>
+  </div>
+  <!-- おすすめユーザー -->
+  <div class="suggest-section" id="suggest-section" style="display:none">
+    <div class="section-lbl">おすすめユーザー</div>
+    <div class="suggest-list" id="suggest-list"></div>
+  </div>
+
   <div class="feed-toolbar">
     <div class="sort-wrap">
       <span class="sort-lbl">並び替え</span>
@@ -1378,6 +1476,68 @@ function getFiltered(){
   return res;
 }
 
+async function loadPickup(){
+  // 過去7日間で最もいいねが多い投稿
+  const since=new Date(Date.now()-7*24*60*60*1000).toISOString();
+  const{data}=await sb.from('posts')
+    .select('id,title,line,season,created_at,profiles(handle,avatar_url),post_images(url,position),likes(count)')
+    .gte('created_at',since)
+    .order('created_at',{ascending:false})
+    .limit(50);
+  if(!data||!data.length){document.getElementById('pickup-section').style.display='none';return;}
+  const sorted=[...data].sort((a,b)=>((b.likes&&b.likes[0]?b.likes[0].count:0)-(a.likes&&a.likes[0]?a.likes[0].count:0)));
+  const p=sorted[0];
+  const imgs=(p.post_images||[]).sort((a,b)=>a.position-b.position);
+  const imgHtml=imgs[0]?`<img class="pickup-img" src="${imgs[0].url}">`:`<div class="pickup-img" style="display:flex;align-items:center;justify-content:center;background:var(--gry)">${fig(p)}</div>`;
+  const likeCnt=p.likes&&p.likes[0]?p.likes[0].count:0;
+  const prof=p.profiles||{};
+  document.getElementById('pickup-content').innerHTML=`
+    <div class="pickup-card" onclick="openPost('${p.id}')">
+      ${imgHtml}
+      <div class="pickup-body">
+        <div>
+          <span class="pickup-badge">♡ ${likeCnt} — 今週1位</span>
+          <div class="pickup-ttl">${p.title||'(タイトルなし)'}</div>
+          <div class="pickup-meta">${[p.line,p.season].filter(Boolean).join(' · ')}</div>
+        </div>
+        <div class="pickup-meta" style="margin-top:8px">@${prof.handle||''}</div>
+      </div>
+    </div>`;
+  document.getElementById('pickup-section').style.display='';
+}
+
+async function loadSuggestUsers(){
+  // フォロワー数上位ユーザーを取得
+  const{data:profiles}=await sb.from('profiles')
+    .select('id,handle,avatar_url')
+    .limit(30);
+  if(!profiles||!profiles.length){document.getElementById('suggest-section').style.display='none';return;}
+  // フォロワー数を取得
+  const{data:follows}=await sb.from('follows').select('following_id');
+  const countMap={};
+  (follows||[]).forEach(f=>{countMap[f.following_id]=(countMap[f.following_id]||0)+1;});
+  const sorted=[...profiles]
+    .filter(u=>!myUser||u.id!==myUser.id)
+    .sort((a,b)=>(countMap[b.id]||0)-(countMap[a.id]||0))
+    .slice(0,10);
+  if(!sorted.length){document.getElementById('suggest-section').style.display='none';return;}
+  document.getElementById('suggest-list').innerHTML=sorted.map(u=>{
+    const av=u.avatar_url?`<img src="${u.avatar_url}">`:`<span>${(u.handle||'?').charAt(0).toUpperCase()}</span>`;
+    return`<div class="suggest-user" onclick="openUserProfile('${u.id}')">
+      <div class="suggest-av">${av}</div>
+      <span class="suggest-handle">@${u.handle||''}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('suggest-section').style.display='';
+}
+
+function _setDiscoverySections(visible){
+  ['pickup-section','suggest-section'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el.innerHTML.trim()!==''&&el.dataset.loaded)el.style.display=visible?'':'none';
+  });
+}
+
 async function updateFeed(){
   document.getElementById('feed-grid').innerHTML='<div class="loading" style="grid-column:1/-1"><div class="spinner"></div>読み込み中...</div>';
   posts=await fetchPosts();
@@ -1436,7 +1596,101 @@ function resetAllFilters(){
 /* =====================================================
    検索タブ切り替え
 ===================================================== */
-let srchTabMode='ref'; // 'ref' or 'user'
+/* =====================================================
+   店舗データ
+===================================================== */
+const STORE_DATA=[
+  // 東京 — 直営
+  {name:'Comme des Garçons 青山店',area:'東京',lines:['CDG'],addr:'東京都港区南青山5-2-1',tel:'03-3406-3951'},
+  {name:'Comme des Garçons 丸の内店',area:'東京',lines:['CDG'],addr:'東京都千代田区丸の内2-1-1',tel:'03-3216-0016'},
+  {name:'Dover Street Market Ginza',area:'東京',lines:['DSM'],addr:'東京都中央区銀座6-9-5 ギンザコマツ西館',tel:'03-6228-5080'},
+  {name:'Trading Museum Comme des Garçons Gyre',area:'東京',lines:['TRADING'],addr:'東京都渋谷区神宮前5-10-1 GYRE 2F',tel:'03-3486-8590'},
+  {name:'Trading Museum Comme des Garçons Midtown',area:'東京',lines:['TRADING'],addr:'東京都港区赤坂9-7-4 東京Midtown 1F',tel:'03-6804-6607'},
+  {name:'CDG (GYRE)',area:'東京',lines:['CDG'],addr:'東京都渋谷区神宮前5-10-1 GYRE 2F',tel:'03-3406-2323'},
+  {name:'CDG 丸の内店',area:'東京',lines:['CDG'],addr:'東京都千代田区丸の内3-4-1',tel:'03-3218-1803'},
+  {name:'Gyre Play Box',area:'東京',lines:['PLAY'],addr:'東京都渋谷区神宮前5-10-1 GYRE 3F',tel:'03-5464-7305'},
+  // 東京 — 百貨店
+  {name:'新宿伊勢丹',area:'東京',lines:['CDG','BLACK','JUNYA','NOIR','TAO'],addr:'東京都新宿区新宿3-14-1 伊勢丹新宿店本館3F / メンズ館',tel:'03-3356-7805'},
+  {name:'渋谷西武',area:'東京',lines:['CDG','BLACK','JUNYA','NOIR'],addr:'東京都渋谷区宇田川町21-1 西武百貨店渋谷店B館2F',tel:'03-5459-2688'},
+  {name:'銀座三越',area:'東京',lines:['CDG','NOIR','HOMME'],addr:'東京都中央区銀座4-6-16 銀座三越4F・6F',tel:'03-6228-7761'},
+  {name:'日本橋三越',area:'東京',lines:['CDG','JUNYA','NOIR','TAO'],addr:'東京都中央区日本橋室町1-4-1 日本橋三越本店新館3・4F',tel:'03-5201-5727'},
+  {name:'渋谷Parco',area:'東京',lines:['CDG','GIRL','JUNYA','TAO'],addr:'東京都渋谷区宇田川町15-1 渋谷Parco 1〜4F',tel:'03-6416-1798'},
+  {name:'新宿高島屋',area:'東京',lines:['HOMME'],addr:'東京都渋谷区千駄ヶ谷5-24-2 新宿高島屋4F',tel:'03-5312-6125'},
+  {name:'阪急メンズ東京',area:'東京',lines:['CDG','JUNYA'],addr:'東京都千代田区有楽町2-5-1 阪急メンズ東京1F・6F',tel:'03-6264-5781'},
+  {name:'池袋西武',area:'東京',lines:['CDG'],addr:'東京都豊島区南池袋1-28-1 西武池袋店5F・7F',tel:'03-3986-7314'},
+  {name:'六本木ヒルズ Estnation Mens Shop',area:'東京',lines:['CDG'],addr:'東京都港区六本木6-10-2 ESTNATION 1F',tel:'03-3470-5011'},
+  // 北海道・東北
+  {name:'札幌大丸',area:'北海道・東北',lines:['CDG'],addr:'北海道札幌市中央区北5条4-7 大丸5F',tel:'011-223-0025'},
+  {name:'札幌Parco',area:'北海道・東北',lines:['CDG','BLACK','JUNYA','TAO'],addr:'北海道札幌市中央区南1条西3 PARCO 1F',tel:'011-251-2158'},
+  {name:'Comme des Garçons 仙台店',area:'北海道・東北',lines:['CDG'],addr:'宮城県仙台市青葉区中央2-10-10 1F',tel:'022-797-1663'},
+  {name:'仙台Parco',area:'北海道・東北',lines:['JUNYA'],addr:'宮城県仙台市青葉区中央1-2-3 仙台PARCO 2F',tel:'022-354-8145'},
+  // 中部・東海
+  {name:'静岡伊勢丹',area:'中部・東海',lines:['CDG'],addr:'静岡県静岡市葵区呉服町1-7 静岡伊勢丹',tel:'054-254-1598'},
+  {name:'名古屋Lachic',area:'中部・東海',lines:['CDG','BLACK'],addr:'愛知県名古屋市中区栄3-6-1 Lachic 1F',tel:'052-259-6302'},
+  {name:'名古屋三越',area:'中部・東海',lines:['CDG','JUNYA','NOIR'],addr:'愛知県名古屋市中区栄3-5-1 名古屋栄三越2・3F',tel:'052-252-1430'},
+  {name:'名古屋高島屋',area:'中部・東海',lines:['CDG','JUNYA','TAO'],addr:'愛知県名古屋市中村区名駅1-1-4 JR名古屋高島屋4〜7F',tel:'052-566-3246'},
+  {name:'Comme des Garçons 岐阜店',area:'中部・東海',lines:['CDG'],addr:'岐阜県岐阜市西玉宮町1-3-2',tel:'058-264-5233'},
+  // 関西
+  {name:'Comme des Garçons 京都店',area:'関西',lines:['CDG'],addr:'京都府京都市中京区亀屋町378',tel:'075-223-0370'},
+  {name:'京都伊勢丹',area:'関西',lines:['CDG','JUNYA'],addr:'京都府京都市下京区東塩小路町 JR京都伊勢丹3・5・6F',tel:'075-352-6306'},
+  {name:'京都大丸',area:'関西',lines:['CDG'],addr:'京都府京都市下京区四条通高倉西入 大丸京都店1・2F',tel:'050-5785-5165'},
+  {name:'藤井大丸',area:'関西',lines:['CDG','BLACK'],addr:'京都府京都市下京区貞安前之町605 藤井大丸4・7F',tel:'075-222-7312'},
+  {name:'Comme des Garçons 大阪店',area:'関西',lines:['CDG'],addr:'大阪府大阪市中央区南船場4-4-21',tel:'06-4963-6150'},
+  {name:'梅田阪急',area:'関西',lines:['CDG','GIRL','BLACK','JUNYA','NOIR','TAO','PARFUMS'],addr:'大阪府大阪市北区角田町8-7 阪急梅田本店3F / メンズ館2・5F',tel:'06-6361-9931'},
+  {name:'なんばパークス',area:'関西',lines:['CDG','PLAY'],addr:'大阪府大阪市浪速区難波中2-10-70 なんばパークス2F',tel:'06-6641-5670'},
+  {name:'大阪高島屋',area:'関西',lines:['TAO'],addr:'大阪府大阪市中央区難波5-1-5 高島屋大阪店3F',tel:'06-6632-9289'},
+  {name:'Comme des Garçons 神戸店',area:'関西',lines:['CDG'],addr:'兵庫県神戸市中央区播磨町29番地',tel:'078-322-3795'},
+  {name:'神戸阪急',area:'関西',lines:['CDG'],addr:'兵庫県神戸市中央区小野柄通8-1-8 神戸阪急新館1F',tel:'078-200-7266'},
+  // 九州・中国
+  {name:'Comme des Garçons 福岡店',area:'九州・中国',lines:['CDG'],addr:'福岡県福岡市博多区博多駅前1-28-8',tel:'092-433-5781'},
+  {name:'CDG 福岡店',area:'九州・中国',lines:['CDG'],addr:'福岡県福岡市博多区博多駅前1-28-8 2F',tel:'092-292-5590'},
+  {name:'福岡岩田屋',area:'九州・中国',lines:['CDG','BLACK','JUNYA','NOIR','TAO'],addr:'福岡県福岡市中央区天神2-5-35 岩田屋本店1・3・4・5F',tel:'092-735-6101'},
+  {name:'Comme des Garçons 広島店',area:'九州・中国',lines:['CDG'],addr:'広島県広島市中区袋町6-14',tel:'082-504-3606'},
+];
+
+let storeAreaFilt='all', storeLineFilt='all';
+
+function setStoreFilter(type,val,el){
+  if(type==='area'){
+    storeAreaFilt=val;
+    document.querySelectorAll('[id^="sarea-"]').forEach(c=>c.classList.remove('active'));
+  }else{
+    storeLineFilt=val;
+    document.querySelectorAll('[id^="sline-"]').forEach(c=>c.classList.remove('active'));
+  }
+  if(el)el.classList.add('active');
+  renderStoreList();
+}
+
+function renderStoreList(){
+  const filtered=STORE_DATA.filter(s=>{
+    const areaOk=storeAreaFilt==='all'||s.area===storeAreaFilt;
+    const lineOk=storeLineFilt==='all'||s.lines.includes(storeLineFilt);
+    return areaOk&&lineOk;
+  });
+  const LINE_LABELS={CDG:'CDG',DSM:'Dover Street Market',BLACK:'BLACK',JUNYA:'JUNYA WATANABE',HOMME:'HOMME',GIRL:'GIRL',TAO:'TAO',NOIR:'NOIR KEI NINOMIYA',PLAY:'PLAY',PARFUMS:'PARFUMS',TRADING:'TRADING MUSEUM'};
+  const el=document.getElementById('store-list');
+  if(!filtered.length){el.innerHTML='<div style="font-size:10px;color:var(--mgry);padding:16px 0;font-family:var(--jp)">該当する店舗がありません</div>';return;}
+  // エリアごとにグループ化
+  const groups={};
+  filtered.forEach(s=>{if(!groups[s.area])groups[s.area]=[];groups[s.area].push(s);});
+  el.innerHTML='<div class="store-count">'+filtered.length+'店舗</div>'+
+    Object.entries(groups).map(([area,stores])=>`
+      <div style="margin-bottom:18px">
+        <div style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--mgry);padding:6px 0;border-bottom:1px solid var(--blk);margin-bottom:4px">${area}</div>
+        ${stores.map(s=>`
+          <div class="store-card">
+            <div>
+              <div class="store-name">${s.name}</div>
+              <div class="store-line-tags">${s.lines.map(l=>`<span class="store-line-tag">${LINE_LABELS[l]||l}</span>`).join('')}</div>
+              <div class="store-addr">${s.addr}</div>
+            </div>
+            <div class="store-tel">Tel<br>${s.tel}</div>
+          </div>`).join('')}
+      </div>`).join('');
+}
+
+let srchTabMode='ref'; // 'ref' or 'user' or 'store'
 let userSortMode='new'; // 'new' or 'popular'
 function setUserSort(mode,el){
   userSortMode=mode;
@@ -1449,23 +1703,31 @@ function switchSrchTab(mode){
   srchTabMode=mode;
   document.getElementById('tab-ref-btn').classList.toggle('active', mode==='ref');
   document.getElementById('tab-user-btn').classList.toggle('active', mode==='user');
+  document.getElementById('tab-store-btn').classList.toggle('active', mode==='store');
   document.getElementById('srch-pane-ref').classList.toggle('active', mode==='ref');
   document.getElementById('srch-pane-user').classList.toggle('active', mode==='user');
-  // フィルター・ソート・グリッドの表示切替
+  document.getElementById('srch-pane-store').classList.toggle('active', mode==='store');
   const filterWrap=document.getElementById('filter-wrap-area');
   const feedToolbar=document.querySelector('.feed-toolbar');
+  const pickupSec=document.getElementById('pickup-section');
+  const suggestSec=document.getElementById('suggest-section');
   if(mode==='ref'){
     if(filterWrap)filterWrap.style.display='';
     if(feedToolbar)feedToolbar.style.display='';
+    if(pickupSec&&pickupSec.dataset.loaded)pickupSec.style.display='';
+    if(suggestSec&&suggestSec.dataset.loaded)suggestSec.style.display='';
     document.getElementById('user-search-results').style.display='none';
     document.getElementById('feed-grid').style.display='';
     updateFeed();
   } else {
     if(filterWrap)filterWrap.style.display='none';
     if(feedToolbar)feedToolbar.style.display='none';
+    if(pickupSec)pickupSec.style.display='none';
+    if(suggestSec)suggestSec.style.display='none';
     document.getElementById('feed-grid').style.display='none';
     document.getElementById('user-search-results').style.display='none';
-    doUserSearch(); // 全ユーザーをデフォルト表示
+    if(mode==='user') doUserSearch();
+    if(mode==='store') renderStoreList();
   }
 }
 
@@ -1616,9 +1878,11 @@ async function doSearch(){
     const res=getFiltered();
     rg('feed-grid',res);
     document.getElementById('feed-cnt').textContent=res.length+'件';
+    _setDiscoverySections(true);
     return;
   }
 
+  _setDiscoverySections(false);
   msgEl.textContent='検索中...';
   document.getElementById('feed-grid').innerHTML='<div class="loading" style="grid-column:1/-1"><div class="spinner"></div>検索中...</div>';
 
@@ -1697,7 +1961,7 @@ async function doSearch(){
 ===================================================== */
 async function openPost(id){
   const {data:p}=await sb.from('posts')
-    .select(`*, profiles(id,nickname,handle,avatar_url,cdg_history,height), post_images(url,position), post_items(name,season,size,ref_number), likes(count), comments(id,user_id,content,created_at,profiles(nickname,handle,avatar_url))`)
+    .select(`*, profiles(id,nickname,handle,avatar_url,cdg_history,height), post_images(url,position), post_items(name,line,season,store,size,ref_number), likes(count), comments(id,user_id,content,created_at,profiles(nickname,handle,avatar_url))`)
     .eq('id',id).single();
   if(!p)return;
   curPost=p;
@@ -2899,6 +3163,12 @@ async function sendContact(){
 buildColorChips();
 buildColorPicker();
 updateFeed();
+// ピックアップ・おすすめユーザーをロード
+Promise.all([loadPickup(),loadSuggestUsers()]).then(()=>{
+  ['pickup-section','suggest-section'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.dataset.loaded='1';
+  });
+});
 // 投稿フォームの初期アイテム行を生成
 (function(){
   const list=document.getElementById('ilist');
