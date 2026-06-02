@@ -919,6 +919,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     </div>
   </div>
   <div class="grid" id="feed-grid"></div>
+  <div id="load-more-wrap" style="display:none;text-align:center;padding:20px 0 28px">
+    <button id="load-more-btn" onclick="loadMoreFeed()" class="sort-chip" style="padding:9px 28px;font-size:9px;letter-spacing:.15em">もっと見る</button>
+  </div>
 </div>
 
 <!-- DETAIL PAGE -->
@@ -1261,6 +1264,8 @@ let myProfile = null;  // profiles テーブルのレコード
 let posts     = [];
 let filtLine='all', filtSea='all', filtColor='all', filtFollowing='all', srchQ='', curSort='popular';
 let curPost=null, curVisitedUserId=null, prevPage=null;
+const PAGE_SIZE=24;
+let feedOffset=0, feedHasMore=false, feedLoading=false;
 let uploadedPhotos=[];   // { file, dataUrl }
 let editingPostId=null;
 let pendingRegAvatar=null, pendingEditAvatar=null;
@@ -1288,9 +1293,27 @@ async function fetchPosts(opts={}){
     `)
     .order('created_at',{ascending:false});
   if(opts.userId) q=q.eq('user_id',opts.userId);
+  if(opts.line) q=q.eq('line',opts.line);
+  if(opts.sea){
+    if(opts.sea==='SS') q=q.ilike('season','%SS%');
+    else if(opts.sea==='AW') q=q.ilike('season','%AW%');
+    else q=q.eq('season',opts.sea);
+  }
+  if(opts.color) q=q.contains('colors',[opts.color]);
+  if(opts.followingIds&&opts.followingIds.length) q=q.in('user_id',opts.followingIds);
+  if(!opts.userId&&opts.from!=null) q=q.range(opts.from, opts.from+(opts.limit??PAGE_SIZE)-1);
   const {data,error}=await q;
   if(error){console.error('fetchPosts error:',error);return[];}
   return data||[];
+}
+
+function _feedFilterOpts(){
+  const o={};
+  if(filtLine!=='all') o.line=filtLine;
+  if(filtSea!=='all') o.sea=filtSea;
+  if(filtColor!=='all') o.color=filtColor;
+  if(filtFollowing==='following'&&myUser) o.followingIds=[myUser.id,...(myProfile?.following||[])];
+  return o;
 }
 
 /* =====================================================
@@ -1415,7 +1438,7 @@ function buildColorChips(){
 function card(p){
   const imgs=p.post_images||[];
   imgs.sort((a,b)=>a.position-b.position);
-  const imgHtml=imgs[0]?`<img src="${imgs[0].url}" style="width:100%;height:100%;object-fit:cover;display:block;">`:fig(p);
+  const imgHtml=imgs[0]?`<img src="${imgs[0].url}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`:fig(p);
   const likeCnt=(p.likes&&p.likes[0])?p.likes[0].count:0;
   const colors=p.colors&&p.colors.length?p.colors:['black'];
   const colorBar=colors.map(cid=>{
@@ -1424,7 +1447,7 @@ function card(p){
     return`<div class="card-color-seg" style="background:${hex}"></div>`;
   }).join('');
   const prof=p.profiles||{};
-  const avH=prof.avatar_url?`<img src="${prof.avatar_url}">`:`<span>${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
+  const avH=prof.avatar_url?`<img src="${prof.avatar_url}" loading="lazy">`:`<span>${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
   const isLiked=likedPostIds.has(p.id);
   const lineShort=p.line?(p.line.replace('COMME des GARCONS ','').replace('COMME des GARÇONS ','')):'';
   return`<div class="card" onclick="openPost('${p.id}')">
@@ -1539,11 +1562,34 @@ function _setDiscoverySections(visible){
 }
 
 async function updateFeed(){
+  feedOffset=0; feedHasMore=false; feedLoading=false; posts=[];
   document.getElementById('feed-grid').innerHTML='<div class="loading" style="grid-column:1/-1"><div class="spinner"></div>読み込み中...</div>';
-  posts=await fetchPosts();
+  document.getElementById('load-more-wrap').style.display='none';
+  const isPopular=curSort==='popular';
+  const fetched=await fetchPosts({..._feedFilterOpts(),from:0,limit:isPopular?200:PAGE_SIZE});
+  posts=fetched;
+  feedHasMore=!isPopular&&fetched.length===PAGE_SIZE;
   const res=getFiltered();
   rg('feed-grid',res);
-  document.getElementById('feed-cnt').textContent=res.length+'件';
+  document.getElementById('feed-cnt').textContent=res.length+(feedHasMore?'+':'')+'件';
+  document.getElementById('load-more-wrap').style.display=feedHasMore?'':'none';
+}
+
+async function loadMoreFeed(){
+  if(feedLoading||!feedHasMore)return;
+  feedLoading=true;
+  const btn=document.getElementById('load-more-btn');
+  if(btn){btn.disabled=true;btn.textContent='読み込み中...';}
+  feedOffset+=PAGE_SIZE;
+  const fetched=await fetchPosts({..._feedFilterOpts(),from:feedOffset,limit:PAGE_SIZE});
+  posts=[...posts,...fetched];
+  feedHasMore=fetched.length===PAGE_SIZE;
+  feedLoading=false;
+  const res=getFiltered();
+  rg('feed-grid',res);
+  document.getElementById('feed-cnt').textContent=res.length+(feedHasMore?'+':'')+'件';
+  document.getElementById('load-more-wrap').style.display=feedHasMore?'':'none';
+  if(btn){btn.disabled=false;btn.textContent='もっと見る';}
 }
 
 function setFollowFilt(val,el){
@@ -1885,6 +1931,7 @@ async function doSearch(){
   _setDiscoverySections(false);
   msgEl.textContent='検索中...';
   document.getElementById('feed-grid').innerHTML='<div class="loading" style="grid-column:1/-1"><div class="spinner"></div>検索中...</div>';
+  document.getElementById('load-more-wrap').style.display='none';
 
   // Supabase側でpost_itemsの品番を検索
   // まず品番に一致するpost_itemsのpost_idを取得
