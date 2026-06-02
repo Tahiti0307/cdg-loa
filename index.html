@@ -485,6 +485,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <span class="nl" onclick="goNav('mypage',this)">マイページ</span>
     <span class="nl" onclick="goNav('saved',this)">保存済み</span>
     <span class="nl" onclick="goNav('contact',this)">お問い合わせ</span>
+    <span class="nl" onclick="goNav('about',this)" style="text-transform:none;letter-spacing:.06em">このアプリについて</span>
   </div>
   <div class="nav-right">
     <button class="btn-login" id="nav-login-btn" onclick="openLoginModal()">ログイン</button>
@@ -517,6 +518,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <span class="drawer-nl" onclick="goNav('mypage',null);closeMenu()">マイページ</span>
     <span class="drawer-nl" onclick="goNav('saved',null);closeMenu()">保存済み</span>
     <span class="drawer-nl" onclick="goNav('contact',null);closeMenu()">お問い合わせ</span>
+    <span class="drawer-nl" onclick="goNav('about',null);closeMenu()">このアプリについて</span>
   </div>
 </div>
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeMenu()"></div>
@@ -536,6 +538,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <div class="err-msg" id="login-err"></div>
         <button class="sub-btn" id="login-btn" onclick="doLogin()">ログイン</button>
         <div class="login-alt">アカウントをお持ちでない方は<span onclick="switchAuthTab('register',document.querySelectorAll('.m-tab')[1])">新規登録</span></div>
+        <div class="login-alt" style="margin-top:6px"><span onclick="switchAuthTab('reset',null)">パスワードを忘れた方</span></div>
       </div>
       <div class="tab-pane" id="tab-register">
         <div class="modal-note">ギャルソン着用歴・身長を登録してください。</div>
@@ -560,11 +563,46 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
             <option>1年未満</option><option>1〜2年</option><option>3〜5年</option><option>6〜10年</option><option>11〜15年</option><option>16〜20年</option><option>20年以上</option>
           </select>
         </div>
-        <div class="fg"><label class="flbl">身長 (cm) *</label><input class="fi" type="text" id="reg-height" placeholder="168" inputmode="numeric" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')"></div>
+        <div class="fr2">
+          <div class="fg"><label class="flbl">身長 (cm) *</label><input class="fi" type="text" id="reg-height" placeholder="168" inputmode="numeric" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')"></div>
+          <div class="fg"><label class="flbl">年齢 *</label><input class="fi" type="text" id="reg-age" placeholder="28" inputmode="numeric" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')"></div>
+        </div>
         <div class="fg"><label class="flbl">自己紹介</label><textarea class="fi fta" id="reg-bio" placeholder="HOMME PLUSを中心にコレクション。DSM銀座常連。"></textarea></div>
         <div class="err-msg" id="reg-err"></div>
-        <button class="sub-btn" id="reg-btn" onclick="doRegister()">登録してログイン</button>
+        <button class="sub-btn" id="reg-btn" onclick="doRegister()">登録する</button>
       </div>
+
+      <!-- メール確認待ち画面 -->
+      <div class="tab-pane" id="tab-confirm">
+        <div style="text-align:center;padding:16px 0 8px">
+          <div style="font-size:28px;margin-bottom:14px">📧</div>
+          <div style="font-size:11px;font-weight:500;margin-bottom:10px;letter-spacing:.05em">確認メールを送信しました</div>
+          <div style="font-size:10px;color:var(--mgry);line-height:1.9;margin-bottom:18px;font-family:var(--jp)">
+            ご登録のメールアドレスに確認リンクを送りました。<br>
+            メール内のリンクをクリックして登録を完了してください。
+          </div>
+          <div style="font-size:9px;color:var(--mgry);line-height:1.7;margin-bottom:20px;font-family:var(--jp);border-left:2px solid var(--lgry);padding-left:10px;text-align:left">
+            メールが届かない場合は迷惑メールフォルダもご確認ください。<br>数分経っても届かない場合は下のボタンから再送できます。
+          </div>
+          <button class="sub-btn" id="resend-btn" onclick="resendConfirm()">確認メールを再送する</button>
+          <div style="font-size:9px;color:var(--mgry);margin-top:14px;font-family:var(--jp)">
+            確認後はページを更新してログインしてください。
+          </div>
+        </div>
+      </div>
+
+      <!-- パスワードリセット画面 -->
+      <div class="tab-pane" id="tab-reset">
+        <div style="font-size:10px;color:var(--mgry);line-height:1.8;margin-bottom:16px;font-family:var(--jp)">
+          登録済みのメールアドレスを入力してください。パスワード再設定のリンクを送ります。
+        </div>
+        <div class="fg"><label class="flbl">メールアドレス</label><input class="fi" type="email" id="reset-email" placeholder="example@email.com"></div>
+        <div class="err-msg" id="reset-err"></div>
+        <div id="reset-ok-msg" style="font-size:10px;color:#2a7;margin-bottom:8px;display:none;font-family:var(--jp)">再設定メールを送信しました。受信トレイをご確認ください。</div>
+        <button class="sub-btn" id="reset-btn" onclick="doResetPassword()">再設定メールを送る</button>
+        <div class="login-alt" style="margin-top:10px"><span onclick="switchAuthTab('login',document.querySelectorAll('.m-tab')[0])">← ログインに戻る</span></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -592,7 +630,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
           <option value="">選択</option><option>1年未満</option><option>1〜2年</option><option>3〜5年</option><option>6〜10年</option><option>11〜15年</option><option>16〜20年</option><option>20年以上</option>
         </select>
       </div>
-      <div class="fg"><label class="flbl">身長 (cm)</label><input class="fi" type="text" id="ep-height" inputmode="numeric" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')"></div>
+      <div class="fr2">
+        <div class="fg"><label class="flbl">身長 (cm)</label><input class="fi" type="text" id="ep-height" inputmode="numeric" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')"></div>
+        <div class="fg"><label class="flbl">年齢</label><input class="fi" type="text" id="ep-age" inputmode="numeric" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')"></div>
+      </div>
       <div class="fg"><label class="flbl">自己紹介</label><textarea class="fi fta" id="ep-bio"></textarea></div>
       <button class="sub-btn" id="ep-save-btn" onclick="saveEditProfile()">保存する</button>
     </div>
@@ -662,9 +703,22 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <!-- ユーザー検索 -->
     <div id="srch-pane-user" class="srch-pane">
       <div class="search-inner">
-        <input type="text" id="srch-user" placeholder="@ハンドルで検索" onkeydown="if(event.key==='Enter')doUserSearch()">
+        <input type="text" id="srch-user" placeholder="@ハンドルで検索（空欄でフィルターのみ可）" onkeydown="if(event.key==='Enter')doUserSearch()">
         <button class="search-btn" id="srch-user-clear-btn" onclick="clearUserSearch()" style="display:none;background:var(--mgry);padding:8px 10px">✕</button>
         <button class="search-btn" onclick="doUserSearch()">検索</button>
+      </div>
+      <!-- 身長・年齢フィルター -->
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;align-items:center">
+        <span style="font-size:8px;letter-spacing:.15em;color:var(--mgry);text-transform:uppercase">身長</span>
+        <input type="text" id="srch-height-min" class="fi" inputmode="numeric" placeholder="150" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')" style="width:58px;padding:5px 7px;font-size:11px">
+        <span style="font-size:10px;color:var(--mgry)">〜</span>
+        <input type="text" id="srch-height-max" class="fi" inputmode="numeric" placeholder="190" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')" style="width:58px;padding:5px 7px;font-size:11px">
+        <span style="font-size:9px;color:var(--mgry)">cm</span>
+        <span style="font-size:8px;letter-spacing:.15em;color:var(--mgry);text-transform:uppercase;margin-left:6px">年齢</span>
+        <input type="text" id="srch-age-min" class="fi" inputmode="numeric" placeholder="18" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')" style="width:48px;padding:5px 7px;font-size:11px">
+        <span style="font-size:10px;color:var(--mgry)">〜</span>
+        <input type="text" id="srch-age-max" class="fi" inputmode="numeric" placeholder="60" oninput="this.value=toHankaku(this.value).replace(/[^0-9]/g,'')" style="width:48px;padding:5px 7px;font-size:11px">
+        <span style="font-size:9px;color:var(--mgry)">歳</span>
       </div>
       <div class="srch-msg" id="srch-user-msg"></div>
       <!-- ユーザー検索結果 -->
@@ -795,6 +849,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
           <div class="prof-info-row">
             <div class="prof-info-item">着用歴：<strong id="my-history"></strong></div>
             <div class="prof-info-item">身長：<strong id="my-height"></strong>cm</div>
+            <div class="prof-info-item" id="my-age-wrap" style="display:none">年齢：<strong id="my-age"></strong>歳</div>
           </div>
           <div class="prof-bio" id="my-bio"></div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
@@ -822,7 +877,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
           <div class="stat" onclick="openFollowModalFor('following')"><span class="stat-n" id="vp-following">0</span><span class="stat-l">フォロー中</span></div>
           <div class="stat" onclick="openFollowModalFor('followers')"><span class="stat-n" id="vp-followers">0</span><span class="stat-l">フォロワー</span></div>
         </div>
-        <div class="prof-info-row"><div class="prof-info-item">着用歴：<strong id="vp-history"></strong></div><div class="prof-info-item">身長：<strong id="vp-height"></strong>cm</div></div>
+        <div class="prof-info-row"><div class="prof-info-item">着用歴：<strong id="vp-history"></strong></div><div class="prof-info-item">身長：<strong id="vp-height"></strong>cm</div><div class="prof-info-item" id="vp-age-wrap" style="display:none">年齢：<strong id="vp-age"></strong>歳</div></div>
         <div class="prof-bio" id="vp-bio"></div>
         <button class="fol-btn" id="vp-fol-btn" style="margin-top:10px" onclick="toggleFollowUser(curVisitedUserId)">フォロー</button>
       </div>
@@ -890,6 +945,55 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 <div id="page-saved" class="page">
   <div style="padding:16px 20px 8px;display:flex;align-items:baseline;justify-content:space-between"><span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500">保存済み</span><span id="saved-cnt" style="font-size:10px;color:var(--mgry)"></span></div>
   <div class="grid" id="saved-grid"></div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div id="page-about" class="page">
+  <div style="max-width:560px;margin:0 auto;padding:44px 20px 60px">
+
+    <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:32px;padding-bottom:12px;border-bottom:1px solid var(--blk)">About</div>
+
+    <!-- 開発者 -->
+    <div style="margin-bottom:40px">
+      <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--mgry);margin-bottom:14px">Developer</div>
+      <div style="font-size:20px;letter-spacing:.04em;margin-bottom:4px">タイチ</div>
+      <div style="font-size:10px;letter-spacing:.12em;color:var(--mgry);margin-bottom:16px">@tahiti</div>
+      <div style="display:flex;gap:8px">
+        <a href="https://x.com/tahiti" target="_blank" rel="noopener" style="font-family:var(--sans);font-size:8px;letter-spacing:.15em;padding:6px 14px;border:1px solid var(--blk);color:var(--blk);text-decoration:none;text-transform:uppercase;transition:all .15s" onmouseover="this.style.background='var(--blk)';this.style.color='var(--wht)'" onmouseout="this.style.background='';this.style.color='var(--blk)'">X (Twitter) →</a>
+      </div>
+    </div>
+
+    <!-- 区切り -->
+    <div style="border-top:1px solid var(--ln);margin-bottom:40px"></div>
+
+    <!-- きっかけ -->
+    <div style="margin-bottom:36px">
+      <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--mgry);margin-bottom:14px">Origin</div>
+      <p style="font-size:11px;line-height:2;color:var(--mgry);font-family:var(--jp)">
+        Xのタイムラインに流れてきた一枚のコーデ写真で、COMME des GARÇONSに一目惚れした。そこから着々とギャルソン沼にはまっていく中で、ひとつのもどかしさを感じるようになった。<br><br>
+        コーデの写真がネット上に散らばりすぎていて、まとめて見られる場所がない。
+      </p>
+    </div>
+
+    <!-- 想い -->
+    <div style="margin-bottom:36px">
+      <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--mgry);margin-bottom:14px">Vision</div>
+      <p style="font-size:11px;line-height:2;color:var(--mgry);font-family:var(--jp)">
+        ギャルソンが好きな人は、自分のコーデを撮るのも、他人のコーデを眺めるのも好きなはずだ。<br><br>
+        そんな人たちのためのアーカイブをつくりたいと思い、CDGLOAを開発した。着こなしを記録し、共有し、発見できる場所。<br><br>
+        ギャルソンラバーがつながり、新たなラバーが生まれ、日本発のブランドが若い世代にも届いていく——そんな場所になれれば。
+      </p>
+    </div>
+
+    <!-- アプリについて -->
+    <div>
+      <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--mgry);margin-bottom:14px">About This App</div>
+      <p style="font-size:10px;line-height:1.9;color:var(--mgry);font-family:var(--jp)">
+        CDGLOA（COMME des GARÇONS LOVERS' OUTFIT ARCHIVES）は、ギャルソン愛好家によるコーデアーカイブです。着用アイテムの品番・ライン・シーズンを記録し、フィルタリングや品番検索でギャルソンの着こなしを探せます。
+      </p>
+    </div>
+
+  </div>
 </div>
 
 <!-- CONTACT PAGE -->
@@ -1025,6 +1129,7 @@ let curPost=null, curVisitedUserId=null, prevPage=null;
 let uploadedPhotos=[];   // { file, dataUrl }
 let editingPostId=null;
 let pendingRegAvatar=null, pendingEditAvatar=null;
+let pendingRegEmail=null;
 let likedPostIds=new Set();
 let savedPostIds=new Set();
 
@@ -1055,10 +1160,15 @@ async function fetchPosts(opts={}){
 
 /* =====================================================
    画像圧縮ユーティリティ
-   maxW/maxH: リサイズ上限px  quality: JPEG品質 0〜1
-   コーデ写真 → 1200px / 0.82  アバター → 400px / 0.85
+   WebP対応ブラウザはWebP（約30%軽量）、非対応はJPEGにフォールバック
+   コーデ写真 → 900px / 0.75  アバター → 280px / 0.80
 ===================================================== */
-function compressImage(file, maxW=1200, maxH=1200, quality=0.82){
+const _webpSupported=(()=>{
+  const c=document.createElement('canvas');
+  return c.toDataURL('image/webp').startsWith('data:image/webp');
+})();
+
+function compressImage(file, maxW=900, maxH=900, quality=0.75){
   return new Promise((resolve, reject)=>{
     const img=new Image();
     const url=URL.createObjectURL(file);
@@ -1076,10 +1186,11 @@ function compressImage(file, maxW=1200, maxH=1200, quality=0.82){
       ctx.fillStyle='#ffffff';
       ctx.fillRect(0,0,w,h);
       ctx.drawImage(img,0,0,w,h);
+      const mime=_webpSupported?'image/webp':'image/jpeg';
       canvas.toBlob(blob=>{
         if(!blob){reject(new Error('compression failed'));return;}
-        resolve(blob);
-      },'image/jpeg', quality);
+        resolve({blob,mime});
+      },mime,quality);
     };
     img.onerror=reject;
     img.src=url;
@@ -1088,15 +1199,16 @@ function compressImage(file, maxW=1200, maxH=1200, quality=0.82){
 
 async function uploadImage(file, bucket='post-images'){
   const isAvatar = bucket==='avatars';
-  const blob = await compressImage(
+  const {blob,mime} = await compressImage(
     file,
-    isAvatar ? 400 : 1200,
-    isAvatar ? 400 : 1200,
-    isAvatar ? 0.85 : 0.82
+    isAvatar ? 280 : 900,
+    isAvatar ? 280 : 900,
+    isAvatar ? 0.80 : 0.75
   );
-  const path=`${myUser.id}/${Date.now()}.jpg`;
+  const ext=mime==='image/webp'?'webp':'jpg';
+  const path=`${myUser.id}/${Date.now()}.${ext}`;
   const {error}=await sb.storage.from(bucket).upload(path, blob, {
-    cacheControl:'3600', upsert:false, contentType:'image/jpeg'
+    cacheControl:'3600', upsert:false, contentType:mime
   });
   if(error)throw error;
   const {data}=sb.storage.from(bucket).getPublicUrl(path);
@@ -1311,11 +1423,17 @@ function switchSrchTab(mode){
 ===================================================== */
 async function doUserSearch(){
   const q=document.getElementById('srch-user').value.trim();
+  const heightMin=parseInt(document.getElementById('srch-height-min').value)||null;
+  const heightMax=parseInt(document.getElementById('srch-height-max').value)||null;
+  const ageMin=parseInt(document.getElementById('srch-age-min').value)||null;
+  const ageMax=parseInt(document.getElementById('srch-age-max').value)||null;
+  const hasFilter=heightMin||heightMax||ageMin||ageMax;
+
   const msgEl=document.getElementById('srch-user-msg');
   const resultsEl=document.getElementById('user-search-results');
   const listEl=document.getElementById('user-search-list');
 
-  if(!q){
+  if(!q&&!hasFilter){
     msgEl.textContent='';
     resultsEl.style.display='none';
     return;
@@ -1324,21 +1442,19 @@ async function doUserSearch(){
   msgEl.textContent='検索中...';
   resultsEl.style.display='none';
 
-  // handleで部分一致検索
-  const {data:byNick}=await sb.from('profiles')
-    .select('id,nickname,handle,avatar_url,cdg_history,height,bio')
-    .ilike('handle','%'+q.replace('@','')+'%')
-    .limit(20);
-
-  const {data:byHandle}=await sb.from('profiles')
-    .select('id,nickname,handle,avatar_url,cdg_history,height,bio')
-    .ilike('handle','%'+q.replace('@','')+'%')
-    .limit(10); // 重複排除されるので少なくてOK
+  // クエリ構築
+  let queryBase=sb.from('profiles').select('id,nickname,handle,avatar_url,cdg_history,height,age,bio');
+  if(q) queryBase=queryBase.ilike('handle','%'+q.replace('@','')+'%');
+  if(heightMin) queryBase=queryBase.gte('height',heightMin);
+  if(heightMax) queryBase=queryBase.lte('height',heightMax);
+  if(ageMin) queryBase=queryBase.gte('age',ageMin);
+  if(ageMax) queryBase=queryBase.lte('age',ageMax);
+  const {data:byNick}=await queryBase.limit(30);
 
   // 重複排除でマージ
   const merged=[];
   const seen=new Set();
-  for(const u of [...(byNick||[]),...(byHandle||[])]){
+  for(const u of (byNick||[])){
     if(!seen.has(u.id)){seen.add(u.id);merged.push(u);}
   }
 
@@ -1382,7 +1498,7 @@ async function doUserSearch(){
         <div class="user-result-av">${avH}</div>
         <div>
           <div class="user-result-name">${u.handle||''}</div>
-          ${u.cdg_history?`<div style="font-size:8px;color:var(--mgry);margin-top:1px">着用歴 ${u.cdg_history}${u.height?' · '+u.height+'cm':''}</div>`:''}
+          ${u.cdg_history||u.height||u.age?`<div style="font-size:8px;color:var(--mgry);margin-top:1px">${[u.cdg_history?'着用歴 '+u.cdg_history:'',u.height?u.height+'cm':'',u.age?u.age+'歳':''].filter(Boolean).join(' · ')}</div>`:''}
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
@@ -1412,6 +1528,10 @@ async function toggleFollowFromSearch(uid){
 
 function clearUserSearch(){
   document.getElementById('srch-user').value='';
+  document.getElementById('srch-height-min').value='';
+  document.getElementById('srch-height-max').value='';
+  document.getElementById('srch-age-min').value='';
+  document.getElementById('srch-age-max').value='';
   document.getElementById('srch-user-msg').textContent='';
   document.getElementById('srch-user-clear-btn').style.display='none';
   document.getElementById('user-search-results').style.display='none';
@@ -1737,9 +1857,21 @@ async function deletePost(){
 ===================================================== */
 function openLoginModal(){openModal('modal-auth');}
 function switchAuthTab(name,el){
-  document.querySelectorAll('.m-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-pane').forEach(t=>t.classList.remove('active'));
-  if(el)el.classList.add('active');document.getElementById('tab-'+name).classList.add('active');
-  document.getElementById('login-err').style.display='none';document.getElementById('reg-err').style.display='none';
+  document.querySelectorAll('.m-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active');
+  const pane=document.getElementById('tab-'+name);
+  if(pane)pane.classList.add('active');
+  // タイトル更新
+  const ttl=document.querySelector('#modal-auth .modal-ttl');
+  if(ttl){
+    if(name==='login')ttl.textContent='ログイン / 新規登録';
+    else if(name==='register')ttl.textContent='ログイン / 新規登録';
+    else if(name==='confirm')ttl.textContent='メールアドレス確認';
+    else if(name==='reset')ttl.textContent='パスワードリセット';
+  }
+  ['login-err','reg-err','reset-err'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  const rok=document.getElementById('reset-ok-msg');if(rok)rok.style.display='none';
 }
 function showErr(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';}
 
@@ -1754,7 +1886,9 @@ async function doLogin(){
     const login=sb.auth.signInWithPassword({email,password:pass});
     const{data,error}=await Promise.race([login,timeout]);
     if(error){
-      const msg=error.message==='Invalid login credentials'?'メールアドレスまたはパスワードが正しくありません。':error.message;
+      let msg=error.message;
+      if(msg==='Invalid login credentials')msg='メールアドレスまたはパスワードが正しくありません。';
+      else if(msg.includes('Email not confirmed'))msg='メールアドレスが確認されていません。登録時に送信した確認メールのリンクをクリックしてください。';
       showErr('login-err',msg);setLoading('login-btn',false,'ログイン');return;
     }
     setLoading('login-btn',false,'ログイン');
@@ -1770,41 +1904,90 @@ async function doLogin(){
 }
 
 async function doRegister(){
-  setLoading('reg-btn',true,'登録');
+  setLoading('reg-btn',true,'登録中...');
   const handle=document.getElementById('reg-handle').value.trim();
-  const nick=handle; // nicknameはhandleと同じ
   const history=document.getElementById('reg-history').value;
   const height=document.getElementById('reg-height').value;
+  const age=document.getElementById('reg-age').value;
   const email=document.getElementById('reg-email').value.trim();
   const pass=document.getElementById('reg-pass').value;
-  if(!handle||!history||!height||!email||!pass){showErr('reg-err','必須項目をすべて入力してください。');setLoading('reg-btn',false,'登録');return;}
+  const bio=document.getElementById('reg-bio').value.trim();
+  if(!handle||!history||!height||!age||!email||!pass){showErr('reg-err','必須項目をすべて入力してください。');setLoading('reg-btn',false,'登録する');return;}
+  if(pass.length<8){showErr('reg-err','パスワードは8文字以上で入力してください。');setLoading('reg-btn',false,'登録する');return;}
 
   const{data,error}=await sb.auth.signUp({email,password:pass});
-  if(error){showErr('reg-err',error.message);setLoading('reg-btn',false,'登録');return;}
+  if(error){
+    const msg=error.message.includes('already registered')||error.message.includes('User already registered')
+      ?'このメールアドレスはすでに登録されています。ログインをお試しください。'
+      :error.message;
+    showErr('reg-err',msg);setLoading('reg-btn',false,'登録する');return;
+  }
 
+  // 登録情報をsessionStorageに保存（メール確認後にプロフィールを作成するため）
+  pendingRegEmail=email;
+  sessionStorage.setItem('pendingProfile',JSON.stringify({handle,history,height:parseInt(height),age:parseInt(age),bio}));
+
+  // メール確認が不要な場合（Supabaseの設定でconfirmationが無効の場合）
+  if(data.session){
+    await _createProfileAfterSignup(data.user);
+    setLoading('reg-btn',false,'登録する');
+    closeModal('modal-auth');
+    showToast('登録完了！ようこそ、'+handle+'さん',3000);
+    return;
+  }
+
+  // メール確認が必要な場合
+  setLoading('reg-btn',false,'登録する');
+  switchAuthTab('confirm',null);
+}
+
+async function _createProfileAfterSignup(user){
+  const pending=JSON.parse(sessionStorage.getItem('pendingProfile')||'{}');
+  if(!pending.handle)return;
   let avatarUrl=null;
-  if(pendingRegAvatar&&data.user){
+  if(pendingRegAvatar){
     try{
       const blob=await(await fetch(pendingRegAvatar)).blob();
       const file=new File([blob],'avatar.jpg',{type:'image/jpeg'});
       avatarUrl=await uploadImage(file,'avatars');
     }catch(e){console.warn('avatar upload failed',e);}
   }
+  await sb.from('profiles').upsert({
+    id:user.id,
+    nickname:pending.handle,
+    handle:pending.handle,
+    cdg_history:pending.history,
+    height:pending.height,
+    age:pending.age||null,
+    bio:pending.bio||'',
+    avatar_url:avatarUrl
+  });
+  sessionStorage.removeItem('pendingProfile');
+  pendingRegAvatar=null;
+}
 
-  if(data.user){
-    await sb.from('profiles').upsert({
-      id:data.user.id,
-      nickname:handle, // nicknameはhandleと同じ
-      handle,
-      cdg_history:history,
-      height:parseInt(height),
-      bio:document.getElementById('reg-bio').value.trim(),
-      avatar_url:avatarUrl
-    });
+async function resendConfirm(){
+  if(!pendingRegEmail){showToast('メールアドレスが不明です。再度登録してください。');return;}
+  setLoading('resend-btn',true,'再送中...');
+  const{error}=await sb.auth.resend({type:'signup',email:pendingRegEmail});
+  setLoading('resend-btn',false,'確認メールを再送する');
+  if(error){showToast('再送に失敗しました: '+error.message,3500);}
+  else{showToast('確認メールを再送しました',3000);}
+}
+
+async function doResetPassword(){
+  const email=document.getElementById('reset-email').value.trim();
+  if(!email){showErr('reset-err','メールアドレスを入力してください。');return;}
+  setLoading('reset-btn',true,'送信中...');
+  const{error}=await sb.auth.resetPasswordForEmail(email,{
+    redirectTo:location.href.split('#')[0]+'#reset-password'
+  });
+  setLoading('reset-btn',false,'再設定メールを送る');
+  if(error){showErr('reset-err',error.message);}
+  else{
+    document.getElementById('reset-ok-msg').style.display='block';
+    document.getElementById('reset-err').style.display='none';
   }
-  setLoading('reg-btn',false,'登録');
-  closeModal('modal-auth');
-  showToast('登録完了！メール確認後ログインしてください。',4000);
 }
 
 async function doLogout(){
@@ -1836,6 +2019,9 @@ async function renderMyPage(){
   document.getElementById('my-handle').textContent='@'+(myProfile.handle||'');
   document.getElementById('my-history').textContent=myProfile.cdg_history||'';
   document.getElementById('my-height').textContent=myProfile.height||'';
+  const myAgeWrap=document.getElementById('my-age-wrap');
+  if(myProfile.age){document.getElementById('my-age').textContent=myProfile.age;myAgeWrap.style.display='';}
+  else{myAgeWrap.style.display='none';}
   document.getElementById('my-bio').textContent=myProfile.bio||'';
   const{data:myPostsData}=await sb.from('posts').select('*,post_images(url,position),post_items(ref_number),likes(count)').eq('user_id',myUser.id).order('created_at',{ascending:false});
   document.getElementById('my-posts').textContent=(myPostsData||[]).length;
@@ -1854,6 +2040,7 @@ function openEditProfileModal(){
   document.getElementById('ep-handle').value=myProfile.handle||'';
   document.getElementById('ep-history').value=myProfile.cdg_history||'';
   document.getElementById('ep-height').value=myProfile.height||'';
+  document.getElementById('ep-age').value=myProfile.age||'';
   document.getElementById('ep-bio').value=myProfile.bio||'';
   openModal('modal-edit-profile');
 }
@@ -1874,6 +2061,7 @@ async function saveEditProfile(){
     handle:newHandle,
     cdg_history:document.getElementById('ep-history').value||myProfile.cdg_history,
     height:parseInt(document.getElementById('ep-height').value)||myProfile.height,
+    age:parseInt(document.getElementById('ep-age').value)||myProfile.age||null,
     bio:document.getElementById('ep-bio').value.trim(),
     avatar_url:avatarUrl,
   };
@@ -1989,6 +2177,9 @@ async function openUserProfile(uid){
   document.getElementById('vp-handle').textContent='';
   document.getElementById('vp-history').textContent=u.cdg_history||'';
   document.getElementById('vp-height').textContent=u.height||'';
+  const vpAgeWrap=document.getElementById('vp-age-wrap');
+  if(u.age){document.getElementById('vp-age').textContent=u.age;vpAgeWrap.style.display='';}
+  else{vpAgeWrap.style.display='none';}
   document.getElementById('vp-bio').textContent=u.bio||'';
   const{data:vPosts}=await sb.from('posts').select('*,post_images(url,position),likes(count)').eq('user_id',uid).order('created_at',{ascending:false});
   document.getElementById('vp-posts').textContent=(vPosts||[]).length;
@@ -2442,13 +2633,27 @@ function goNav(name,el){
 sb.auth.onAuthStateChange(async(event,session)=>{
   myUser=session?.user||null;
   if(myUser){
-    // プロフィールと認証状態を先に更新してUIを即反映
     updateAuthUI();
-    // バックグラウンドで非同期に取得
+
+    // メール確認後のプロフィール作成（sessionStorageにpendingProfileがある場合）
+    if((event==='SIGNED_IN'||event==='USER_UPDATED')&&sessionStorage.getItem('pendingProfile')){
+      const existing=await fetchProfile(myUser.id);
+      if(!existing){
+        await _createProfileAfterSignup(myUser);
+      }else{
+        sessionStorage.removeItem('pendingProfile');
+      }
+    }
+
     fetchProfile(myUser.id).then(p=>{
       myProfile=p;
       renderMyPage();
-      if(event==='SIGNED_IN') showToast(`ようこそ、${myProfile?.handle||''}さん`);
+      if(event==='SIGNED_IN'){
+        // モーダルが開いていれば閉じる
+        const authModal=document.getElementById('modal-auth');
+        if(authModal&&authModal.classList.contains('open'))closeModal('modal-auth');
+        showToast(`ようこそ、${myProfile?.handle||''}さん`);
+      }
     });
     fetchLikes();
     fetchSaves();
