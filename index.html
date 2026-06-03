@@ -225,6 +225,54 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 
 
 
+
+/* CROSS REFERENCE */
+.xref-sec{margin-top:14px;padding-top:14px;border-top:1px solid var(--ln)}
+.xref-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.xref-ttl{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--mgry)}
+.xref-cnt{font-size:8px;color:var(--lgry)}
+.xref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px}
+.xref-card{cursor:pointer;overflow:hidden;border:1px solid var(--ln);transition:border-color .15s}
+.xref-card:hover{border-color:var(--blk)}
+.xref-card-img{width:100%;aspect-ratio:3/4;background:var(--gry);overflow:hidden}
+.xref-card-img img{width:100%;height:100%;object-fit:cover;display:block}
+.xref-card-info{padding:5px 6px}
+.xref-card-ref{font-size:7px;letter-spacing:.1em;color:var(--mgry);text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.xref-card-user{font-size:8px;color:var(--mgry);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.xref-item-label{font-size:8px;letter-spacing:.1em;color:var(--blk);padding:3px 0;margin-bottom:4px;font-weight:500}
+
+/* BADGES */
+.badge-sec{padding:14px 20px 0;max-width:900px;margin:0 auto;border-top:1px solid var(--ln);margin-top:4px}
+.badge-ttl{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--mgry);margin-bottom:10px}
+.badge-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.badge-item{display:flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid var(--ln);font-family:var(--sans)}
+.badge-item.earned{border-color:var(--blk);background:#fafaf8}
+.badge-item.locked{opacity:.35}
+.badge-icon{font-size:16px;line-height:1}
+.badge-label{font-size:9px;letter-spacing:.06em}
+.badge-sub{font-size:7px;color:var(--mgry);margin-top:1px}
+@media(max-width:600px){
+  .xref-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
+  .badge-item{padding:5px 10px}
+  .badge-label{font-size:10px}
+  .badge-sub{font-size:8px}
+}
+
+/* AI MATCH */
+.ai-match-sec{margin-top:14px;padding-top:14px;border-top:1px solid var(--ln)}
+.ai-match-btn{font-family:var(--sans);font-size:8px;letter-spacing:.15em;text-transform:uppercase;padding:8px 16px;border:1px solid var(--blk);background:transparent;cursor:pointer;transition:all .15s;color:var(--blk)}
+.ai-match-btn:hover{background:var(--blk);color:var(--wht)}
+.ai-match-btn:disabled{opacity:.4;cursor:not-allowed}
+.ai-match-result{margin-top:10px}
+.ai-match-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;margin-top:8px}
+.ai-match-card{cursor:pointer;border:1px solid var(--ln);overflow:hidden;transition:border-color .15s}
+.ai-match-card:hover{border-color:var(--blk)}
+.ai-match-card-img{width:100%;aspect-ratio:3/4;background:var(--gry);overflow:hidden}
+.ai-match-card-img img{width:100%;height:100%;object-fit:cover;display:block}
+.ai-match-card-info{padding:5px 6px}
+.ai-match-card-ttl{font-size:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai-match-card-line{font-size:7px;color:var(--mgry);letter-spacing:.08em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 /* SKELETON LOADING */
 @keyframes shimmer{
   0%{background-position:-600px 0}
@@ -326,7 +374,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .feed-tab{flex:1;font-family:var(--sans);font-size:9px;letter-spacing:.18em;text-transform:uppercase;padding:11px 0;border:none;background:transparent;cursor:pointer;color:var(--mgry);border-bottom:2px solid transparent;transition:all .15s}
 .feed-tab:hover{color:var(--blk)}
 .feed-tab.active{color:var(--blk);border-bottom-color:var(--blk)}
-@media(max-width:600px){.feed-tab{font-size:9px;padding:10px 0}}
+
 
 /* RANKING PAGE */
 .rank-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 10px;border-bottom:1px solid var(--ln)}
@@ -529,6 +577,62 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   .ccard-ttl{font-size:10px}
   .ccard-sea,.ccard-lk{font-size:8px}
 
+  /* MOBILE: フォント・ボタンサイズ拡大 */
+  .chip{font-size:9px;padding:5px 10px;letter-spacing:.08em}
+  .sort-chip{font-size:9px;padding:5px 10px}
+  .sort-lbl{font-size:9px}
+  .fi{font-size:12px;padding:9px 11px}
+  .flbl{font-size:9px}
+  .sub-btn{font-size:10px;padding:13px}
+  .btn-primary{font-size:10px;padding:6px 14px}
+  .ccard-ttl{font-size:12px}
+  .ccard-handle{font-size:9px}
+  .ccard-sea{font-size:10px}
+  .ccard-lk{font-size:10px}
+  .cov-ttl{font-size:12px}
+  .cov-line{font-size:9px}
+  .search-inner input{font-size:12px;padding:8px 12px}
+  .srch-tab{font-size:9px;padding:8px 14px}
+  .feed-c{font-size:10px}
+  .rank-title{font-size:13px}
+  .rank-lk{font-size:14px}
+  .rank-line{font-size:9px}
+  .rank-handle{font-size:10px}
+  .post-tag{font-size:9px;padding:5px 10px}
+  .abtn{font-size:9px;padding:7px 12px}
+  .dttl{font-size:18px}
+  .dsea{font-size:9px}
+  .dline{font-size:9px}
+  .dcap{font-size:11px}
+  .iname{font-size:10px}
+  .ibadge,.isz{font-size:8px;padding:3px 5px}
+  .cmt-txt{font-size:11px}
+  .cmt-un{font-size:10px}
+  .cmt-dt{font-size:9px}
+  .cmt-lk-btn{font-size:10px}
+  .cmt-reply-btn{font-size:9px}
+  #cmt-in{font-size:12px;padding:9px 10px}
+  .toast{font-size:11px;padding:11px 22px}
+  .notif-text{font-size:11px}
+  .notif-icon{font-size:16px}
+  .notif-time{font-size:9px}
+  .user-result-name{font-size:13px}
+  .user-result-handle{font-size:10px}
+  .user-result-fol-btn{font-size:9px;padding:5px 12px}
+  .drawer-nl{font-size:14px}
+  .marquee-item{font-size:8px}
+  .error-state-msg{font-size:14px}
+  .error-state-sub{font-size:11px}
+  .error-state-retry{font-size:9px;padding:9px 26px}
+  .rank-tab{font-size:9px;padding:6px 14px}
+  .cdg-stat-val{font-size:16px}
+  .cdg-stat-label{font-size:9px}
+  .cdg-stat-sub{font-size:9px}
+  .cdg-line-chip{font-size:9px}
+  .color-chip{width:28px;height:28px}
+  .color-lbl{font-size:9px}
+  .feed-tab{font-size:10px;padding:11px 0}
+
   /* DETAIL: モバイル全幅レイアウト */
   .dw{grid-template-columns:1fr;grid-template-rows:auto auto}
   .dim{min-height:unset}
@@ -664,7 +768,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .user-result-fol-btn:hover,.user-result-fol-btn.following{background:var(--blk);color:var(--wht)}
 .user-result-fol-btn.following:hover{background:var(--wht);color:var(--blk)}
 @media(max-width:600px){
-  .srch-tab{font-size:8px;padding:7px 12px;letter-spacing:.1em}
   .user-result-meta{display:none}
 }
 </style>
@@ -1020,18 +1123,21 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <button class="search-btn" id="srch-user-clear-btn" onclick="clearUserSearch()" style="display:none;background:var(--mgry);padding:8px 10px">✕</button>
         <button class="search-btn" onclick="doUserSearch()">検索</button>
       </div>
-      <!-- 身長・年齢フィルター -->
+      <!-- 身長フィルター -->
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;align-items:center">
-        <span style="font-size:8px;letter-spacing:.15em;color:var(--mgry);text-transform:uppercase">身長</span>
-        <input type="text" id="srch-height-min" class="fi" inputmode="numeric" placeholder="150" oninput="onNumericInput(event)" style="width:58px;padding:5px 7px;font-size:11px">
-        <span style="font-size:10px;color:var(--mgry)">〜</span>
-        <input type="text" id="srch-height-max" class="fi" inputmode="numeric" placeholder="190" oninput="onNumericInput(event)" style="width:58px;padding:5px 7px;font-size:11px">
-        <span style="font-size:9px;color:var(--mgry)">cm</span>
-        <span style="font-size:8px;letter-spacing:.15em;color:var(--mgry);text-transform:uppercase;margin-left:6px">年齢</span>
-        <input type="text" id="srch-age-min" class="fi" inputmode="numeric" placeholder="18" oninput="onNumericInput(event)" style="width:48px;padding:5px 7px;font-size:11px">
-        <span style="font-size:10px;color:var(--mgry)">〜</span>
-        <input type="text" id="srch-age-max" class="fi" inputmode="numeric" placeholder="60" oninput="onNumericInput(event)" style="width:48px;padding:5px 7px;font-size:11px">
-        <span style="font-size:9px;color:var(--mgry)">歳</span>
+        <span style="font-size:9px;letter-spacing:.15em;color:var(--mgry);text-transform:uppercase">身長</span>
+        <input type="text" id="srch-height-min" class="fi" inputmode="numeric" placeholder="150" oninput="onNumericInput(event)" style="width:62px;padding:6px 8px;font-size:12px">
+        <span style="font-size:11px;color:var(--mgry)">〜</span>
+        <input type="text" id="srch-height-max" class="fi" inputmode="numeric" placeholder="190" oninput="onNumericInput(event)" style="width:62px;padding:6px 8px;font-size:12px">
+        <span style="font-size:10px;color:var(--mgry)">cm</span>
+      </div>
+      <!-- 年齢フィルター -->
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;align-items:center">
+        <span style="font-size:9px;letter-spacing:.15em;color:var(--mgry);text-transform:uppercase">年齢</span>
+        <input type="text" id="srch-age-min" class="fi" inputmode="numeric" placeholder="18" oninput="onNumericInput(event)" style="width:56px;padding:6px 8px;font-size:12px">
+        <span style="font-size:11px;color:var(--mgry)">〜</span>
+        <input type="text" id="srch-age-max" class="fi" inputmode="numeric" placeholder="60" oninput="onNumericInput(event)" style="width:56px;padding:6px 8px;font-size:12px">
+        <span style="font-size:10px;color:var(--mgry)">歳</span>
       </div>
       <!-- 並び替え -->
       <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
@@ -1173,6 +1279,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <button class="abtn" id="edit-post-btn" style="display:none" onclick="openEditPost()">✎ 編集</button>
         <button class="abtn danger" id="del-post-btn" style="display:none" onclick="deletePost()">✕ 削除</button>
       </div>
+      <!-- 品番クロスリファレンス -->
+      <div class="xref-sec" id="xref-sec" style="display:none">
+        <div class="xref-hd"><span class="xref-ttl">この品番を持つ他のユーザー</span><span class="xref-cnt" id="xref-cnt"></span></div>
+        <div id="xref-list"></div>
+      </div>
+      <!-- AIマッチ提案 -->
+      <div class="ai-match-sec" id="ai-match-sec">
+        <button class="ai-match-btn" id="ai-match-btn" onclick="findMatchingItems()">✦ このアイテムに合うコーデを探す</button>
+        <div class="ai-match-result" id="ai-match-result"></div>
+      </div>
       <div class="csec">
         <div class="clbl">コメント</div><div id="cmt-list"></div>
         <div class="cmt-form"><input class="cmt-inp" type="text" id="cmt-in" placeholder="コメントを追加..."><button class="cmt-sub" onclick="addCmt()">送信</button></div>
@@ -1221,6 +1337,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         </div>
       </div>
     </div>
+    <div class="badge-sec" id="my-badge-sec" style="display:none">
+      <div class="badge-ttl">BADGES</div>
+      <div class="badge-grid" id="my-badges"></div>
+    </div>
     <div class="cdg-stats-section" id="my-cdg-stats" style="display:none">
       <div class="cdg-stats-ttl">CDG COLLECTION STATS</div>
       <div class="cdg-stats-grid" id="my-stats-grid"></div>
@@ -1250,6 +1370,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <button class="fol-btn" id="vp-fol-btn" style="margin-top:10px" onclick="toggleFollowUser(curVisitedUserId)">フォロー</button>
       </div>
     </div>
+  </div>
+  <div class="badge-sec" id="vp-badge-sec" style="display:none">
+    <div class="badge-ttl">BADGES</div>
+    <div class="badge-grid" id="vp-badges"></div>
   </div>
   <div class="cdg-stats-section" id="vp-cdg-stats" style="display:none">
     <div class="cdg-stats-ttl">CDG COLLECTION STATS</div>
@@ -2415,6 +2539,10 @@ async function openPost(id){
   if(window.innerWidth<=600){
     document.querySelector('.dact').classList.add('mobile-visible');
   }
+  // 品番クロスリファレンスを読み込み
+  loadCrossRef(p.post_items||[]);
+  // AIマッチ結果をリセット
+  document.getElementById('ai-match-result').innerHTML='';
 }
 
 function sliderGoto(idx){
@@ -2893,6 +3021,7 @@ async function renderMyPage(){
   document.getElementById('my-followers').textContent=fwers||0;
   rg('my-grid',myPostsData||[]);
   calcCdgStats(myPostsData||[],'my-stats-grid','my-lines-list','my-cdg-stats');
+  calcBadges(myPostsData||[],'my-badges','my-badge-sec');
 }
 
 function openEditProfileModal(){
@@ -3059,6 +3188,7 @@ async function openUserProfile(uid){
   const vb=document.getElementById('vp-fol-btn');vb.textContent=fol?'フォロー中':'フォロー';vb.classList.toggle('following',fol);
   rg('vprof-grid',vPosts||[]);
   calcCdgStats(vPosts||[],'vp-stats-grid','vp-lines-list','vp-cdg-stats');
+  calcBadges(vPosts||[],'vp-badges','vp-badge-sec');
   goNav('vprofile',null);
 }
 
@@ -3510,6 +3640,186 @@ document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>
 /* =====================================================
    NAV
 ===================================================== */
+
+/* =====================================================
+   品番クロスリファレンス
+===================================================== */
+async function loadCrossRef(postItems){
+  const sec=document.getElementById('xref-sec');
+  const list=document.getElementById('xref-list');
+  if(!sec||!list)return;
+  const refs=(postItems||[]).map(i=>i.ref_number).filter(Boolean);
+  if(!refs.length){sec.style.display='none';return;}
+  try{
+    const results=[];
+    for(const ref of refs){
+      const{data}=await sb.from('post_items')
+        .select('ref_number,posts(id,user_id,title,line,season,profiles(handle,avatar_url),post_images(url,position))')
+        .ilike('ref_number','%'+ref+'%')
+        .limit(20);
+      const others=(data||[]).filter(d=>d.posts&&(!curPost||d.posts.id!==curPost.id));
+      if(others.length) results.push({ref,items:others});
+    }
+    if(!results.length){sec.style.display='none';return;}
+    const totalCount=results.reduce((s,r)=>s+r.items.length,0);
+    document.getElementById('xref-cnt').textContent=totalCount+'件のスタイリング';
+    list.innerHTML=results.map(r=>{
+      const cards=r.items.slice(0,8).map(item=>{
+        const p=item.posts;
+        const imgs=(p.post_images||[]).sort((a,b)=>a.position-b.position);
+        const imgH=imgs[0]?`<img src="${imgs[0].url}" loading="lazy">`:'';
+        const prof=p.profiles||{};
+        return`<div class="xref-card" onclick="openPost('${p.id}')">
+          <div class="xref-card-img">${imgH}</div>
+          <div class="xref-card-info">
+            <div class="xref-card-ref">${item.ref_number}</div>
+            <div class="xref-card-user">@${prof.handle||''}</div>
+          </div>
+        </div>`;
+      }).join('');
+      return`<div class="xref-item-label">${r.ref}（${r.items.length}件）</div><div class="xref-grid">${cards}</div>`;
+    }).join('');
+    sec.style.display='';
+  }catch(e){console.error('xref error:',e);sec.style.display='none';}
+}
+
+/* =====================================================
+   コレクションバッジ / 実績システム
+===================================================== */
+const BADGE_DEFS=[
+  {id:'first',icon:'🎯',name:'First Post',desc:'初投稿',check:s=>s.posts>=1},
+  {id:'p5',icon:'📸',name:'5 Archives',desc:'5件投稿',check:s=>s.posts>=5},
+  {id:'p10',icon:'📷',name:'10 Archives',desc:'10件投稿',check:s=>s.posts>=10},
+  {id:'p50',icon:'🏆',name:'50 Archives',desc:'50件投稿',check:s=>s.posts>=50},
+  {id:'lines3',icon:'🏷️',name:'3 Lines',desc:'3ライン投稿',check:s=>s.lines>=3},
+  {id:'lines5',icon:'🌟',name:'5 Lines',desc:'5ライン投稿',check:s=>s.lines>=5},
+  {id:'lines10',icon:'💎',name:'10 Lines',desc:'10ライン制覇',check:s=>s.lines>=10},
+  {id:'cross',icon:'✂️',name:'Cross Liner',desc:'1コーデで3ライン以上',check:s=>s.maxLinesInPost>=3},
+  {id:'archive',icon:'🗄️',name:'Archive Master',desc:'2010年以前のシーズン投稿',check:s=>s.hasArchive},
+  {id:'liked',icon:'♡',name:'100 Likes',desc:'累計100いいね獲得',check:s=>s.totalLikes>=100},
+  {id:'liked500',icon:'❤️',name:'500 Likes',desc:'累計500いいね獲得',check:s=>s.totalLikes>=500},
+  {id:'sea5',icon:'📅',name:'5 Seasons',desc:'5シーズンカバー',check:s=>s.seasons>=5},
+  {id:'sea10',icon:'🗓️',name:'10 Seasons',desc:'10シーズンカバー',check:s=>s.seasons>=10},
+];
+
+function calcBadges(posts, gridId, sectionId){
+  const section=document.getElementById(sectionId);
+  const grid=document.getElementById(gridId);
+  if(!section||!grid)return;
+  if(!posts||!posts.length){section.style.display='none';return;}
+  const lineSet=new Set();
+  const seaSet=new Set();
+  let totalLikes=0;
+  let hasArchive=false;
+  let maxLinesInPost=0;
+  posts.forEach(p=>{
+    if(p.line)lineSet.add(p.line);
+    if(p.season)seaSet.add(p.season);
+    totalLikes+=((p.likes&&p.likes[0])?p.likes[0].count:0);
+    if(p.season){
+      const yr=parseInt(p.season.replace(/[^0-9]/g,''));
+      if(yr>0&&yr<=10) hasArchive=true;
+    }
+    // post_items のライン数（1コーデ内の異なるライン）
+    const itemLines=new Set();
+    (p.post_items||[]).forEach(it=>{if(it.line)itemLines.add(it.line);});
+    if(itemLines.size>maxLinesInPost) maxLinesInPost=itemLines.size;
+  });
+  const stats={
+    posts:posts.length,lines:lineSet.size,seasons:seaSet.size,
+    totalLikes,hasArchive,maxLinesInPost
+  };
+  grid.innerHTML=BADGE_DEFS.map(b=>{
+    const earned=b.check(stats);
+    return`<div class="badge-item ${earned?'earned':'locked'}">
+      <span class="badge-icon">${b.icon}</span>
+      <div><div class="badge-label">${b.name}</div><div class="badge-sub">${b.desc}</div></div>
+    </div>`;
+  }).join('');
+  section.style.display='';
+}
+
+/* =====================================================
+   AIスタイリング提案（類似アイテム検索）
+===================================================== */
+async function findMatchingItems(){
+  if(!curPost)return;
+  const btn=document.getElementById('ai-match-btn');
+  const resultEl=document.getElementById('ai-match-result');
+  btn.disabled=true;btn.textContent='検索中...';
+  resultEl.innerHTML='';
+  try{
+    // 現在の投稿のアイテム情報を取得
+    const items=(curPost.post_items||[]);
+    const curLine=curPost.line||'';
+    const curSea=curPost.season||'';
+    const curColors=curPost.colors||[];
+    const itemLines=items.map(i=>i.line).filter(Boolean);
+
+    // 同じラインまたは同じカラーの投稿を検索（自分以外）
+    let query=sb.from('posts')
+      .select('id,user_id,title,line,season,colors,created_at,profiles(handle,avatar_url),post_images(url,position),post_items(name,line,ref_number),likes(count)')
+      .neq('id',curPost.id)
+      .order('created_at',{ascending:false})
+      .limit(100);
+
+    const{data:candidates}=await query;
+    if(!candidates||!candidates.length){
+      resultEl.innerHTML='<div style="font-size:10px;color:var(--mgry);padding:10px 0;font-family:var(--jp)">マッチする投稿が見つかりませんでした</div>';
+      btn.disabled=false;btn.textContent='✦ このアイテムに合うコーデを探す';
+      return;
+    }
+
+    // スコアリング: ライン補完性 + カラー相性 + シーズン近さ
+    const scored=candidates.map(p=>{
+      let score=0;
+      const pItems=(p.post_items||[]);
+      const pLines=pItems.map(i=>i.line).filter(Boolean);
+      const pColors=p.colors||[];
+
+      // 同じラインのアイテムがある → 相性が良い
+      itemLines.forEach(il=>{if(pLines.includes(il))score+=3;});
+      // 同じカラーパレットで合わせている
+      curColors.forEach(c=>{if(pColors.includes(c))score+=2;});
+      // 異なるラインだが同じシーズン → 着合わせの参考になる
+      if(curSea&&p.season===curSea&&p.line!==curLine) score+=4;
+      // 同じラインの別シーズン → バリエーション参考
+      if(curLine&&p.line===curLine&&p.season!==curSea) score+=2;
+      // いいね数で微調整
+      const lk=(p.likes&&p.likes[0])?p.likes[0].count:0;
+      score+=Math.min(lk*0.1,3);
+      // 自分の投稿は除外
+      if(myUser&&p.user_id===myUser.id) score-=2;
+      return{...p,score};
+    }).filter(p=>p.score>0).sort((a,b)=>b.score-a.score).slice(0,8);
+
+    if(!scored.length){
+      resultEl.innerHTML='<div style="font-size:10px;color:var(--mgry);padding:10px 0;font-family:var(--jp)">マッチする投稿が見つかりませんでした</div>';
+    }else{
+      const reason=curLine?`${curLine.replace('COMME des GARÇONS ','CdG ')}に合うスタイリング`:'関連するスタイリング';
+      resultEl.innerHTML=`<div style="font-size:8px;color:var(--mgry);letter-spacing:.1em;margin-bottom:6px">${reason} — ${scored.length}件</div>
+      <div class="ai-match-grid">${scored.map(p=>{
+        const imgs=(p.post_images||[]).sort((a,b)=>a.position-b.position);
+        const imgH=imgs[0]?`<img src="${imgs[0].url}" loading="lazy">`:'';
+        const prof=p.profiles||{};
+        const lineShort=(p.line||'').replace('COMME des GARÇONS ','CdG ').replace('COMME des GARÇONS','CdG');
+        return`<div class="ai-match-card" onclick="openPost('${p.id}')">
+          <div class="ai-match-card-img">${imgH}</div>
+          <div class="ai-match-card-info">
+            <div class="ai-match-card-ttl">${p.title||''}</div>
+            <div class="ai-match-card-line">${lineShort} ${p.season||''}</div>
+          </div>
+        </div>`;
+      }).join('')}</div>`;
+    }
+  }catch(e){
+    console.error('AI match error:',e);
+    resultEl.innerHTML='<div style="font-size:10px;color:var(--mgry);padding:10px 0">検索に失敗しました</div>';
+  }
+  btn.disabled=false;btn.textContent='✦ このアイテムに合うコーデを探す';
+}
+
+
 // URLパラメータ処理
 function calcCdgStats(posts, gridId, linesId, sectionId){
   const section=document.getElementById(sectionId);
