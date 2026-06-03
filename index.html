@@ -241,21 +241,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .xref-card-user{font-size:8px;color:var(--mgry);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
 .xref-item-label{font-size:8px;letter-spacing:.1em;color:var(--blk);padding:3px 0;margin-bottom:4px;font-weight:500}
 
-/* BADGES */
-.badge-sec{padding:14px 20px 0;max-width:900px;margin:0 auto;border-top:1px solid var(--ln);margin-top:4px}
-.badge-ttl{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--mgry);margin-bottom:10px}
-.badge-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.badge-item{display:flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid var(--ln);font-family:var(--sans)}
-.badge-item.earned{border-color:var(--blk);background:#fafaf8}
-.badge-item.locked{opacity:.35}
-.badge-icon{font-size:16px;line-height:1}
-.badge-label{font-size:9px;letter-spacing:.06em}
-.badge-sub{font-size:7px;color:var(--mgry);margin-top:1px}
+
 @media(max-width:600px){
   .xref-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
-  .badge-item{padding:5px 10px}
-  .badge-label{font-size:10px}
-  .badge-sub{font-size:8px}
+
 }
 
 /* AI MATCH */
@@ -879,7 +868,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   <div class="nav-right">
     <button class="btn-login" id="nav-login-btn" onclick="openLoginModal()">ログイン</button>
     <button class="notif-bell" id="notif-bell-btn" onclick="toggleNotifPanel()" title="通知" style="display:none">
-      🔔<span class="notif-badge" id="notif-badge" style="display:none"></span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-badge" id="notif-badge" style="display:none"></span>
     </button>
     <button class="btn-primary" id="nav-post-btn" onclick="tryPost()" disabled>＋ 投稿</button>
     <!-- ハンバーガーボタン（スマホのみ表示） -->
@@ -1337,10 +1326,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         </div>
       </div>
     </div>
-    <div class="badge-sec" id="my-badge-sec" style="display:none">
-      <div class="badge-ttl">BADGES</div>
-      <div class="badge-grid" id="my-badges"></div>
-    </div>
     <div class="cdg-stats-section" id="my-cdg-stats" style="display:none">
       <div class="cdg-stats-ttl">CDG COLLECTION STATS</div>
       <div class="cdg-stats-grid" id="my-stats-grid"></div>
@@ -1370,10 +1355,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <button class="fol-btn" id="vp-fol-btn" style="margin-top:10px" onclick="toggleFollowUser(curVisitedUserId)">フォロー</button>
       </div>
     </div>
-  </div>
-  <div class="badge-sec" id="vp-badge-sec" style="display:none">
-    <div class="badge-ttl">BADGES</div>
-    <div class="badge-grid" id="vp-badges"></div>
   </div>
   <div class="cdg-stats-section" id="vp-cdg-stats" style="display:none">
     <div class="cdg-stats-ttl">CDG COLLECTION STATS</div>
@@ -3021,7 +3002,6 @@ async function renderMyPage(){
   document.getElementById('my-followers').textContent=fwers||0;
   rg('my-grid',myPostsData||[]);
   calcCdgStats(myPostsData||[],'my-stats-grid','my-lines-list','my-cdg-stats');
-  calcBadges(myPostsData||[],'my-badges','my-badge-sec');
 }
 
 function openEditProfileModal(){
@@ -3188,7 +3168,6 @@ async function openUserProfile(uid){
   const vb=document.getElementById('vp-fol-btn');vb.textContent=fol?'フォロー中':'フォロー';vb.classList.toggle('following',fol);
   rg('vprof-grid',vPosts||[]);
   calcCdgStats(vPosts||[],'vp-stats-grid','vp-lines-list','vp-cdg-stats');
-  calcBadges(vPosts||[],'vp-badges','vp-badge-sec');
   goNav('vprofile',null);
 }
 
@@ -3554,7 +3533,7 @@ async function loadNotifications(){
       unreadNotifCount=0;updateNotifBadge();
     }
     listEl.innerHTML=data.map(n=>{
-      const icon=n.type==='like'?'♡':n.type==='comment'?'💬':n.type==='follow'?'👤':'🔔';
+      const icon=n.type==='like'?'♡':n.type==='comment'?'💬':n.type==='follow'?'👤':'●';
       const actor=n.actor||{};
       let txt='';
       if(n.type==='like')txt=`<strong>${actor.handle||'誰か'}</strong>があなたの投稿にいいねしました`;
@@ -3683,61 +3662,6 @@ async function loadCrossRef(postItems){
   }catch(e){console.error('xref error:',e);sec.style.display='none';}
 }
 
-/* =====================================================
-   コレクションバッジ / 実績システム
-===================================================== */
-const BADGE_DEFS=[
-  {id:'first',icon:'🎯',name:'First Post',desc:'初投稿',check:s=>s.posts>=1},
-  {id:'p5',icon:'📸',name:'5 Archives',desc:'5件投稿',check:s=>s.posts>=5},
-  {id:'p10',icon:'📷',name:'10 Archives',desc:'10件投稿',check:s=>s.posts>=10},
-  {id:'p50',icon:'🏆',name:'50 Archives',desc:'50件投稿',check:s=>s.posts>=50},
-  {id:'lines3',icon:'🏷️',name:'3 Lines',desc:'3ライン投稿',check:s=>s.lines>=3},
-  {id:'lines5',icon:'🌟',name:'5 Lines',desc:'5ライン投稿',check:s=>s.lines>=5},
-  {id:'lines10',icon:'💎',name:'10 Lines',desc:'10ライン制覇',check:s=>s.lines>=10},
-  {id:'cross',icon:'✂️',name:'Cross Liner',desc:'1コーデで3ライン以上',check:s=>s.maxLinesInPost>=3},
-  {id:'archive',icon:'🗄️',name:'Archive Master',desc:'2010年以前のシーズン投稿',check:s=>s.hasArchive},
-  {id:'liked',icon:'♡',name:'100 Likes',desc:'累計100いいね獲得',check:s=>s.totalLikes>=100},
-  {id:'liked500',icon:'❤️',name:'500 Likes',desc:'累計500いいね獲得',check:s=>s.totalLikes>=500},
-  {id:'sea5',icon:'📅',name:'5 Seasons',desc:'5シーズンカバー',check:s=>s.seasons>=5},
-  {id:'sea10',icon:'🗓️',name:'10 Seasons',desc:'10シーズンカバー',check:s=>s.seasons>=10},
-];
-
-function calcBadges(posts, gridId, sectionId){
-  const section=document.getElementById(sectionId);
-  const grid=document.getElementById(gridId);
-  if(!section||!grid)return;
-  if(!posts||!posts.length){section.style.display='none';return;}
-  const lineSet=new Set();
-  const seaSet=new Set();
-  let totalLikes=0;
-  let hasArchive=false;
-  let maxLinesInPost=0;
-  posts.forEach(p=>{
-    if(p.line)lineSet.add(p.line);
-    if(p.season)seaSet.add(p.season);
-    totalLikes+=((p.likes&&p.likes[0])?p.likes[0].count:0);
-    if(p.season){
-      const yr=parseInt(p.season.replace(/[^0-9]/g,''));
-      if(yr>0&&yr<=10) hasArchive=true;
-    }
-    // post_items のライン数（1コーデ内の異なるライン）
-    const itemLines=new Set();
-    (p.post_items||[]).forEach(it=>{if(it.line)itemLines.add(it.line);});
-    if(itemLines.size>maxLinesInPost) maxLinesInPost=itemLines.size;
-  });
-  const stats={
-    posts:posts.length,lines:lineSet.size,seasons:seaSet.size,
-    totalLikes,hasArchive,maxLinesInPost
-  };
-  grid.innerHTML=BADGE_DEFS.map(b=>{
-    const earned=b.check(stats);
-    return`<div class="badge-item ${earned?'earned':'locked'}">
-      <span class="badge-icon">${b.icon}</span>
-      <div><div class="badge-label">${b.name}</div><div class="badge-sub">${b.desc}</div></div>
-    </div>`;
-  }).join('');
-  section.style.display='';
-}
 
 /* =====================================================
    AIスタイリング提案（類似アイテム検索）
