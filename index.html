@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CDGLOA">
 <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES</title>
 <meta name="description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
 
@@ -1380,21 +1381,22 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       <div id="color-picker" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
       <div class="hint">メインカラーを選んでください（フィード絞り込みに使用）</div>
     </div>
-    <div class="fg"><label class="flbl">タイトル</label><input class="fi" type="text" id="p-ttl" placeholder="例：AW24 非対称シルエット"></div>
+    <div class="fg">
+      <label class="flbl" style="display:flex;justify-content:space-between;align-items:center">
+        タイトル <span id="ttl-count" style="font-size:8px;color:var(--lgry);font-weight:400">0/50</span>
+      </label>
+      <input class="fi" type="text" id="p-ttl" placeholder="例：AW24 非対称シルエット" maxlength="50" oninput="document.getElementById('ttl-count').textContent=this.value.length+'/50'">
+    </div>
     <div class="fg"><label class="flbl">説明</label><textarea class="fi fta" id="p-cap" placeholder="インスピレーションや着用シーンなど..."></textarea></div>
+    <div class="fg">
+      <label class="flbl">タグ <span style="font-size:8px;color:var(--mgry);letter-spacing:.04em;text-transform:none">スペース区切りで複数入力</span></label>
+      <input class="fi" type="text" id="p-tags" placeholder="例: 青山 AW2019 サイズ感">
+    </div>
 
     <div class="fg">
       <label class="flbl">着用アイテム</label>
       <div class="ibldr">
-        <div class="ibldr-hd" style="display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr 0.8fr 0.8fr 0.7fr auto;gap:5px;margin-bottom:5px;border-bottom:1px solid var(--ln);padding-bottom:5px">
-          <span class="flbl" style="margin-bottom:0">アイテム名</span>
-          <span class="flbl" style="margin-bottom:0">ライン</span>
-          <span class="flbl" style="margin-bottom:0">シーズン</span>
-          <span class="flbl" style="margin-bottom:0">購入店舗</span>
-          <span class="flbl" style="margin-bottom:0">サイズ</span>
-          <span class="flbl" style="margin-bottom:0">品番</span>
-          <span></span>
-        </div>
+
         <div id="ilist"></div>
         <button class="add-r" onclick="addItem()">＋ アイテムを追加</button>
       </div>
@@ -1618,8 +1620,10 @@ let savedPostIds=new Set();
    SUPABASE HELPERS
 ===================================================== */
 async function fetchProfile(userId){
+  try{
   const {data}=await sb.from('profiles').select('*').eq('id',userId).single();
   return data;
+  }catch(e){console.error('fetchProfile:',e);}
 }
 
 async function fetchPosts(opts={}){
@@ -1701,6 +1705,7 @@ function compressImage(file, maxW=900, maxH=900, quality=0.75){
 }
 
 async function uploadImage(file, bucket='post-images'){
+  try{
   const isAvatar = bucket==='avatars';
   const {blob,mime} = await compressImage(
     file,
@@ -1716,35 +1721,46 @@ async function uploadImage(file, bucket='post-images'){
   if(error)throw error;
   const {data}=sb.storage.from(bucket).getPublicUrl(path);
   return data.publicUrl;
+  }catch(e){console.error('uploadImage:',e);throw e;}
 }
 
 async function fetchLikes(){
+  try{
   if(!myUser)return;
   const {data}=await sb.from('likes').select('post_id').eq('user_id',myUser.id);
   likedPostIds=new Set((data||[]).map(r=>r.post_id));
+  }catch(e){console.error('fetchLikes:',e);}
 }
 
 async function fetchFollowingIds(){
+  try{
   if(!myUser)return;
   const{data}=await sb.from('follows').select('following_id').eq('follower_id',myUser.id);
   if(myProfile) myProfile.following=(data||[]).map(r=>r.following_id);
+  }catch(e){console.error('fetchFollowingIds:',e);}
 }
 async function fetchSaves(){
+  try{
   if(!myUser)return;
   const {data}=await sb.from('saves').select('post_id').eq('user_id',myUser.id);
   savedPostIds=new Set((data||[]).map(r=>r.post_id));
+  }catch(e){console.error('fetchSaves:',e);}
 }
 async function fetchFollowCounts(userId){
+  try{
   const [{count:fc},{count:ing}]=await Promise.all([
     sb.from('follows').select('*',{count:'exact',head:true}).eq('following_id',userId),
     sb.from('follows').select('*',{count:'exact',head:true}).eq('follower_id',userId),
   ]);
   return{followers:fc||0,following:ing||0};
+  }catch(e){console.error('fetchFollowCounts:',e);}
 }
 async function isFollowing(targetId){
+  try{
   if(!myUser)return false;
   const {data}=await sb.from('follows').select('id').eq('follower_id',myUser.id).eq('following_id',targetId).maybeSingle();
   return!!data;
+  }catch(e){console.error('isFollowing:',e);return false;}
 }
 
 /* =====================================================
@@ -1864,6 +1880,7 @@ function getFiltered(){
 }
 
 async function loadPickup(){
+  try{
   // 過去7日間で最もいいねが多い投稿
   const since=new Date(Date.now()-7*24*60*60*1000).toISOString();
   const{data}=await sb.from('posts')
@@ -1891,9 +1908,11 @@ async function loadPickup(){
       </div>
     </div>`;
   document.getElementById('pickup-section').style.display='';
+  }catch(e){console.error('loadPickup:',e);}
 }
 
 async function loadSuggestUsers(){
+  try{
   // フォロワー数上位ユーザーを取得
   const{data:profiles}=await sb.from('profiles')
     .select('id,handle,avatar_url')
@@ -1916,6 +1935,7 @@ async function loadSuggestUsers(){
     </div>`;
   }).join('');
   document.getElementById('suggest-section').style.display='';
+  }catch(e){console.error('loadSuggestUsers:',e);}
 }
 
 function _setDiscoverySections(visible){
@@ -1937,6 +1957,7 @@ function showFeedError(retryFn){
 }
 
 async function updateFeed(){
+  try{
   feedOffset=0; feedHasMore=false; feedLoading=false; posts=[];
   skeletonGrid('feed-grid',6);
   document.getElementById('load-more-wrap').style.display='none';
@@ -1949,9 +1970,11 @@ async function updateFeed(){
   document.getElementById('feed-cnt').textContent=res.length+(feedHasMore?'+':'')+'件';
   document.getElementById('load-more-wrap').style.display=feedHasMore?'':'none';
   initInfiniteScroll();
+  }catch(e){console.error('updateFeed:',e);showFeedError();}
 }
 
 async function loadMoreFeed(){
+  try{
   if(feedLoading||!feedHasMore)return;
   feedLoading=true;
   const btn=document.getElementById('load-more-btn');
@@ -1966,6 +1989,7 @@ async function loadMoreFeed(){
   document.getElementById('feed-cnt').textContent=res.length+(feedHasMore?'+':'')+'件';
   document.getElementById('load-more-wrap').style.display=feedHasMore?'':'none';
   if(btn){btn.disabled=false;btn.textContent='もっと見る';}
+  }catch(e){console.error('loadMoreFeed:',e);}
 }
 
 // 無限スクロール: IntersectionObserver
@@ -2196,6 +2220,7 @@ function switchSrchTab(mode){
    ユーザー検索
 ===================================================== */
 async function doUserSearch(){
+  try{
   const q=document.getElementById('srch-user').value.trim();
   const heightMin=parseInt(document.getElementById('srch-height-min').value)||null;
   const heightMax=parseInt(document.getElementById('srch-height-max').value)||null;
@@ -2302,13 +2327,16 @@ async function doUserSearch(){
       });
     }
   }
+  }catch(e){console.error('doUserSearch:',e);showToast('検索に失敗しました');}
 }
 
 async function toggleFollowFromSearch(uid){
+  try{
   await toggleFollowUser(uid);
   const fol=await isFollowing(uid);
   const btn=document.getElementById('urfol-'+uid);
   if(btn){btn.textContent=fol?'フォロー中':'フォロー';btn.classList.toggle('following',fol);}
+  }catch(e){console.error('toggleFollowFromSearch:',e);showToast('エラーが発生しました');}
 }
 
 function clearUserSearch(){
@@ -2330,6 +2358,7 @@ function clearSearch(){
 }
 
 async function doSearch(){
+  try{
   const raw=document.getElementById('srch').value.trim();
   srchQ=normalizeRef(raw);
   const msgEl=document.getElementById('srch-msg');
@@ -2426,6 +2455,7 @@ async function doSearch(){
   msgEl.textContent=`「${raw}」の検索結果（品番・タイトル・説明）`;
   rg('feed-grid',combined);
   document.getElementById('feed-cnt').textContent=combined.length+'件';
+  }catch(e){console.error('doSearch:',e);showToast('検索に失敗しました');}
 }
 
 /* =====================================================
@@ -2433,16 +2463,13 @@ async function doSearch(){
 ===================================================== */
 async function openPost(id){
   try{
-  console.log('openPost called:', id);
   const {data:p, error}=await sb.from('posts')
     .select(`*, profiles(id,nickname,handle,avatar_url,cdg_history,height), post_images(url,position), post_items(name,line,season,store,size,ref_number)`)
     .eq('id',id).single();
-  console.log('query result:', {p, error});
   if(error){console.error('openPost query error:',error);showToast('投稿の読み込みに失敗しました');return;}
   if(!p){console.error('post not found');return;}
   // いいね数を別途取得
   const {count:likeCnt=0}=await sb.from('likes').select('*',{count:'exact',head:true}).eq('post_id',id);
-  console.log('likeCnt:', likeCnt);
   curPost=p;
   prevPage=document.querySelector('.page.active').id;
 
@@ -2559,6 +2586,7 @@ function switchImg(src,el){sliderGoto(parseInt(el.dataset.idx||0));}
 let likedCmtIds=new Set();
 
 async function fetchCmts(){
+  try{
   if(!curPost)return;
   const{data:allCmts}=await sb.from('comments')
     .select('*,profiles(handle,avatar_url),comment_likes(count)')
@@ -2568,6 +2596,7 @@ async function fetchCmts(){
     likedCmtIds=new Set((myLikes||[]).map(l=>l.comment_id));
   }else{likedCmtIds=new Set();}
   renderCmts(allCmts||[]);
+  }catch(e){console.error('fetchCmts:',e);}
 }
 
 function renderCmts(cmts){
@@ -2606,6 +2635,7 @@ function toggleReplyForm(id){
 }
 
 async function toggleCmtLike(cmtId,btn){
+  try{
   if(!myUser){showToast('ログインが必要です');openLoginModal();return;}
   const liked=btn.classList.contains('liked');
   const countEl=btn.querySelector('span');
@@ -2619,17 +2649,21 @@ async function toggleCmtLike(cmtId,btn){
     likedCmtIds.add(cmtId);btn.classList.add('liked');
     countEl.textContent=cur+1;
   }
+  }catch(e){console.error('toggleCmtLike:',e);}
 }
 
 async function deleteCmt(cmtId){
+  try{
   if(!myUser)return;
   if(!confirm('このコメントを削除しますか？'))return;
   await sb.from('comments').delete().eq('id',cmtId).eq('user_id',myUser.id);
   await fetchCmts();
   showToast('コメントを削除しました');
+  }catch(e){console.error('deleteCmt:',e);showToast('削除に失敗しました');}
 }
 
 async function submitReply(parentId,formId){
+  try{
   if(!myUser){showToast('ログインが必要です');openLoginModal();return;}
   const form=document.getElementById(formId);
   const inp=form?.querySelector('input');
@@ -2638,15 +2672,18 @@ async function submitReply(parentId,formId){
   await sb.from('comments').insert({post_id:curPost.id,user_id:myUser.id,content:txt,parent_id:parentId});
   inp.disabled=false;
   await fetchCmts();
+  }catch(e){console.error('submitReply:',e);showToast('返信に失敗しました');}
 }
 
 async function addCmt(){
+  try{
   if(!myUser){showToast('コメントするにはログインが必要です');openLoginModal();return;}
   const inp=document.getElementById('cmt-in');const txt=inp.value.trim();if(!txt||!curPost)return;
   inp.value='';inp.disabled=true;
   await sb.from('comments').insert({post_id:curPost.id,user_id:myUser.id,content:txt});
   inp.disabled=false;inp.focus();
   await fetchCmts();
+  }catch(e){console.error('addCmt:',e);showToast('コメントの送信に失敗しました');}
 }
 
 function renderSnsLinks(containerId, profile){
@@ -2680,6 +2717,7 @@ async function shareGeneral(){
 }
 
 async function doLike(){
+  try{
   if(!myUser){showToast('いいねするにはログインが必要です');openLoginModal();return;}
   const btn=document.getElementById('lbtn');
   const cnt=document.getElementById('lcnt');
@@ -2694,9 +2732,11 @@ async function doLike(){
     btn.classList.add('liked');
     cnt.textContent=parseInt(cnt.textContent)+1;
   }
+  }catch(e){console.error('doLike:',e);showToast('エラーが発生しました');}
 }
 
 async function toggleSave(){
+  try{
   if(!myUser){showToast('保存するにはログインが必要です');openLoginModal();return;}
   const btn=document.getElementById('save-btn');
   if(savedPostIds.has(curPost.id)){
@@ -2708,14 +2748,17 @@ async function toggleSave(){
     savedPostIds.add(curPost.id);
     btn.classList.add('liked');btn.textContent='★ 保存済み';showToast('保存しました');
   }
+  }catch(e){console.error('toggleSave:',e);showToast('エラーが発生しました');}
 }
 
 async function toggleFollowDetail(){
+  try{
   if(!curPost)return;
   await toggleFollowUser(curPost.user_id);
   const fol=await isFollowing(curPost.user_id);
   const b=document.getElementById('detail-fol-btn');
   b.textContent=fol?'フォロー中':'フォロー';b.classList.toggle('following',fol);
+  }catch(e){console.error('toggleFollowDetail:',e);showToast('エラーが発生しました');}
 }
 
 /* =====================================================
@@ -2776,6 +2819,7 @@ function addItemEdit(){document.getElementById('epost-ilist').appendChild(makeEd
 function rmItemEdit(b){if(document.querySelectorAll('#epost-ilist .ir').length>1)b.closest('.ir').remove();}
 
 async function saveEditPost(){
+  try{
   setLoading('epost-save-btn',true);
   // アイテムはsaveEditPost内のnewItemsで処理するためここでは不要
   // アイテム行の最初のラインとシーズンをpostsに反映
@@ -2817,12 +2861,15 @@ async function saveEditPost(){
   closeModal('modal-edit-post');
   await openPost(editingPostId);
   updateFeed();showToast('投稿を更新しました');
+  }catch(e){console.error('saveEditPost:',e);showToast('保存に失敗しました');}
 }
 
 async function deletePost(){
+  try{
   if(!curPost)return;if(!confirm('この投稿を削除しますか？\nこの操作は取り消せません。'))return;
   await sb.from('posts').delete().eq('id',curPost.id);
   curPost=null;goNav('feed',document.querySelector('.nl'));updateFeed();showToast('投稿を削除しました');
+  }catch(e){console.error('deletePost:',e);showToast('削除に失敗しました');}
 }
 
 /* =====================================================
@@ -2849,6 +2896,7 @@ function switchAuthTab(name,el){
 function showErr(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';}
 
 async function doLogin(){
+  try{
   setLoading('login-btn',true,'ログイン');
   document.getElementById('login-err').style.display='none';
   const email=document.getElementById('login-email').value.trim();
@@ -2874,9 +2922,11 @@ async function doLogin(){
     }
     setLoading('login-btn',false,'ログイン');
   }
+  }catch(e){console.error('doLogin:',e);showToast('ログインに失敗しました');}
 }
 
 async function doRegister(){
+  try{
   setLoading('reg-btn',true,'登録中...');
   const handle=document.getElementById('reg-handle').value.trim();
   const history=document.getElementById('reg-history').value;
@@ -2919,6 +2969,7 @@ async function doRegister(){
   // メール確認が必要な場合
   setLoading('reg-btn',false,'登録する');
   switchAuthTab('confirm',null);
+  }catch(e){console.error('doRegister:',e);showToast('登録に失敗しました');}
 }
 
 async function _createProfileAfterSignup(user){
@@ -2949,15 +3000,18 @@ async function _createProfileAfterSignup(user){
 }
 
 async function resendConfirm(){
+  try{
   if(!pendingRegEmail){showToast('メールアドレスが不明です。再度登録してください。');return;}
   setLoading('resend-btn',true,'再送中...');
   const{error}=await sb.auth.resend({type:'signup',email:pendingRegEmail});
   setLoading('resend-btn',false,'確認メールを再送する');
   if(error){showToast('再送に失敗しました: '+error.message,3500);}
   else{showToast('確認メールを再送しました',3000);}
+  }catch(e){console.error('resendConfirm:',e);}
 }
 
 async function doResetPassword(){
+  try{
   const email=document.getElementById('reset-email').value.trim();
   if(!email){showErr('reset-err','メールアドレスを入力してください。');return;}
   setLoading('reset-btn',true,'送信中...');
@@ -2970,14 +3024,17 @@ async function doResetPassword(){
     document.getElementById('reset-ok-msg').style.display='block';
     document.getElementById('reset-err').style.display='none';
   }
+  }catch(e){console.error('doResetPassword:',e);showToast('パスワードリセットに失敗しました');}
 }
 
 async function doLogout(){
+  try{
   if(!confirm('ログアウトしますか？'))return;
   await sb.auth.signOut();
   myUser=null;myProfile=null;likedPostIds=new Set();savedPostIds=new Set();
   updateAuthUI();renderMyPage();updateFeed();
   goNav('feed',document.querySelector('.nl'));showToast('ログアウトしました');
+  }catch(e){console.error('doLogout:',e);}
 }
 
 function updateAuthUI(){
@@ -2990,6 +3047,7 @@ function updateAuthUI(){
    PROFILE
 ===================================================== */
 async function renderMyPage(){
+  try{
   if(!myUser){document.getElementById('mypage-unregistered').style.display='block';document.getElementById('mypage-registered').style.display='none';return;}
   document.getElementById('mypage-unregistered').style.display='none';document.getElementById('mypage-registered').style.display='block';
   if(!myProfile)myProfile=await fetchProfile(myUser.id);
@@ -3014,6 +3072,7 @@ async function renderMyPage(){
   document.getElementById('my-followers').textContent=fwers||0;
   rg('my-grid',myPostsData||[]);
   calcCdgStats(myPostsData||[],'my-stats-grid','my-lines-list','my-cdg-stats');
+  }catch(e){console.error('renderMyPage:',e);showToast('読み込みに失敗しました');}
 }
 
 function openEditProfileModal(){
@@ -3118,6 +3177,7 @@ async function updateMyAvatar(e){
    FOLLOW
 ===================================================== */
 async function toggleFollowUser(targetId){
+  try{
   if(!myUser){showToast('フォローするにはログインが必要です');openLoginModal();return;}
   const fol=await isFollowing(targetId);
   if(fol){await sb.from('follows').delete().eq('follower_id',myUser.id).eq('following_id',targetId);}
@@ -3130,9 +3190,11 @@ async function toggleFollowUser(targetId){
     const{count}=await sb.from('follows').select('*',{count:'exact',head:true}).eq('following_id',targetId);
     document.getElementById('vp-followers').textContent=count||0;
   }
+  }catch(e){console.error('toggleFollowUser:',e);showToast('エラーが発生しました');}
 }
 
 async function openFollowModal(type){
+  try{
   if(!myUser||!myProfile)return;
   document.getElementById('fol-modal-ttl').textContent=type==='following'?'フォロー中':'フォロワー';
   let userIds=[];
@@ -3142,9 +3204,11 @@ async function openFollowModal(type){
   const{data:users}=await sb.from('profiles').select('*').in('id',userIds);
   document.getElementById('fol-list-body').innerHTML=(users||[]).map(u=>followItemHTML(u)).join('');
   openModal('modal-follow');
+  }catch(e){console.error('openFollowModal:',e);}
 }
 
 async function openFollowModalFor(type){
+  try{
   if(!curVisitedUserId)return;
   document.getElementById('fol-modal-ttl').textContent=type==='following'?'フォロー中':'フォロワー';
   let userIds=[];
@@ -3154,6 +3218,7 @@ async function openFollowModalFor(type){
   const{data:users}=await sb.from('profiles').select('*').in('id',userIds);
   document.getElementById('fol-list-body').innerHTML=(users||[]).map(u=>followItemHTML(u)).join('');
   openModal('modal-follow');
+  }catch(e){console.error('openFollowModalFor:',e);}
 }
 
 function followItemHTML(u){
@@ -3166,6 +3231,7 @@ function followItemHTML(u){
    VISITED PROFILE
 ===================================================== */
 async function openUserProfile(uid){
+  try{
   if(!uid)return;
   if(myUser&&uid===myUser.id){goNav('mypage',document.querySelectorAll('.nl')[1]);return;}
   prevPage=document.querySelector('.page.active').id;
@@ -3193,6 +3259,7 @@ async function openUserProfile(uid){
   rg('vprof-grid',vPosts||[]);
   calcCdgStats(vPosts||[],'vp-stats-grid','vp-lines-list','vp-cdg-stats');
   goNav('vprofile',null);
+  }catch(e){console.error('openUserProfile:',e);showToast('プロフィールの読み込みに失敗しました');}
 }
 
 /* =====================================================
@@ -3201,10 +3268,30 @@ async function openUserProfile(uid){
 function tryPost(){
   if(!myUser){openLoginModal();return;}
   prevPage='page-feed';
+  // フォームをリセットして投稿ページへ
+  resetPostForm();
   goNav('post',null);
   window.scrollTo({top:0,behavior:'instant'});
   document.documentElement.scrollTop=0;
   document.body.scrollTop=0;
+}
+
+function resetPostForm(){
+  // 写真・フォームを全リセット
+  const pz=document.getElementById('photo-zone');
+  if(pz) pz.innerHTML=`<div class="photo-add" onclick="document.getElementById('fi-up').click()"><span style="font-size:22px">＋</span><span>写真を追加</span></div><input type="file" id="fi-up" accept="image/*" multiple style="display:none" onchange="addPhotos(event)">`;
+  const ttl=document.getElementById('p-ttl');if(ttl){ttl.value='';document.getElementById('ttl-count').textContent='0/50';}
+  const cap=document.getElementById('p-cap');if(cap)cap.value='';
+  const tags=document.getElementById('p-tags');if(tags)tags.value='';
+  const ilist=document.getElementById('ilist');
+  if(ilist){ilist.innerHTML='';ilist.appendChild(makeItemRow());}
+  if(typeof resetColorPicker==='function')resetColorPicker();
+}
+
+function hasPostFormData(){
+  const ttl=document.getElementById('p-ttl')?.value.trim();
+  const cap=document.getElementById('p-cap')?.value.trim();
+  return (uploadedPhotos&&uploadedPhotos.length>0)||!!ttl||!!cap;
 }
 
 async function addPhotos(e){
@@ -3366,12 +3453,23 @@ function addItem(){
 function rmItem(b){if(document.querySelectorAll('#ilist .ir').length>1)b.closest('.ir').remove();}
 
 async function doSubmit(){
+  try{
   if(!myUser){openLoginModal();return;}
   const ttl=document.getElementById('p-ttl').value.trim();
-  if(!ttl){showToast('タイトルを入力してください');document.getElementById('p-ttl').focus();return;}
-  // アイテムが1件以上あるかチェック
+  if(!ttl){
+    showToast('タイトルを入力してください');
+    document.getElementById('p-ttl').focus();
+    document.getElementById('p-ttl').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  if(ttl.length>50){showToast('タイトルは50文字以内で入力してください');return;}
+  // アイテムが1件以上あるかチェック（アイテム名selectの最初のvalueで確認）
   const firstItem=document.querySelector('#ilist .ir select');
-  if(!firstItem||!firstItem.value){showToast('着用アイテムを1件以上入力してください');return;}
+  if(!firstItem||!firstItem.value){
+    showToast('着用アイテムのアイテム名を選択してください');
+    firstItem?.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
   setLoading('submit-post-btn',true,'アーカイブに投稿する');
   try{
     const cap=document.getElementById('p-cap').value.trim()||'';
@@ -3440,6 +3538,7 @@ async function doSubmit(){
     setLoading('submit-post-btn',false,'アーカイブに投稿する');
     showToast('Post failed. — 投稿に失敗しました');
   }
+  }catch(e){console.error('doSubmit:',e);showToast('投稿に失敗しました。もう一度お試しください');}
 }
 
 
@@ -3624,12 +3723,14 @@ function showNotifBell(show){
    SAVED PAGE
 ===================================================== */
 async function loadSavedPage(){
+  try{
   if(!myUser){document.getElementById('saved-grid').innerHTML=`<div class="error-state"><div class="error-state-code">Not signed in</div><div class="error-state-msg">Sign in to view saved posts.</div><div class="error-state-sub">ログインすると保存済みコーデを閲覧できます。</div><button class="error-state-retry" onclick="openLoginModal()">Sign in</button></div>`;document.getElementById('saved-cnt').textContent='';return;}
   const{data:saves}=await sb.from('saves').select('post_id').eq('user_id',myUser.id);
   const ids=(saves||[]).map(s=>s.post_id);
   if(!ids.length){rg('saved-grid',[]);document.getElementById('saved-cnt').textContent='0件';return;}
   const{data}=await sb.from('posts').select('*,post_images(url,position),likes(count)').in('id',ids).order('created_at',{ascending:false});
   rg('saved-grid',data||[]);document.getElementById('saved-cnt').textContent=(data||[]).length+'件';
+  }catch(e){console.error('loadSavedPage:',e);showToast('読み込みに失敗しました');}
 }
 
 /* =====================================================
@@ -3839,6 +3940,11 @@ function showPage(id){
   }
 }
 function goNav(name,el,pushHistory=true){
+  // 投稿フォームに入力がある場合の離脱確認
+  const isOnPost=document.getElementById('page-post')?.classList.contains('active');
+  if(isOnPost&&name!=='post'&&hasPostFormData&&hasPostFormData()){
+    if(!confirm('入力中の内容が消えますが、移動しますか？'))return;
+  }
   document.querySelectorAll('.nl').forEach(l=>l.classList.remove('active'));
   if(el&&el.classList&&el.classList.contains('nl'))el.classList.add('active');
   showPage('page-'+name);
@@ -4005,6 +4111,7 @@ function closeMenu(){
    Supabaseに保存 + メール通知（EmailJS経由）
 ===================================================== */
 async function sendContact(){
+  try{
   const type=document.getElementById('contact-type').value;
   const name=document.getElementById('contact-name').value.trim();
   const email=document.getElementById('contact-email').value.trim();
@@ -4043,6 +4150,7 @@ async function sendContact(){
     }
     setLoading('contact-submit-btn',false,'送信する');
   });
+  }catch(e){console.error('sendContact:',e);showToast('送信に失敗しました');}
 }
 
 buildColorChips();
