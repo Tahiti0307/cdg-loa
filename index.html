@@ -2434,9 +2434,11 @@ async function doSearch(){
    POST DETAIL
 ===================================================== */
 async function openPost(id){
-  const {data:p}=await sb.from('posts')
-    .select(`*, profiles(id,nickname,handle,avatar_url,cdg_history,height), post_images(url,position), post_items(name,line,season,store,size,ref_number), likes(count), comments(id,user_id,content,created_at,profiles(nickname,handle,avatar_url))`)
+  try{
+  const {data:p, error}=await sb.from('posts')
+    .select(`*, profiles(id,nickname,handle,avatar_url,cdg_history,height), post_images(url,position), post_items(name,line,season,store,size,ref_number), likes(count)`)
     .eq('id',id).single();
+  if(error){console.error('openPost query error:',error);showToast('投稿の読み込みに失敗しました');return;}
   if(!p)return;
   curPost=p;
   prevPage=document.querySelector('.page.active').id;
@@ -2524,6 +2526,7 @@ async function openPost(id){
   loadCrossRef(p.post_items||[]);
   // AIマッチ結果をリセット
   document.getElementById('ai-match-result').innerHTML='';
+  }catch(e){console.error('openPost error:',e);showToast('投稿の読み込みに失敗しました');}
 }
 
 function sliderGoto(idx){
