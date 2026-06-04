@@ -18,7 +18,7 @@
 <meta property="og:url" content="https://cdg-loa.vercel.app/">
 <meta property="og:title" content="CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES">
 <meta property="og:description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
-<meta property="og:image" content="https://cdg-loa.vercel.app/og-image.svg">
+<meta property="og:image" content="https://cdg-loa.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ja_JP">
@@ -30,7 +30,9 @@
 <meta name="twitter:creator" content="@tttaichi___">
 <meta name="twitter:title" content="CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES">
 <meta name="twitter:description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
-<meta name="twitter:image" content="https://cdg-loa.vercel.app/og-image.svg">
+<meta name="twitter:image" content="https://cdg-loa.vercel.app/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='white'/%3E%3Ctext x='40' y='50' text-anchor='middle' font-family='Helvetica Neue,Helvetica,Arial,sans-serif' font-size='26' font-weight='600' letter-spacing='4' fill='black'%3ELOA%3C/text%3E%3C/svg%3E">
 <link rel="alternate icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
@@ -772,6 +774,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 @media(max-width:600px){
   .user-result-meta{display:none}
 }
+*{-webkit-tap-highlight-color:transparent}
 </style>
 </head>
 <body>
@@ -1417,7 +1420,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   <div class="pw">
     <div class="pttl">新しいコーデを投稿</div>
     <div class="fg">
-      <label class="flbl">写真（複数枚可）</label>
+      <label class="flbl" style="display:flex;justify-content:space-between">写真<span id="photo-count" style="font-weight:400;color:var(--lgry)">0 / 8</span></label>
       <div class="photo-zone" id="photo-zone">
         <div class="photo-add" onclick="document.getElementById('fi-up').click()"><span style="font-size:22px">＋</span><span>写真を追加</span></div>
         <input type="file" id="fi-up" accept="image/*" multiple style="display:none" onchange="addPhotos(event)">
@@ -1975,7 +1978,7 @@ async function loadSuggestUsers(){
     .slice(0,10);
   if(!sorted.length){document.getElementById('suggest-section').style.display='none';return;}
   document.getElementById('suggest-list').innerHTML=sorted.map(u=>{
-    const av=u.avatar_url?`<img src="${u.avatar_url}">`:`<span>${(u.handle||'?').charAt(0).toUpperCase()}</span>`;
+    const av=u.avatar_url?`<img src="${u.avatar_url}" loading="lazy">`:`<span>${(u.handle||'?').charAt(0).toUpperCase()}</span>`;
     return`<div class="suggest-user" onclick="openUserProfile('${u.id}')">
       <div class="suggest-av">${av}</div>
       <span class="suggest-handle">@${u.handle||''}</span>
@@ -2344,7 +2347,7 @@ async function doUserSearch(){
 
   listEl.innerHTML=merged.map(u=>{
     const avH=u.avatar_url
-      ?`<img src="${u.avatar_url}">`
+      ?`<img src="${u.avatar_url}" loading="lazy">`
       :`<span>${(u.handle||'?').charAt(0).toUpperCase()}</span>`;
     const postCnt=countMap[u.id]||0;
     const followerCnt=followerMap[u.id]||0;
@@ -2538,7 +2541,7 @@ async function openPost(id){
 
   const prof=p.profiles||{};
   const avEl=document.getElementById('d-av');
-  avEl.innerHTML=prof.avatar_url?`<img src="${prof.avatar_url}">`:`<span>${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
+  avEl.innerHTML=prof.avatar_url?`<img src="${prof.avatar_url}" loading="lazy">`:`<span>${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
   document.getElementById('d-un').textContent=prof.handle||'';
   document.getElementById('d-handle').textContent='';
   document.getElementById('d-sea').textContent=p.season||'';
@@ -2656,7 +2659,7 @@ function renderCmts(cmts){
 
 function cmtHTML(c,replies,isReply=false){
   const prof=c.profiles||{};
-  const av=prof.avatar_url?`<img src="${prof.avatar_url}">`:`<span style="font-size:8px">${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
+  const av=prof.avatar_url?`<img src="${prof.avatar_url}" loading="lazy">`:`<span style="font-size:8px">${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
   const lkCnt=(c.comment_likes&&c.comment_likes[0])?c.comment_likes[0].count:0;
   const liked=likedCmtIds.has(c.id);
   const childReplies=(replies||[]).filter(r=>r.parent_id===c.id);
@@ -2667,7 +2670,7 @@ function cmtHTML(c,replies,isReply=false){
     <div class="cmt-txt">${c.content}</div>
     <div class="cmt-actions">
       <button class="cmt-lk-btn${liked?' liked':''}" onclick="toggleCmtLike('${c.id}',this)">♡ <span>${lkCnt||''}</span></button>
-      ${!isReply?`<button class="cmt-reply-btn" onclick="toggleReplyForm('${replyFormId}')">返信</button>`:''}
+      ${(!isReply&&depth<1)?`<button class="cmt-reply-btn" onclick="toggleReplyForm('${replyFormId}')">返信</button>`:''}
       ${myUser&&c.user_id===myUser.id?`<button class="cmt-reply-btn" style="color:var(--mgry);margin-left:auto" onclick="deleteCmt('${c.id}')">削除</button>`:''}
     </div>
     ${!isReply?`<div class="cmt-reply-form" id="${replyFormId}" style="display:none"><input class="cmt-inp" type="text" placeholder="返信を追加..."><button class="cmt-sub" onclick="submitReply('${c.id}','${replyFormId}')">送信</button></div>`:''}
@@ -3100,7 +3103,7 @@ async function renderMyPage(){
   if(!myProfile)myProfile=await fetchProfile(myUser.id);
   if(!myProfile)return;
   const avEl=document.getElementById('my-av');
-  if(myProfile.avatar_url){avEl.innerHTML=`<img src="${myProfile.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-ov">📷<span style="font-size:8px;margin-top:2px">変更</span></div>`;}
+  if(myProfile.avatar_url){avEl.innerHTML=`<img src="${myProfile.avatar_url}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-ov">📷<span style="font-size:8px;margin-top:2px">変更</span></div>`;}
   else{avEl.innerHTML=`<span id="my-av-initial">${(myProfile.handle||'?').charAt(0).toUpperCase()}</span><div class="av-ov">📷<span style="font-size:8px;margin-top:2px">変更</span></div>`;}
   document.getElementById('my-name').textContent=myProfile.handle||'';
   document.getElementById('my-handle').textContent='@'+(myProfile.handle||'');
@@ -3126,7 +3129,7 @@ function openEditProfileModal(){
   if(!myProfile)return;
   pendingEditAvatar=null;
   const p=document.getElementById('ep-av-preview');
-  p.innerHTML=myProfile.avatar_url?`<img src="${myProfile.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-overlay">📷</div>`:`<span id="ep-av-initial">${(myProfile.handle||'?').charAt(0).toUpperCase()}</span><div class="av-overlay">📷</div>`;
+  p.innerHTML=myProfile.avatar_url?`<img src="${myProfile.avatar_url}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-overlay">📷</div>`:`<span id="ep-av-initial">${(myProfile.handle||'?').charAt(0).toUpperCase()}</span><div class="av-overlay">📷</div>`;
   document.getElementById('ep-handle').value=myProfile.handle||'';
   document.getElementById('ep-history').value=myProfile.cdg_history||'';
   document.getElementById('ep-height').value=myProfile.height||'';
@@ -3277,7 +3280,7 @@ async function openFollowModalFor(type){
 
 function followItemHTML(u){
   const fol=myUser&&(myProfile?.following||[]).includes(u.id);
-  const avH=u.avatar_url?`<img src="${u.avatar_url}">`:`${(u.handle||'?').charAt(0).toUpperCase()}`;
+  const avH=u.avatar_url?`<img src="${u.avatar_url}" loading="lazy">`:`${(u.handle||'?').charAt(0).toUpperCase()}`;
   return`<div class="follow-item" onclick="openUserProfile('${u.id}');closeModal('modal-follow')"><div class="fi-left"><div class="fi-av">${avH}</div><div><div class="fi-name">${u.handle||''}</div></div></div><div style="display:flex;align-items:center;gap:7px"><span style="font-size:9px;color:var(--mgry)">${u.cdg_history||''}</span><button class="fol-btn ${fol?'following':''}" onclick="event.stopPropagation();toggleFollowUser('${u.id}').then(()=>{this.textContent=this.classList.contains('following')?'フォロー':'フォロー中';this.classList.toggle('following')})">${fol?'フォロー中':'フォロー'}</button></div></div>`;
 }
 
@@ -3292,7 +3295,7 @@ async function openUserProfile(uid){
   curVisitedUserId=uid;
   const u=await fetchProfile(uid);if(!u)return;
   const vpAv=document.getElementById('vp-av');
-  vpAv.innerHTML=u.avatar_url?`<img src="${u.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`<span style="font-size:22px">${(u.handle||'?').charAt(0).toUpperCase()}</span>`;
+  vpAv.innerHTML=u.avatar_url?`<img src="${u.avatar_url}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`<span style="font-size:22px">${(u.handle||'?').charAt(0).toUpperCase()}</span>`;
   document.getElementById('vp-name').textContent=u.handle||'';
   document.getElementById('vp-handle').textContent='';
   document.getElementById('vp-history').textContent=u.cdg_history||'';
@@ -3348,6 +3351,7 @@ function hasPostFormData(){
   return (uploadedPhotos&&uploadedPhotos.length>0)||!!ttl||!!cap;
 }
 
+const MAX_PHOTOS=8;
 async function addPhotos(e){
   const files=[...e.target.files];
   for(const f of files){
@@ -3639,7 +3643,7 @@ async function loadRanking(){
         ?`<img class="rank-thumb" src="${imgs[0].url}" alt="">`
         :`<div class="rank-thumb" style="background:${['#d8d4cc','#c4c0b8','#dcdad4','#b8b4ac','#d0cec8'][i%5]};display:flex;align-items:center;justify-content:center;font-size:20px">👗</div>`;
       const prof=p.profiles||{};
-      const avH=prof.avatar_url?`<img src="${prof.avatar_url}">`:`<span>${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
+      const avH=prof.avatar_url?`<img src="${prof.avatar_url}" loading="lazy">`:`<span>${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
       const lk=(p.likes&&p.likes[0])?p.likes[0].count:0;
       const numCls=i===0?'top1':i===1?'top2':i===2?'top3':'';
       return`<div class="rank-item" onclick="openPost('${p.id}')">
@@ -3809,14 +3813,19 @@ async function loadCrossRef(postItems){
   if(!refs.length){sec.style.display='none';return;}
   try{
     const results=[];
-    for(const ref of refs){
-      const{data}=await sb.from('post_items')
-        .select('ref_number,posts(id,user_id,title,line,season,profiles(handle,avatar_url),post_images(url,position))')
-        .ilike('ref_number','%'+ref+'%')
-        .limit(20);
-      const others=(data||[]).filter(d=>d.posts&&(!curPost||d.posts.id!==curPost.id));
+    // OR クエリで一括取得（N+1回避）
+    const orFilter=refs.map(r=>`ref_number.ilike.%${r}%`).join(',');
+    const{data:allData}=await sb.from('post_items')
+      .select('ref_number,posts(id,user_id,title,line,season,profiles(handle,avatar_url),post_images(url,position))')
+      .or(orFilter)
+      .limit(60);
+    refs.forEach(ref=>{
+      const others=(allData||[]).filter(d=>
+        d.posts&&(!curPost||d.posts.id!==curPost.id)&&
+        d.ref_number&&d.ref_number.toUpperCase().includes(ref.toUpperCase())
+      );
       if(others.length) results.push({ref,items:others});
-    }
+    });
     if(!results.length){sec.style.display='none';return;}
     const totalCount=results.reduce((s,r)=>s+r.items.length,0);
     document.getElementById('xref-cnt').textContent=totalCount+'件のスタイリング';
@@ -4031,6 +4040,10 @@ window.addEventListener('popstate', e=>{
   document.querySelectorAll('.modal-bg').forEach(m=>{m.style.display='none';});
   document.querySelector('.dact')?.classList.remove('mobile-visible');
   document.title='CDGLOA — COMME des GARÇONS LOVERS’ OUTFIT ARCHIVES';
+
+  // 投稿フォームから離脱した場合リセット
+  const wasOnPost=document.getElementById('page-post')?.classList.contains('active');
+  if(wasOnPost) resetPostForm();
 
   if(!state){
     // 初期状態（feedページ）
