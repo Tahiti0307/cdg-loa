@@ -2786,13 +2786,15 @@ async function openPost(id){
   document.getElementById('save-btn').textContent=isSaved?'★ 保存済み':'□ 保存';
 
   document.getElementById('d-items').innerHTML=(p.post_items||[]).map(i=>`
-    <div class="irow" style="display:flex;flex-wrap:wrap;gap:4px;padding:8px 0;border-bottom:1px solid var(--ln);align-items:center">
-      <span class="iname" style="font-size:11px;flex:1;min-width:80px">${i.name||''}</span>
-      ${i.line?`<span class="ibadge" style="font-size:8px">${i.line}</span>`:''}
-      ${i.season?`<span class="ibadge">${i.season}</span>`:''}
-      ${i.store?`<span class="ibadge" style="font-size:8px;color:var(--mgry)">${i.store}</span>`:''}
-      ${i.size?`<span class="isz">${i.size}</span>`:''}
-      ${i.ref_number?`<span class="ibadge" style="font-family:var(--sans)">${i.ref_number}</span>`:''}
+    <div class="irow" style="padding:9px 0;border-bottom:1px solid var(--ln)">
+      <div style="font-size:11px;font-family:var(--jp);margin-bottom:4px">${i.name||''}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center">
+        ${i.ref_number?`<span class="ibadge" style="font-family:var(--sans);font-weight:500;color:var(--blk);background:var(--gry)">${i.ref_number}</span>`:''}
+        ${i.line?`<span class="ibadge" style="font-size:8px">${i.line}</span>`:''}
+        ${i.season?`<span class="ibadge">${i.season}</span>`:''}
+        ${i.store?`<span class="ibadge" style="font-size:8px;color:var(--mgry)">${i.store}</span>`:''}
+        ${i.size?`<span class="isz">${i.size}</span>`:''}
+      </div>
     </div>`).join('');
   document.getElementById('d-store').innerHTML=p.store?`<span>📍</span><span>${p.store}</span>`:'';
   // 投稿日・更新日
