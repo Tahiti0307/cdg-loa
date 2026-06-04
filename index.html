@@ -9,7 +9,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CDGLOA">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES</title>
 <meta name="description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
 
@@ -18,7 +17,7 @@
 <meta property="og:url" content="https://cdg-loa.vercel.app/">
 <meta property="og:title" content="CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES">
 <meta property="og:description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
-<meta property="og:image" content="https://cdg-loa.vercel.app/og-image.png">
+<meta property="og:image" content="https://cdg-loa.vercel.app/og-image.svg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ja_JP">
@@ -30,9 +29,7 @@
 <meta name="twitter:creator" content="@tttaichi___">
 <meta name="twitter:title" content="CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES">
 <meta name="twitter:description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
-<meta name="twitter:image" content="https://cdg-loa.vercel.app/og-image.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="twitter:image" content="https://cdg-loa.vercel.app/og-image.svg">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='white'/%3E%3Ctext x='40' y='50' text-anchor='middle' font-family='Helvetica Neue,Helvetica,Arial,sans-serif' font-size='26' font-weight='600' letter-spacing='4' fill='black'%3ELOA%3C/text%3E%3C/svg%3E">
 <link rel="alternate icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
@@ -115,20 +112,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .post-tag{font-family:var(--sans);font-size:8px;letter-spacing:.1em;padding:4px 9px;border:1px solid var(--ln);background:var(--gry);cursor:pointer;transition:all .15s;color:var(--mgry)}
 .post-tag:hover{background:var(--blk);color:var(--wht);border-color:var(--blk)}
 .tag-active{background:var(--blk);color:var(--wht);border-color:var(--blk)}
-
-
-/* NOTIFICATION SETTINGS TOGGLE */
-.notif-setting-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--ln)}
-.notif-setting-row:last-child{border-bottom:none}
-.notif-setting-label{font-size:11px;font-family:var(--jp)}
-.notif-setting-sub{font-size:9px;color:var(--mgry);margin-top:1px}
-.toggle-wrap{position:relative;width:36px;height:20px;flex-shrink:0}
-.toggle-wrap input{opacity:0;width:0;height:0;position:absolute}
-.toggle-slider{position:absolute;inset:0;background:#ccc;border-radius:20px;cursor:pointer;transition:background .2s}
-.toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:2px;top:2px;background:#fff;border-radius:50%;transition:transform .2s}
-.toggle-wrap input:checked + .toggle-slider{background:var(--blk)}
-.toggle-wrap input:checked + .toggle-slider:before{transform:translateX(16px)}
-.notif-sec-ttl{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--mgry);margin:14px 0 6px;padding-bottom:6px;border-bottom:1px solid var(--ln)}
 
 /* MODAL */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 20px}
@@ -532,11 +515,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .photo-rm{position:absolute;top:2px;right:2px;background:var(--blk);color:var(--wht);border:none;width:17px;height:17px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .ibldr{border:1px solid var(--ln);padding:11px}
 .ibldr-hd{display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr 0.8fr 0.8fr 0.7fr auto;gap:5px;margin-bottom:5px;border-bottom:1px solid var(--ln);padding-bottom:5px}
-.ir{background:var(--gry);border:1px solid var(--ln);padding:12px;margin-bottom:8px;position:relative}
+.ir{background:var(--gry);border:1px solid var(--ln);padding:12px;margin-bottom:8px}
 .ir-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 .ir-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:0}
 .ir-label{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--mgry);margin-bottom:3px}
 .ir-full{grid-column:1/-1}
+.ir-sel-wrap{position:relative;display:block}
+.ir-sel-wrap::after{content:"▾";position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:11px;color:var(--mgry)}
+.ir-sel-wrap select{padding-right:28px}
 .add-r{font-family:var(--sans);font-size:8px;letter-spacing:.13em;padding:5px 0;color:var(--mgry);cursor:pointer;border:none;background:none;border-top:1px solid var(--ln);width:100%;text-align:left;margin-top:3px;text-transform:uppercase}
 .add-r:hover{color:var(--blk)}
 .rm{font-size:13px;color:var(--lgry);cursor:pointer;border:none;background:none;padding:7px 3px;align-self:end;line-height:1}
@@ -774,7 +760,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 @media(max-width:600px){
   .user-result-meta{display:none}
 }
-*{-webkit-tap-highlight-color:transparent}
 </style>
 </head>
 <body>
@@ -1036,39 +1021,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       <div class="fr2">
         <div class="fg"><label class="flbl">X (@ハンドル)</label><input class="fi" type="text" id="ep-x-url" placeholder="tttaichi___"></div>
         <div class="fg"><label class="flbl">Instagram (@ハンドル)</label><input class="fi" type="text" id="ep-ig-url" placeholder="username"></div>
-      </div>
-      <div class="notif-sec-ttl">通知設定</div>
-      <div>
-        <div class="notif-setting-row">
-          <div>
-            <div class="notif-setting-label">いいね通知</div>
-            <div class="notif-setting-sub">自分の投稿にいいねされたとき</div>
-          </div>
-          <label class="toggle-wrap">
-            <input type="checkbox" id="ep-notif-likes" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="notif-setting-row">
-          <div>
-            <div class="notif-setting-label">コメント通知</div>
-            <div class="notif-setting-sub">自分の投稿にコメントされたとき</div>
-          </div>
-          <label class="toggle-wrap">
-            <input type="checkbox" id="ep-notif-comments" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="notif-setting-row">
-          <div>
-            <div class="notif-setting-label">フォロー通知</div>
-            <div class="notif-setting-sub">新しいフォロワーができたとき</div>
-          </div>
-          <label class="toggle-wrap">
-            <input type="checkbox" id="ep-notif-follows" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
       </div>
       <button class="sub-btn" id="ep-save-btn" onclick="saveEditProfile()">保存する</button>
     </div>
@@ -1420,7 +1372,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   <div class="pw">
     <div class="pttl">新しいコーデを投稿</div>
     <div class="fg">
-      <label class="flbl" style="display:flex;justify-content:space-between">写真<span id="photo-count" style="font-weight:400;color:var(--lgry)">0 / 8</span></label>
+      <label class="flbl">写真（複数枚可）</label>
       <div class="photo-zone" id="photo-zone">
         <div class="photo-add" onclick="document.getElementById('fi-up').click()"><span style="font-size:22px">＋</span><span>写真を追加</span></div>
         <input type="file" id="fi-up" accept="image/*" multiple style="display:none" onchange="addPhotos(event)">
@@ -1431,22 +1383,12 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       <div id="color-picker" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
       <div class="hint">メインカラーを選んでください（フィード絞り込みに使用）</div>
     </div>
-    <div class="fg">
-      <label class="flbl" style="display:flex;justify-content:space-between;align-items:center">
-        タイトル <span id="ttl-count" style="font-size:8px;color:var(--lgry);font-weight:400">0/50</span>
-      </label>
-      <input class="fi" type="text" id="p-ttl" placeholder="例：AW24 非対称シルエット" maxlength="50" oninput="document.getElementById('ttl-count').textContent=this.value.length+'/50'">
-    </div>
+    <div class="fg"><label class="flbl">タイトル</label><input class="fi" type="text" id="p-ttl" placeholder="例：AW24 非対称シルエット"></div>
     <div class="fg"><label class="flbl">説明</label><textarea class="fi fta" id="p-cap" placeholder="インスピレーションや着用シーンなど..."></textarea></div>
-    <div class="fg">
-      <label class="flbl">タグ <span style="font-size:8px;color:var(--mgry);letter-spacing:.04em;text-transform:none">スペース区切りで複数入力</span></label>
-      <input class="fi" type="text" id="p-tags" placeholder="例: 青山 AW2019 サイズ感">
-    </div>
 
     <div class="fg">
       <label class="flbl">着用アイテム</label>
       <div class="ibldr">
-
         <div id="ilist"></div>
         <button class="add-r" onclick="addItem()">＋ アイテムを追加</button>
       </div>
@@ -1670,10 +1612,8 @@ let savedPostIds=new Set();
    SUPABASE HELPERS
 ===================================================== */
 async function fetchProfile(userId){
-  try{
   const {data}=await sb.from('profiles').select('*').eq('id',userId).single();
   return data;
-  }catch(e){console.error('fetchProfile:',e);}
 }
 
 async function fetchPosts(opts={}){
@@ -1755,7 +1695,6 @@ function compressImage(file, maxW=900, maxH=900, quality=0.75){
 }
 
 async function uploadImage(file, bucket='post-images'){
-  try{
   const isAvatar = bucket==='avatars';
   const {blob,mime} = await compressImage(
     file,
@@ -1771,46 +1710,35 @@ async function uploadImage(file, bucket='post-images'){
   if(error)throw error;
   const {data}=sb.storage.from(bucket).getPublicUrl(path);
   return data.publicUrl;
-  }catch(e){console.error('uploadImage:',e);throw e;}
 }
 
 async function fetchLikes(){
-  try{
   if(!myUser)return;
   const {data}=await sb.from('likes').select('post_id').eq('user_id',myUser.id);
   likedPostIds=new Set((data||[]).map(r=>r.post_id));
-  }catch(e){console.error('fetchLikes:',e);}
 }
 
 async function fetchFollowingIds(){
-  try{
   if(!myUser)return;
   const{data}=await sb.from('follows').select('following_id').eq('follower_id',myUser.id);
   if(myProfile) myProfile.following=(data||[]).map(r=>r.following_id);
-  }catch(e){console.error('fetchFollowingIds:',e);}
 }
 async function fetchSaves(){
-  try{
   if(!myUser)return;
   const {data}=await sb.from('saves').select('post_id').eq('user_id',myUser.id);
   savedPostIds=new Set((data||[]).map(r=>r.post_id));
-  }catch(e){console.error('fetchSaves:',e);}
 }
 async function fetchFollowCounts(userId){
-  try{
   const [{count:fc},{count:ing}]=await Promise.all([
     sb.from('follows').select('*',{count:'exact',head:true}).eq('following_id',userId),
     sb.from('follows').select('*',{count:'exact',head:true}).eq('follower_id',userId),
   ]);
   return{followers:fc||0,following:ing||0};
-  }catch(e){console.error('fetchFollowCounts:',e);}
 }
 async function isFollowing(targetId){
-  try{
   if(!myUser)return false;
   const {data}=await sb.from('follows').select('id').eq('follower_id',myUser.id).eq('following_id',targetId).maybeSingle();
   return!!data;
-  }catch(e){console.error('isFollowing:',e);return false;}
 }
 
 /* =====================================================
@@ -1930,7 +1858,6 @@ function getFiltered(){
 }
 
 async function loadPickup(){
-  try{
   // 過去7日間で最もいいねが多い投稿
   const since=new Date(Date.now()-7*24*60*60*1000).toISOString();
   const{data}=await sb.from('posts')
@@ -1958,11 +1885,9 @@ async function loadPickup(){
       </div>
     </div>`;
   document.getElementById('pickup-section').style.display='';
-  }catch(e){console.error('loadPickup:',e);}
 }
 
 async function loadSuggestUsers(){
-  try{
   // フォロワー数上位ユーザーを取得
   const{data:profiles}=await sb.from('profiles')
     .select('id,handle,avatar_url')
@@ -1978,14 +1903,13 @@ async function loadSuggestUsers(){
     .slice(0,10);
   if(!sorted.length){document.getElementById('suggest-section').style.display='none';return;}
   document.getElementById('suggest-list').innerHTML=sorted.map(u=>{
-    const av=u.avatar_url?`<img src="${u.avatar_url}" loading="lazy">`:`<span>${(u.handle||'?').charAt(0).toUpperCase()}</span>`;
+    const av=u.avatar_url?`<img src="${u.avatar_url}">`:`<span>${(u.handle||'?').charAt(0).toUpperCase()}</span>`;
     return`<div class="suggest-user" onclick="openUserProfile('${u.id}')">
       <div class="suggest-av">${av}</div>
       <span class="suggest-handle">@${u.handle||''}</span>
     </div>`;
   }).join('');
   document.getElementById('suggest-section').style.display='';
-  }catch(e){console.error('loadSuggestUsers:',e);}
 }
 
 function _setDiscoverySections(visible){
@@ -2007,7 +1931,6 @@ function showFeedError(retryFn){
 }
 
 async function updateFeed(){
-  try{
   feedOffset=0; feedHasMore=false; feedLoading=false; posts=[];
   skeletonGrid('feed-grid',6);
   document.getElementById('load-more-wrap').style.display='none';
@@ -2020,11 +1943,9 @@ async function updateFeed(){
   document.getElementById('feed-cnt').textContent=res.length+(feedHasMore?'+':'')+'件';
   document.getElementById('load-more-wrap').style.display=feedHasMore?'':'none';
   initInfiniteScroll();
-  }catch(e){console.error('updateFeed:',e);showFeedError();}
 }
 
 async function loadMoreFeed(){
-  try{
   if(feedLoading||!feedHasMore)return;
   feedLoading=true;
   const btn=document.getElementById('load-more-btn');
@@ -2039,7 +1960,6 @@ async function loadMoreFeed(){
   document.getElementById('feed-cnt').textContent=res.length+(feedHasMore?'+':'')+'件';
   document.getElementById('load-more-wrap').style.display=feedHasMore?'':'none';
   if(btn){btn.disabled=false;btn.textContent='もっと見る';}
-  }catch(e){console.error('loadMoreFeed:',e);}
 }
 
 // 無限スクロール: IntersectionObserver
@@ -2270,7 +2190,6 @@ function switchSrchTab(mode){
    ユーザー検索
 ===================================================== */
 async function doUserSearch(){
-  try{
   const q=document.getElementById('srch-user').value.trim();
   const heightMin=parseInt(document.getElementById('srch-height-min').value)||null;
   const heightMax=parseInt(document.getElementById('srch-height-max').value)||null;
@@ -2347,7 +2266,7 @@ async function doUserSearch(){
 
   listEl.innerHTML=merged.map(u=>{
     const avH=u.avatar_url
-      ?`<img src="${u.avatar_url}" loading="lazy">`
+      ?`<img src="${u.avatar_url}">`
       :`<span>${(u.handle||'?').charAt(0).toUpperCase()}</span>`;
     const postCnt=countMap[u.id]||0;
     const followerCnt=followerMap[u.id]||0;
@@ -2377,16 +2296,13 @@ async function doUserSearch(){
       });
     }
   }
-  }catch(e){console.error('doUserSearch:',e);showToast('検索に失敗しました');}
 }
 
 async function toggleFollowFromSearch(uid){
-  try{
   await toggleFollowUser(uid);
   const fol=await isFollowing(uid);
   const btn=document.getElementById('urfol-'+uid);
   if(btn){btn.textContent=fol?'フォロー中':'フォロー';btn.classList.toggle('following',fol);}
-  }catch(e){console.error('toggleFollowFromSearch:',e);showToast('エラーが発生しました');}
 }
 
 function clearUserSearch(){
@@ -2408,7 +2324,6 @@ function clearSearch(){
 }
 
 async function doSearch(){
-  try{
   const raw=document.getElementById('srch').value.trim();
   srchQ=normalizeRef(raw);
   const msgEl=document.getElementById('srch-msg');
@@ -2505,7 +2420,6 @@ async function doSearch(){
   msgEl.textContent=`「${raw}」の検索結果（品番・タイトル・説明）`;
   rg('feed-grid',combined);
   document.getElementById('feed-cnt').textContent=combined.length+'件';
-  }catch(e){console.error('doSearch:',e);showToast('検索に失敗しました');}
 }
 
 /* =====================================================
@@ -2513,13 +2427,16 @@ async function doSearch(){
 ===================================================== */
 async function openPost(id){
   try{
+  console.log('openPost called:', id);
   const {data:p, error}=await sb.from('posts')
     .select(`*, profiles(id,nickname,handle,avatar_url,cdg_history,height), post_images(url,position), post_items(name,line,season,store,size,ref_number)`)
     .eq('id',id).single();
+  console.log('query result:', {p, error});
   if(error){console.error('openPost query error:',error);showToast('投稿の読み込みに失敗しました');return;}
   if(!p){console.error('post not found');return;}
   // いいね数を別途取得
   const {count:likeCnt=0}=await sb.from('likes').select('*',{count:'exact',head:true}).eq('post_id',id);
+  console.log('likeCnt:', likeCnt);
   curPost=p;
   prevPage=document.querySelector('.page.active').id;
 
@@ -2541,7 +2458,7 @@ async function openPost(id){
 
   const prof=p.profiles||{};
   const avEl=document.getElementById('d-av');
-  avEl.innerHTML=prof.avatar_url?`<img src="${prof.avatar_url}" loading="lazy">`:`<span>${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
+  avEl.innerHTML=prof.avatar_url?`<img src="${prof.avatar_url}">`:`<span>${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
   document.getElementById('d-un').textContent=prof.handle||'';
   document.getElementById('d-handle').textContent='';
   document.getElementById('d-sea').textContent=p.season||'';
@@ -2599,7 +2516,7 @@ async function openPost(id){
   // ブラウザ履歴にdetailページを追加
   const postTitle=`${p.title||'コーデ'} — CDGLOA`;
   document.title=postTitle;
-  history.pushState({page:'detail',postId:p.id},postTitle,'/post/'+p.id);
+  history.pushState({page:'detail',postId:p.id},postTitle,'?post='+p.id);
   // モバイルでボトムアクションバーを表示
   if(window.innerWidth<=600){
     document.querySelector('.dact').classList.add('mobile-visible');
@@ -2636,7 +2553,6 @@ function switchImg(src,el){sliderGoto(parseInt(el.dataset.idx||0));}
 let likedCmtIds=new Set();
 
 async function fetchCmts(){
-  try{
   if(!curPost)return;
   const{data:allCmts}=await sb.from('comments')
     .select('*,profiles(handle,avatar_url),comment_likes(count)')
@@ -2646,7 +2562,6 @@ async function fetchCmts(){
     likedCmtIds=new Set((myLikes||[]).map(l=>l.comment_id));
   }else{likedCmtIds=new Set();}
   renderCmts(allCmts||[]);
-  }catch(e){console.error('fetchCmts:',e);}
 }
 
 function renderCmts(cmts){
@@ -2659,7 +2574,7 @@ function renderCmts(cmts){
 
 function cmtHTML(c,replies,isReply=false){
   const prof=c.profiles||{};
-  const av=prof.avatar_url?`<img src="${prof.avatar_url}" loading="lazy">`:`<span style="font-size:8px">${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
+  const av=prof.avatar_url?`<img src="${prof.avatar_url}">`:`<span style="font-size:8px">${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
   const lkCnt=(c.comment_likes&&c.comment_likes[0])?c.comment_likes[0].count:0;
   const liked=likedCmtIds.has(c.id);
   const childReplies=(replies||[]).filter(r=>r.parent_id===c.id);
@@ -2670,7 +2585,7 @@ function cmtHTML(c,replies,isReply=false){
     <div class="cmt-txt">${c.content}</div>
     <div class="cmt-actions">
       <button class="cmt-lk-btn${liked?' liked':''}" onclick="toggleCmtLike('${c.id}',this)">♡ <span>${lkCnt||''}</span></button>
-      ${(!isReply&&depth<1)?`<button class="cmt-reply-btn" onclick="toggleReplyForm('${replyFormId}')">返信</button>`:''}
+      ${!isReply?`<button class="cmt-reply-btn" onclick="toggleReplyForm('${replyFormId}')">返信</button>`:''}
       ${myUser&&c.user_id===myUser.id?`<button class="cmt-reply-btn" style="color:var(--mgry);margin-left:auto" onclick="deleteCmt('${c.id}')">削除</button>`:''}
     </div>
     ${!isReply?`<div class="cmt-reply-form" id="${replyFormId}" style="display:none"><input class="cmt-inp" type="text" placeholder="返信を追加..."><button class="cmt-sub" onclick="submitReply('${c.id}','${replyFormId}')">送信</button></div>`:''}
@@ -2685,7 +2600,6 @@ function toggleReplyForm(id){
 }
 
 async function toggleCmtLike(cmtId,btn){
-  try{
   if(!myUser){showToast('ログインが必要です');openLoginModal();return;}
   const liked=btn.classList.contains('liked');
   const countEl=btn.querySelector('span');
@@ -2699,21 +2613,17 @@ async function toggleCmtLike(cmtId,btn){
     likedCmtIds.add(cmtId);btn.classList.add('liked');
     countEl.textContent=cur+1;
   }
-  }catch(e){console.error('toggleCmtLike:',e);}
 }
 
 async function deleteCmt(cmtId){
-  try{
   if(!myUser)return;
   if(!confirm('このコメントを削除しますか？'))return;
   await sb.from('comments').delete().eq('id',cmtId).eq('user_id',myUser.id);
   await fetchCmts();
   showToast('コメントを削除しました');
-  }catch(e){console.error('deleteCmt:',e);showToast('削除に失敗しました');}
 }
 
 async function submitReply(parentId,formId){
-  try{
   if(!myUser){showToast('ログインが必要です');openLoginModal();return;}
   const form=document.getElementById(formId);
   const inp=form?.querySelector('input');
@@ -2722,18 +2632,15 @@ async function submitReply(parentId,formId){
   await sb.from('comments').insert({post_id:curPost.id,user_id:myUser.id,content:txt,parent_id:parentId});
   inp.disabled=false;
   await fetchCmts();
-  }catch(e){console.error('submitReply:',e);showToast('返信に失敗しました');}
 }
 
 async function addCmt(){
-  try{
   if(!myUser){showToast('コメントするにはログインが必要です');openLoginModal();return;}
   const inp=document.getElementById('cmt-in');const txt=inp.value.trim();if(!txt||!curPost)return;
   inp.value='';inp.disabled=true;
   await sb.from('comments').insert({post_id:curPost.id,user_id:myUser.id,content:txt});
   inp.disabled=false;inp.focus();
   await fetchCmts();
-  }catch(e){console.error('addCmt:',e);showToast('コメントの送信に失敗しました');}
 }
 
 function renderSnsLinks(containerId, profile){
@@ -2756,7 +2663,7 @@ function shareToX(){
 
 async function shareGeneral(){
   if(!curPost)return;
-  const postUrl=location.origin+'/post/'+curPost.id;
+  const postUrl=location.origin+location.pathname+'?post='+curPost.id;
   const shareData={title:curPost.title||'コーデ',text:(curPost.title||'コーデ')+' — CDGLOA',url:postUrl};
   if(navigator.share){
     try{await navigator.share(shareData);}catch(e){}
@@ -2767,7 +2674,6 @@ async function shareGeneral(){
 }
 
 async function doLike(){
-  try{
   if(!myUser){showToast('いいねするにはログインが必要です');openLoginModal();return;}
   const btn=document.getElementById('lbtn');
   const cnt=document.getElementById('lcnt');
@@ -2782,11 +2688,9 @@ async function doLike(){
     btn.classList.add('liked');
     cnt.textContent=parseInt(cnt.textContent)+1;
   }
-  }catch(e){console.error('doLike:',e);showToast('エラーが発生しました');}
 }
 
 async function toggleSave(){
-  try{
   if(!myUser){showToast('保存するにはログインが必要です');openLoginModal();return;}
   const btn=document.getElementById('save-btn');
   if(savedPostIds.has(curPost.id)){
@@ -2798,17 +2702,14 @@ async function toggleSave(){
     savedPostIds.add(curPost.id);
     btn.classList.add('liked');btn.textContent='★ 保存済み';showToast('保存しました');
   }
-  }catch(e){console.error('toggleSave:',e);showToast('エラーが発生しました');}
 }
 
 async function toggleFollowDetail(){
-  try{
   if(!curPost)return;
   await toggleFollowUser(curPost.user_id);
   const fol=await isFollowing(curPost.user_id);
   const b=document.getElementById('detail-fol-btn');
   b.textContent=fol?'フォロー中':'フォロー';b.classList.toggle('following',fol);
-  }catch(e){console.error('toggleFollowDetail:',e);showToast('エラーが発生しました');}
 }
 
 /* =====================================================
@@ -2869,7 +2770,6 @@ function addItemEdit(){document.getElementById('epost-ilist').appendChild(makeEd
 function rmItemEdit(b){if(document.querySelectorAll('#epost-ilist .ir').length>1)b.closest('.ir').remove();}
 
 async function saveEditPost(){
-  try{
   setLoading('epost-save-btn',true);
   // アイテムはsaveEditPost内のnewItemsで処理するためここでは不要
   // アイテム行の最初のラインとシーズンをpostsに反映
@@ -2911,15 +2811,12 @@ async function saveEditPost(){
   closeModal('modal-edit-post');
   await openPost(editingPostId);
   updateFeed();showToast('投稿を更新しました');
-  }catch(e){console.error('saveEditPost:',e);showToast('保存に失敗しました');}
 }
 
 async function deletePost(){
-  try{
   if(!curPost)return;if(!confirm('この投稿を削除しますか？\nこの操作は取り消せません。'))return;
   await sb.from('posts').delete().eq('id',curPost.id);
   curPost=null;goNav('feed',document.querySelector('.nl'));updateFeed();showToast('投稿を削除しました');
-  }catch(e){console.error('deletePost:',e);showToast('削除に失敗しました');}
 }
 
 /* =====================================================
@@ -2946,7 +2843,6 @@ function switchAuthTab(name,el){
 function showErr(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';}
 
 async function doLogin(){
-  try{
   setLoading('login-btn',true,'ログイン');
   document.getElementById('login-err').style.display='none';
   const email=document.getElementById('login-email').value.trim();
@@ -2972,11 +2868,9 @@ async function doLogin(){
     }
     setLoading('login-btn',false,'ログイン');
   }
-  }catch(e){console.error('doLogin:',e);showToast('ログインに失敗しました');}
 }
 
 async function doRegister(){
-  try{
   setLoading('reg-btn',true,'登録中...');
   const handle=document.getElementById('reg-handle').value.trim();
   const history=document.getElementById('reg-history').value;
@@ -3019,7 +2913,6 @@ async function doRegister(){
   // メール確認が必要な場合
   setLoading('reg-btn',false,'登録する');
   switchAuthTab('confirm',null);
-  }catch(e){console.error('doRegister:',e);showToast('登録に失敗しました');}
 }
 
 async function _createProfileAfterSignup(user){
@@ -3050,18 +2943,15 @@ async function _createProfileAfterSignup(user){
 }
 
 async function resendConfirm(){
-  try{
   if(!pendingRegEmail){showToast('メールアドレスが不明です。再度登録してください。');return;}
   setLoading('resend-btn',true,'再送中...');
   const{error}=await sb.auth.resend({type:'signup',email:pendingRegEmail});
   setLoading('resend-btn',false,'確認メールを再送する');
   if(error){showToast('再送に失敗しました: '+error.message,3500);}
   else{showToast('確認メールを再送しました',3000);}
-  }catch(e){console.error('resendConfirm:',e);}
 }
 
 async function doResetPassword(){
-  try{
   const email=document.getElementById('reset-email').value.trim();
   if(!email){showErr('reset-err','メールアドレスを入力してください。');return;}
   setLoading('reset-btn',true,'送信中...');
@@ -3074,17 +2964,14 @@ async function doResetPassword(){
     document.getElementById('reset-ok-msg').style.display='block';
     document.getElementById('reset-err').style.display='none';
   }
-  }catch(e){console.error('doResetPassword:',e);showToast('パスワードリセットに失敗しました');}
 }
 
 async function doLogout(){
-  try{
   if(!confirm('ログアウトしますか？'))return;
   await sb.auth.signOut();
   myUser=null;myProfile=null;likedPostIds=new Set();savedPostIds=new Set();
   updateAuthUI();renderMyPage();updateFeed();
   goNav('feed',document.querySelector('.nl'));showToast('ログアウトしました');
-  }catch(e){console.error('doLogout:',e);}
 }
 
 function updateAuthUI(){
@@ -3097,13 +2984,12 @@ function updateAuthUI(){
    PROFILE
 ===================================================== */
 async function renderMyPage(){
-  try{
   if(!myUser){document.getElementById('mypage-unregistered').style.display='block';document.getElementById('mypage-registered').style.display='none';return;}
   document.getElementById('mypage-unregistered').style.display='none';document.getElementById('mypage-registered').style.display='block';
   if(!myProfile)myProfile=await fetchProfile(myUser.id);
   if(!myProfile)return;
   const avEl=document.getElementById('my-av');
-  if(myProfile.avatar_url){avEl.innerHTML=`<img src="${myProfile.avatar_url}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-ov">📷<span style="font-size:8px;margin-top:2px">変更</span></div>`;}
+  if(myProfile.avatar_url){avEl.innerHTML=`<img src="${myProfile.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-ov">📷<span style="font-size:8px;margin-top:2px">変更</span></div>`;}
   else{avEl.innerHTML=`<span id="my-av-initial">${(myProfile.handle||'?').charAt(0).toUpperCase()}</span><div class="av-ov">📷<span style="font-size:8px;margin-top:2px">変更</span></div>`;}
   document.getElementById('my-name').textContent=myProfile.handle||'';
   document.getElementById('my-handle').textContent='@'+(myProfile.handle||'');
@@ -3122,14 +3008,13 @@ async function renderMyPage(){
   document.getElementById('my-followers').textContent=fwers||0;
   rg('my-grid',myPostsData||[]);
   calcCdgStats(myPostsData||[],'my-stats-grid','my-lines-list','my-cdg-stats');
-  }catch(e){console.error('renderMyPage:',e);showToast('読み込みに失敗しました');}
 }
 
 function openEditProfileModal(){
   if(!myProfile)return;
   pendingEditAvatar=null;
   const p=document.getElementById('ep-av-preview');
-  p.innerHTML=myProfile.avatar_url?`<img src="${myProfile.avatar_url}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-overlay">📷</div>`:`<span id="ep-av-initial">${(myProfile.handle||'?').charAt(0).toUpperCase()}</span><div class="av-overlay">📷</div>`;
+  p.innerHTML=myProfile.avatar_url?`<img src="${myProfile.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="av-overlay">📷</div>`:`<span id="ep-av-initial">${(myProfile.handle||'?').charAt(0).toUpperCase()}</span><div class="av-overlay">📷</div>`;
   document.getElementById('ep-handle').value=myProfile.handle||'';
   document.getElementById('ep-history').value=myProfile.cdg_history||'';
   document.getElementById('ep-height').value=myProfile.height||'';
@@ -3137,10 +3022,6 @@ function openEditProfileModal(){
   document.getElementById('ep-bio').value=myProfile.bio||'';
   document.getElementById('ep-x-url').value=myProfile.x_url||'';
   document.getElementById('ep-ig-url').value=myProfile.instagram_url||'';
-  // 通知設定を反映
-  document.getElementById('ep-notif-likes').checked    = myProfile.notif_likes    !== false;
-  document.getElementById('ep-notif-comments').checked = myProfile.notif_comments !== false;
-  document.getElementById('ep-notif-follows').checked  = myProfile.notif_follows  !== false;
   openModal('modal-edit-profile');
 }
 
@@ -3177,9 +3058,6 @@ async function saveEditProfile(){
     x_url:document.getElementById('ep-x-url').value.trim().replace(/^@/,'')||null,
     instagram_url:document.getElementById('ep-ig-url').value.trim().replace(/^@/,'')||null,
     avatar_url:avatarUrl,
-    notif_likes:    document.getElementById('ep-notif-likes').checked,
-    notif_comments: document.getElementById('ep-notif-comments').checked,
-    notif_follows:  document.getElementById('ep-notif-follows').checked,
   };
   await sb.from('profiles').update(upd).eq('id',myUser.id);
   myProfile={...myProfile,...upd};
@@ -3234,7 +3112,6 @@ async function updateMyAvatar(e){
    FOLLOW
 ===================================================== */
 async function toggleFollowUser(targetId){
-  try{
   if(!myUser){showToast('フォローするにはログインが必要です');openLoginModal();return;}
   const fol=await isFollowing(targetId);
   if(fol){await sb.from('follows').delete().eq('follower_id',myUser.id).eq('following_id',targetId);}
@@ -3247,11 +3124,9 @@ async function toggleFollowUser(targetId){
     const{count}=await sb.from('follows').select('*',{count:'exact',head:true}).eq('following_id',targetId);
     document.getElementById('vp-followers').textContent=count||0;
   }
-  }catch(e){console.error('toggleFollowUser:',e);showToast('エラーが発生しました');}
 }
 
 async function openFollowModal(type){
-  try{
   if(!myUser||!myProfile)return;
   document.getElementById('fol-modal-ttl').textContent=type==='following'?'フォロー中':'フォロワー';
   let userIds=[];
@@ -3261,11 +3136,9 @@ async function openFollowModal(type){
   const{data:users}=await sb.from('profiles').select('*').in('id',userIds);
   document.getElementById('fol-list-body').innerHTML=(users||[]).map(u=>followItemHTML(u)).join('');
   openModal('modal-follow');
-  }catch(e){console.error('openFollowModal:',e);}
 }
 
 async function openFollowModalFor(type){
-  try{
   if(!curVisitedUserId)return;
   document.getElementById('fol-modal-ttl').textContent=type==='following'?'フォロー中':'フォロワー';
   let userIds=[];
@@ -3275,12 +3148,11 @@ async function openFollowModalFor(type){
   const{data:users}=await sb.from('profiles').select('*').in('id',userIds);
   document.getElementById('fol-list-body').innerHTML=(users||[]).map(u=>followItemHTML(u)).join('');
   openModal('modal-follow');
-  }catch(e){console.error('openFollowModalFor:',e);}
 }
 
 function followItemHTML(u){
   const fol=myUser&&(myProfile?.following||[]).includes(u.id);
-  const avH=u.avatar_url?`<img src="${u.avatar_url}" loading="lazy">`:`${(u.handle||'?').charAt(0).toUpperCase()}`;
+  const avH=u.avatar_url?`<img src="${u.avatar_url}">`:`${(u.handle||'?').charAt(0).toUpperCase()}`;
   return`<div class="follow-item" onclick="openUserProfile('${u.id}');closeModal('modal-follow')"><div class="fi-left"><div class="fi-av">${avH}</div><div><div class="fi-name">${u.handle||''}</div></div></div><div style="display:flex;align-items:center;gap:7px"><span style="font-size:9px;color:var(--mgry)">${u.cdg_history||''}</span><button class="fol-btn ${fol?'following':''}" onclick="event.stopPropagation();toggleFollowUser('${u.id}').then(()=>{this.textContent=this.classList.contains('following')?'フォロー':'フォロー中';this.classList.toggle('following')})">${fol?'フォロー中':'フォロー'}</button></div></div>`;
 }
 
@@ -3288,14 +3160,13 @@ function followItemHTML(u){
    VISITED PROFILE
 ===================================================== */
 async function openUserProfile(uid){
-  try{
   if(!uid)return;
   if(myUser&&uid===myUser.id){goNav('mypage',document.querySelectorAll('.nl')[1]);return;}
   prevPage=document.querySelector('.page.active').id;
   curVisitedUserId=uid;
   const u=await fetchProfile(uid);if(!u)return;
   const vpAv=document.getElementById('vp-av');
-  vpAv.innerHTML=u.avatar_url?`<img src="${u.avatar_url}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`<span style="font-size:22px">${(u.handle||'?').charAt(0).toUpperCase()}</span>`;
+  vpAv.innerHTML=u.avatar_url?`<img src="${u.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`:`<span style="font-size:22px">${(u.handle||'?').charAt(0).toUpperCase()}</span>`;
   document.getElementById('vp-name').textContent=u.handle||'';
   document.getElementById('vp-handle').textContent='';
   document.getElementById('vp-history').textContent=u.cdg_history||'';
@@ -3316,7 +3187,6 @@ async function openUserProfile(uid){
   rg('vprof-grid',vPosts||[]);
   calcCdgStats(vPosts||[],'vp-stats-grid','vp-lines-list','vp-cdg-stats');
   goNav('vprofile',null);
-  }catch(e){console.error('openUserProfile:',e);showToast('プロフィールの読み込みに失敗しました');}
 }
 
 /* =====================================================
@@ -3325,33 +3195,12 @@ async function openUserProfile(uid){
 function tryPost(){
   if(!myUser){openLoginModal();return;}
   prevPage='page-feed';
-  // フォームをリセットして投稿ページへ
-  resetPostForm();
   goNav('post',null);
   window.scrollTo({top:0,behavior:'instant'});
   document.documentElement.scrollTop=0;
   document.body.scrollTop=0;
 }
 
-function resetPostForm(){
-  // 写真・フォームを全リセット
-  const pz=document.getElementById('photo-zone');
-  if(pz) pz.innerHTML=`<div class="photo-add" onclick="document.getElementById('fi-up').click()"><span style="font-size:22px">＋</span><span>写真を追加</span></div><input type="file" id="fi-up" accept="image/*" multiple style="display:none" onchange="addPhotos(event)">`;
-  const ttl=document.getElementById('p-ttl');if(ttl){ttl.value='';document.getElementById('ttl-count').textContent='0/50';}
-  const cap=document.getElementById('p-cap');if(cap)cap.value='';
-  const tags=document.getElementById('p-tags');if(tags)tags.value='';
-  const ilist=document.getElementById('ilist');
-  if(ilist){ilist.innerHTML='';ilist.appendChild(makeItemRow());}
-  if(typeof resetColorPicker==='function')resetColorPicker();
-}
-
-function hasPostFormData(){
-  const ttl=document.getElementById('p-ttl')?.value.trim();
-  const cap=document.getElementById('p-cap')?.value.trim();
-  return (uploadedPhotos&&uploadedPhotos.length>0)||!!ttl||!!cap;
-}
-
-const MAX_PHOTOS=8;
 async function addPhotos(e){
   const files=[...e.target.files];
   for(const f of files){
@@ -3423,7 +3272,7 @@ function makeItemRow(){
     <div class="ir-grid">
       <div class="ir-full">
         <div class="ir-label">アイテム名</div>
-        <select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
+        <div class="ir-sel-wrap"><select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
           <option value="">選択してください</option>
           <option>シャツ</option>
           <option>Tシャツ</option>
@@ -3438,18 +3287,18 @@ function makeItemRow(){
           <option>その他トップス</option>
           <option>その他ボトムス</option>
           <option>その他</option>
-        </select>
+        </select></div>
       </div>
       <div class="ir-full">
         <div class="ir-label">ライン</div>
-        <select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
+        <div class="ir-sel-wrap"><select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
           <option value="">選択してください</option>
-          \${makeItemLineOptions()}
-        </select>
+          ${makeItemLineOptions()}
+        </select></div>
       </div>
       <div>
         <div class="ir-label">シーズン</div>
-        <select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
+        <div class="ir-sel-wrap"><select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
           <option value="">選択</option>
           <option>26AW</option><option>26SS</option>
           <option>25AW</option><option>25SS</option>
@@ -3479,14 +3328,14 @@ function makeItemRow(){
           <option>01AW</option><option>01SS</option>
           <option>00AW</option><option>00SS</option>
           <option>アーカイブ（2000年以前）</option>
-        </select>
+        </select></div>
       </div>
       <div>
         <div class="ir-label">購入店舗</div>
-        <select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
+        <div class="ir-sel-wrap"><select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
           <option value="">選択</option>
-          \${makeItemStoreOptions()}
-        </select>
+          ${makeItemStoreOptions()}
+        </select></div>
       </div>
     </div>
     <div class="ir-grid-3">
@@ -3511,23 +3360,12 @@ function addItem(){
 function rmItem(b){if(document.querySelectorAll('#ilist .ir').length>1)b.closest('.ir').remove();}
 
 async function doSubmit(){
-  try{
   if(!myUser){openLoginModal();return;}
   const ttl=document.getElementById('p-ttl').value.trim();
-  if(!ttl){
-    showToast('タイトルを入力してください');
-    document.getElementById('p-ttl').focus();
-    document.getElementById('p-ttl').scrollIntoView({behavior:'smooth',block:'center'});
-    return;
-  }
-  if(ttl.length>50){showToast('タイトルは50文字以内で入力してください');return;}
-  // アイテムが1件以上あるかチェック（アイテム名selectの最初のvalueで確認）
+  if(!ttl){showToast('タイトルを入力してください');document.getElementById('p-ttl').focus();return;}
+  // アイテムが1件以上あるかチェック
   const firstItem=document.querySelector('#ilist .ir select');
-  if(!firstItem||!firstItem.value){
-    showToast('着用アイテムのアイテム名を選択してください');
-    firstItem?.scrollIntoView({behavior:'smooth',block:'center'});
-    return;
-  }
+  if(!firstItem||!firstItem.value){showToast('着用アイテムを1件以上入力してください');return;}
   setLoading('submit-post-btn',true,'アーカイブに投稿する');
   try{
     const cap=document.getElementById('p-cap').value.trim()||'';
@@ -3596,7 +3434,6 @@ async function doSubmit(){
     setLoading('submit-post-btn',false,'アーカイブに投稿する');
     showToast('Post failed. — 投稿に失敗しました');
   }
-  }catch(e){console.error('doSubmit:',e);showToast('投稿に失敗しました。もう一度お試しください');}
 }
 
 
@@ -3643,7 +3480,7 @@ async function loadRanking(){
         ?`<img class="rank-thumb" src="${imgs[0].url}" alt="">`
         :`<div class="rank-thumb" style="background:${['#d8d4cc','#c4c0b8','#dcdad4','#b8b4ac','#d0cec8'][i%5]};display:flex;align-items:center;justify-content:center;font-size:20px">👗</div>`;
       const prof=p.profiles||{};
-      const avH=prof.avatar_url?`<img src="${prof.avatar_url}" loading="lazy">`:`<span>${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
+      const avH=prof.avatar_url?`<img src="${prof.avatar_url}">`:`<span>${(prof.handle||'?').charAt(0).toUpperCase()}</span>`;
       const lk=(p.likes&&p.likes[0])?p.likes[0].count:0;
       const numCls=i===0?'top1':i===1?'top2':i===2?'top3':'';
       return`<div class="rank-item" onclick="openPost('${p.id}')">
@@ -3781,14 +3618,12 @@ function showNotifBell(show){
    SAVED PAGE
 ===================================================== */
 async function loadSavedPage(){
-  try{
   if(!myUser){document.getElementById('saved-grid').innerHTML=`<div class="error-state"><div class="error-state-code">Not signed in</div><div class="error-state-msg">Sign in to view saved posts.</div><div class="error-state-sub">ログインすると保存済みコーデを閲覧できます。</div><button class="error-state-retry" onclick="openLoginModal()">Sign in</button></div>`;document.getElementById('saved-cnt').textContent='';return;}
   const{data:saves}=await sb.from('saves').select('post_id').eq('user_id',myUser.id);
   const ids=(saves||[]).map(s=>s.post_id);
   if(!ids.length){rg('saved-grid',[]);document.getElementById('saved-cnt').textContent='0件';return;}
   const{data}=await sb.from('posts').select('*,post_images(url,position),likes(count)').in('id',ids).order('created_at',{ascending:false});
   rg('saved-grid',data||[]);document.getElementById('saved-cnt').textContent=(data||[]).length+'件';
-  }catch(e){console.error('loadSavedPage:',e);showToast('読み込みに失敗しました');}
 }
 
 /* =====================================================
@@ -3813,19 +3648,14 @@ async function loadCrossRef(postItems){
   if(!refs.length){sec.style.display='none';return;}
   try{
     const results=[];
-    // OR クエリで一括取得（N+1回避）
-    const orFilter=refs.map(r=>`ref_number.ilike.%${r}%`).join(',');
-    const{data:allData}=await sb.from('post_items')
-      .select('ref_number,posts(id,user_id,title,line,season,profiles(handle,avatar_url),post_images(url,position))')
-      .or(orFilter)
-      .limit(60);
-    refs.forEach(ref=>{
-      const others=(allData||[]).filter(d=>
-        d.posts&&(!curPost||d.posts.id!==curPost.id)&&
-        d.ref_number&&d.ref_number.toUpperCase().includes(ref.toUpperCase())
-      );
+    for(const ref of refs){
+      const{data}=await sb.from('post_items')
+        .select('ref_number,posts(id,user_id,title,line,season,profiles(handle,avatar_url),post_images(url,position))')
+        .ilike('ref_number','%'+ref+'%')
+        .limit(20);
+      const others=(data||[]).filter(d=>d.posts&&(!curPost||d.posts.id!==curPost.id));
       if(others.length) results.push({ref,items:others});
-    });
+    }
     if(!results.length){sec.style.display='none';return;}
     const totalCount=results.reduce((s,r)=>s+r.items.length,0);
     document.getElementById('xref-cnt').textContent=totalCount+'件のスタイリング';
@@ -3971,13 +3801,11 @@ function searchByTag(tag){
 }
 
 function parseUrlParams(){
-  // ?post=xxx 形式
   const params=new URLSearchParams(window.location.search);
   const postId=params.get('post');
-  if(postId){openPost(postId);return;}
-  // /post/:id 形式（OGPリダイレクト後）
-  const m=location.pathname.match(/^\/post\/([a-f0-9-]{36})$/i);
-  if(m){openPost(m[1]);}
+  if(postId){
+    openPost(postId);
+  }
 }
 
 function updateUrlParam(key, val){
@@ -4005,11 +3833,6 @@ function showPage(id){
   }
 }
 function goNav(name,el,pushHistory=true){
-  // 投稿フォームに入力がある場合の離脱確認
-  const isOnPost=document.getElementById('page-post')?.classList.contains('active');
-  if(isOnPost&&name!=='post'&&hasPostFormData&&hasPostFormData()){
-    if(!confirm('入力中の内容が消えますが、移動しますか？'))return;
-  }
   document.querySelectorAll('.nl').forEach(l=>l.classList.remove('active'));
   if(el&&el.classList&&el.classList.contains('nl'))el.classList.add('active');
   showPage('page-'+name);
@@ -4043,10 +3866,6 @@ window.addEventListener('popstate', e=>{
   document.querySelector('.dact')?.classList.remove('mobile-visible');
   document.title='CDGLOA — COMME des GARÇONS LOVERS’ OUTFIT ARCHIVES';
 
-  // 投稿フォームから離脱した場合リセット
-  const wasOnPost=document.getElementById('page-post')?.classList.contains('active');
-  if(wasOnPost) resetPostForm();
-
   if(!state){
     // 初期状態（feedページ）
     goNav('feed',document.querySelector('.nl'),false);
@@ -4070,10 +3889,8 @@ window.addEventListener('popstate', e=>{
   const params=new URLSearchParams(location.search);
   const postId=params.get('post');
   const page=params.get('page');
-  const pathMatch=location.pathname.match(/^\/post\/([a-f0-9-]{36})$/i);
-  if(postId||pathMatch){
-    const pid=postId||(pathMatch&&pathMatch[1]);
-    history.replaceState({page:'detail',postId:pid},document.title,location.href);
+  if(postId){
+    history.replaceState({page:'detail',postId},document.title,location.href);
   }else if(page){
     history.replaceState({page},document.title,location.href);
   }else{
@@ -4182,7 +3999,6 @@ function closeMenu(){
    Supabaseに保存 + メール通知（EmailJS経由）
 ===================================================== */
 async function sendContact(){
-  try{
   const type=document.getElementById('contact-type').value;
   const name=document.getElementById('contact-name').value.trim();
   const email=document.getElementById('contact-email').value.trim();
@@ -4221,7 +4037,6 @@ async function sendContact(){
     }
     setLoading('contact-submit-btn',false,'送信する');
   });
-  }catch(e){console.error('sendContact:',e);showToast('送信に失敗しました');}
 }
 
 buildColorChips();
