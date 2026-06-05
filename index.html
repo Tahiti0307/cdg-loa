@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -817,6 +818,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   .user-result-meta{display:none}
 }
 </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
@@ -1235,6 +1238,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     </div>
     <!-- 店舗検索 -->
     <div id="srch-pane-store" class="srch-pane">
+      <!-- 地図 -->
+      <div style="margin-bottom:12px;border:1px solid var(--ln)">
+        <div id="store-map" style="height:280px;width:100%"></div>
+      </div>
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:center">
         <span class="sort-lbl">エリア</span>
         <span class="sort-chip active" id="sarea-all" onclick="setStoreFilter('area','all',this)">ALL</span>
@@ -2031,7 +2038,7 @@ function skeletonGrid(id, n=6){
         <div class="sk-title sk"></div>
         <div class="sk-meta sk"></div>
       </div>
-    </div>`).join('');
+    </div>`}).join('');
 }
 
 function rg(id,arr){
@@ -2268,53 +2275,54 @@ function resetAllFilters(){
 /* =====================================================
    店舗データ
 ===================================================== */
+// 座標付き店舗データ（番号1〜40はインデックス+1）
 const STORE_DATA=[
   // 東京 — 直営
-  {name:'Comme des Garçons 青山店',area:'東京',lines:['CDG'],addr:'東京都港区南青山5-2-1',tel:'03-3406-3951'},
-  {name:'Comme des Garçons 丸の内店',area:'東京',lines:['CDG'],addr:'東京都千代田区丸の内2-1-1',tel:'03-3216-0016'},
-  {name:'Dover Street Market Ginza',area:'東京',lines:['DSM'],addr:'東京都中央区銀座6-9-5 ギンザコマツ西館',tel:'03-6228-5080'},
-  {name:'Trading Museum Comme des Garçons Gyre',area:'東京',lines:['TRADING'],addr:'東京都渋谷区神宮前5-10-1 GYRE 2F',tel:'03-3486-8590'},
-  {name:'Trading Museum Comme des Garçons Midtown',area:'東京',lines:['TRADING'],addr:'東京都港区赤坂9-7-4 東京Midtown 1F',tel:'03-6804-6607'},
-  {name:'CDG (GYRE)',area:'東京',lines:['CDG'],addr:'東京都渋谷区神宮前5-10-1 GYRE 2F',tel:'03-3406-2323'},
-  {name:'CDG 丸の内店',area:'東京',lines:['CDG'],addr:'東京都千代田区丸の内3-4-1',tel:'03-3218-1803'},
-  {name:'Gyre Play Box',area:'東京',lines:['PLAY'],addr:'東京都渋谷区神宮前5-10-1 GYRE 3F',tel:'03-5464-7305'},
+  {name:'Comme des Garçons 青山店',area:'東京',lines:['CDG'],addr:'東京都港区南青山5-2-1',tel:'03-3406-3951',lat:35.6656,lng:139.7143},
+  {name:'Comme des Garçons 丸の内店',area:'東京',lines:['CDG'],addr:'東京都千代田区丸の内2-1-1',tel:'03-3216-0016',lat:35.682,lng:139.7652},
+  {name:'Dover Street Market Ginza',area:'東京',lines:['DSM'],addr:'東京都中央区銀座6-9-5 ギンザコマツ西館',tel:'03-6228-5080',lat:35.6686,lng:139.7669},
+  {name:'Trading Museum Comme des Garçons Gyre',area:'東京',lines:['TRADING'],addr:'東京都渋谷区神宮前5-10-1 GYRE 2F',tel:'03-3486-8590',lat:35.6677,lng:139.7097},
+  {name:'Trading Museum Comme des Garçons Midtown',area:'東京',lines:['TRADING'],addr:'東京都港区赤坂9-7-4 東京Midtown 1F',tel:'03-6804-6607',lat:35.6671,lng:139.7295},
+  {name:'CDG (GYRE)',area:'東京',lines:['CDG'],addr:'東京都渋谷区神宮前5-10-1 GYRE 2F',tel:'03-3406-2323',lat:35.6677,lng:139.71},
+  {name:'CDG 丸の内店',area:'東京',lines:['CDG'],addr:'東京都千代田区丸の内3-4-1',tel:'03-3218-1803',lat:35.6814,lng:139.7641},
+  {name:'Gyre Play Box',area:'東京',lines:['PLAY'],addr:'東京都渋谷区神宮前5-10-1 GYRE 3F',tel:'03-5464-7305',lat:35.668,lng:139.71},
   // 東京 — 百貨店
-  {name:'新宿伊勢丹',area:'東京',lines:['CDG','BLACK','JUNYA','NOIR','TAO'],addr:'東京都新宿区新宿3-14-1 伊勢丹新宿店本館3F / メンズ館',tel:'03-3356-7805'},
-  {name:'渋谷西武',area:'東京',lines:['CDG','BLACK','JUNYA','NOIR'],addr:'東京都渋谷区宇田川町21-1 西武百貨店渋谷店B館2F',tel:'03-5459-2688'},
-  {name:'銀座三越',area:'東京',lines:['CDG','NOIR','HOMME'],addr:'東京都中央区銀座4-6-16 銀座三越4F・6F',tel:'03-6228-7761'},
-  {name:'日本橋三越',area:'東京',lines:['CDG','JUNYA','NOIR','TAO'],addr:'東京都中央区日本橋室町1-4-1 日本橋三越本店新館3・4F',tel:'03-5201-5727'},
-  {name:'渋谷Parco',area:'東京',lines:['CDG','GIRL','JUNYA','TAO'],addr:'東京都渋谷区宇田川町15-1 渋谷Parco 1〜4F',tel:'03-6416-1798'},
-  {name:'新宿高島屋',area:'東京',lines:['HOMME'],addr:'東京都渋谷区千駄ヶ谷5-24-2 新宿高島屋4F',tel:'03-5312-6125'},
-  {name:'阪急メンズ東京',area:'東京',lines:['CDG','JUNYA'],addr:'東京都千代田区有楽町2-5-1 阪急メンズ東京1F・6F',tel:'03-6264-5781'},
-  {name:'池袋西武',area:'東京',lines:['CDG'],addr:'東京都豊島区南池袋1-28-1 西武池袋店5F・7F',tel:'03-3986-7314'},
-  {name:'六本木ヒルズ Estnation Mens Shop',area:'東京',lines:['CDG'],addr:'東京都港区六本木6-10-2 ESTNATION 1F',tel:'03-3470-5011'},
+  {name:'新宿伊勢丹',area:'東京',lines:['CDG','BLACK','JUNYA','NOIR','TAO'],addr:'東京都新宿区新宿3-14-1 伊勢丹新宿店本館3F / メンズ館',tel:'03-3356-7805',lat:35.6918,lng:139.7036},
+  {name:'渋谷西武',area:'東京',lines:['CDG','BLACK','JUNYA','NOIR'],addr:'東京都渋谷区宇田川町21-1 西武百貨店渋谷店B館2F',tel:'03-5459-2688',lat:35.659,lng:139.6983},
+  {name:'銀座三越',area:'東京',lines:['CDG','NOIR','HOMME'],addr:'東京都中央区銀座4-6-16 銀座三越4F・6F',tel:'03-6228-7761',lat:35.6715,lng:139.7649},
+  {name:'日本橋三越',area:'東京',lines:['CDG','JUNYA','NOIR','TAO'],addr:'東京都中央区日本橋室町1-4-1 日本橋三越本店新館3・4F',tel:'03-5201-5727',lat:35.6854,lng:139.7736},
+  {name:'渋谷Parco',area:'東京',lines:['CDG','GIRL','JUNYA','TAO'],addr:'東京都渋谷区宇田川町15-1 渋谷Parco 1〜4F',tel:'03-6416-1798',lat:35.6592,lng:139.6988},
+  {name:'新宿高島屋',area:'東京',lines:['HOMME'],addr:'東京都渋谷区千駄ヶ谷5-24-2 新宿高島屋4F',tel:'03-5312-6125',lat:35.6868,lng:139.7031},
+  {name:'阪急メンズ東京',area:'東京',lines:['CDG','JUNYA'],addr:'東京都千代田区有楽町2-5-1 阪急メンズ東京1F・6F',tel:'03-6264-5781',lat:35.6749,lng:139.7596},
+  {name:'池袋西武',area:'東京',lines:['CDG'],addr:'東京都豊島区南池袋1-28-1 西武池袋店5F・7F',tel:'03-3986-7314',lat:35.73,lng:139.7115},
+  {name:'六本木ヒルズ Estnation Mens Shop',area:'東京',lines:['CDG'],addr:'東京都港区六本木6-10-2 ESTNATION 1F',tel:'03-3470-5011',lat:35.6604,lng:139.7291},
   // 北海道・東北
-  {name:'札幌大丸',area:'北海道・東北',lines:['CDG'],addr:'北海道札幌市中央区北5条4-7 大丸5F',tel:'011-223-0025'},
-  {name:'札幌Parco',area:'北海道・東北',lines:['CDG','BLACK','JUNYA','TAO'],addr:'北海道札幌市中央区南1条西3 PARCO 1F',tel:'011-251-2158'},
-  {name:'Comme des Garçons 仙台店',area:'北海道・東北',lines:['CDG'],addr:'宮城県仙台市青葉区中央2-10-10 1F',tel:'022-797-1663'},
-  {name:'仙台Parco',area:'北海道・東北',lines:['JUNYA'],addr:'宮城県仙台市青葉区中央1-2-3 仙台PARCO 2F',tel:'022-354-8145'},
+  {name:'札幌大丸',area:'北海道・東北',lines:['CDG'],addr:'北海道札幌市中央区北5条4-7 大丸5F',tel:'011-223-0025',lat:43.0672,lng:141.3505},
+  {name:'札幌Parco',area:'北海道・東北',lines:['CDG','BLACK','JUNYA','TAO'],addr:'北海道札幌市中央区南1条西3 PARCO 1F',tel:'011-251-2158',lat:43.0593,lng:141.3533},
+  {name:'Comme des Garçons 仙台店',area:'北海道・東北',lines:['CDG'],addr:'宮城県仙台市青葉区中央2-10-10 1F',tel:'022-797-1663',lat:38.2688,lng:140.8714},
+  {name:'仙台Parco',area:'北海道・東北',lines:['JUNYA'],addr:'宮城県仙台市青葉区中央1-2-3 仙台PARCO 2F',tel:'022-354-8145',lat:38.2607,lng:140.8774},
   // 中部・東海
-  {name:'静岡伊勢丹',area:'中部・東海',lines:['CDG'],addr:'静岡県静岡市葵区呉服町1-7 静岡伊勢丹',tel:'054-254-1598'},
-  {name:'名古屋Lachic',area:'中部・東海',lines:['CDG','BLACK'],addr:'愛知県名古屋市中区栄3-6-1 Lachic 1F',tel:'052-259-6302'},
-  {name:'名古屋三越',area:'中部・東海',lines:['CDG','JUNYA','NOIR'],addr:'愛知県名古屋市中区栄3-5-1 名古屋栄三越2・3F',tel:'052-252-1430'},
-  {name:'名古屋高島屋',area:'中部・東海',lines:['CDG','JUNYA','TAO'],addr:'愛知県名古屋市中村区名駅1-1-4 JR名古屋高島屋4〜7F',tel:'052-566-3246'},
-  {name:'Comme des Garçons 岐阜店',area:'中部・東海',lines:['CDG'],addr:'岐阜県岐阜市西玉宮町1-3-2',tel:'058-264-5233'},
+  {name:'静岡伊勢丹',area:'中部・東海',lines:['CDG'],addr:'静岡県静岡市葵区呉服町1-7 静岡伊勢丹',tel:'054-254-1598',lat:34.9742,lng:138.3812},
+  {name:'名古屋Lachic',area:'中部・東海',lines:['CDG','BLACK'],addr:'愛知県名古屋市中区栄3-6-1 Lachic 1F',tel:'052-259-6302',lat:35.1693,lng:136.9084},
+  {name:'名古屋三越',area:'中部・東海',lines:['CDG','JUNYA','NOIR'],addr:'愛知県名古屋市中区栄3-5-1 名古屋栄三越2・3F',tel:'052-252-1430',lat:35.1695,lng:136.9077},
+  {name:'名古屋高島屋',area:'中部・東海',lines:['CDG','JUNYA','TAO'],addr:'愛知県名古屋市中村区名駅1-1-4 JR名古屋高島屋4〜7F',tel:'052-566-3246',lat:35.1706,lng:136.882},
+  {name:'Comme des Garçons 岐阜店',area:'中部・東海',lines:['CDG'],addr:'岐阜県岐阜市西玉宮町1-3-2',tel:'058-264-5233',lat:35.4239,lng:136.7606},
   // 関西
-  {name:'Comme des Garçons 京都店',area:'関西',lines:['CDG'],addr:'京都府京都市中京区亀屋町378',tel:'075-223-0370'},
-  {name:'京都伊勢丹',area:'関西',lines:['CDG','JUNYA'],addr:'京都府京都市下京区東塩小路町 JR京都伊勢丹3・5・6F',tel:'075-352-6306'},
-  {name:'京都大丸',area:'関西',lines:['CDG'],addr:'京都府京都市下京区四条通高倉西入 大丸京都店1・2F',tel:'050-5785-5165'},
-  {name:'藤井大丸',area:'関西',lines:['CDG','BLACK'],addr:'京都府京都市下京区貞安前之町605 藤井大丸4・7F',tel:'075-222-7312'},
-  {name:'Comme des Garçons 大阪店',area:'関西',lines:['CDG'],addr:'大阪府大阪市中央区南船場4-4-21',tel:'06-4963-6150'},
-  {name:'梅田阪急',area:'関西',lines:['CDG','GIRL','BLACK','JUNYA','NOIR','TAO','PARFUMS'],addr:'大阪府大阪市北区角田町8-7 阪急梅田本店3F / メンズ館2・5F',tel:'06-6361-9931'},
-  {name:'なんばパークス',area:'関西',lines:['CDG','PLAY'],addr:'大阪府大阪市浪速区難波中2-10-70 なんばパークス2F',tel:'06-6641-5670'},
-  {name:'大阪高島屋',area:'関西',lines:['TAO'],addr:'大阪府大阪市中央区難波5-1-5 高島屋大阪店3F',tel:'06-6632-9289'},
-  {name:'Comme des Garçons 神戸店',area:'関西',lines:['CDG'],addr:'兵庫県神戸市中央区播磨町29番地',tel:'078-322-3795'},
-  {name:'神戸阪急',area:'関西',lines:['CDG'],addr:'兵庫県神戸市中央区小野柄通8-1-8 神戸阪急新館1F',tel:'078-200-7266'},
+  {name:'Comme des Garçons 京都店',area:'関西',lines:['CDG'],addr:'京都府京都市中京区亀屋町378',tel:'075-223-0370',lat:35.0099,lng:135.7566},
+  {name:'京都伊勢丹',area:'関西',lines:['CDG','JUNYA'],addr:'京都府京都市下京区東塩小路町 JR京都伊勢丹3・5・6F',tel:'075-352-6306',lat:34.9857,lng:135.7589},
+  {name:'京都大丸',area:'関西',lines:['CDG'],addr:'京都府京都市下京区四条通高倉西入 大丸京都店1・2F',tel:'050-5785-5165',lat:35.0041,lng:135.7605},
+  {name:'藤井大丸',area:'関西',lines:['CDG','BLACK'],addr:'京都府京都市下京区貞安前之町605 藤井大丸4・7F',tel:'075-222-7312',lat:35.003,lng:135.7601},
+  {name:'Comme des Garçons 大阪店',area:'関西',lines:['CDG'],addr:'大阪府大阪市中央区南船場4-4-21',tel:'06-4963-6150',lat:34.6776,lng:135.5018},
+  {name:'梅田阪急',area:'関西',lines:['CDG','GIRL','BLACK','JUNYA','NOIR','TAO','PARFUMS'],addr:'大阪府大阪市北区角田町8-7 阪急梅田本店3F / メンズ館2・5F',tel:'06-6361-9931',lat:34.7058,lng:135.5007},
+  {name:'なんばパークス',area:'関西',lines:['CDG','PLAY'],addr:'大阪府大阪市浪速区難波中2-10-70 なんばパークス2F',tel:'06-6641-5670',lat:34.6625,lng:135.5018},
+  {name:'大阪高島屋',area:'関西',lines:['TAO'],addr:'大阪府大阪市中央区難波5-1-5 高島屋大阪店3F',tel:'06-6632-9289',lat:34.6627,lng:135.5013},
+  {name:'Comme des Garçons 神戸店',area:'関西',lines:['CDG'],addr:'兵庫県神戸市中央区播磨町29番地',tel:'078-322-3795',lat:34.6933,lng:135.194},
+  {name:'神戸阪急',area:'関西',lines:['CDG'],addr:'兵庫県神戸市中央区小野柄通8-1-8 神戸阪急新館1F',tel:'078-200-7266',lat:34.694,lng:135.1956},
   // 九州・中国
-  {name:'Comme des Garçons 福岡店',area:'九州・中国',lines:['CDG'],addr:'福岡県福岡市博多区博多駅前1-28-8',tel:'092-433-5781'},
-  {name:'CDG 福岡店',area:'九州・中国',lines:['CDG'],addr:'福岡県福岡市博多区博多駅前1-28-8 2F',tel:'092-292-5590'},
-  {name:'福岡岩田屋',area:'九州・中国',lines:['CDG','BLACK','JUNYA','NOIR','TAO'],addr:'福岡県福岡市中央区天神2-5-35 岩田屋本店1・3・4・5F',tel:'092-735-6101'},
-  {name:'Comme des Garçons 広島店',area:'九州・中国',lines:['CDG'],addr:'広島県広島市中区袋町6-14',tel:'082-504-3606'},
+  {name:'Comme des Garçons 福岡店',area:'九州・中国',lines:['CDG'],addr:'福岡県福岡市博多区博多駅前1-28-8',tel:'092-433-5781',lat:33.5903,lng:130.4207},
+  {name:'CDG 福岡店',area:'九州・中国',lines:['CDG'],addr:'福岡県福岡市博多区博多駅前1-28-8 2F',tel:'092-292-5590',lat:33.5906,lng:130.421},
+  {name:'福岡岩田屋',area:'九州・中国',lines:['CDG','BLACK','JUNYA','NOIR','TAO'],addr:'福岡県福岡市中央区天神2-5-35 岩田屋本店1・3・4・5F',tel:'092-735-6101',lat:33.59,lng:130.398},
+  {name:'Comme des Garçons 広島店',area:'九州・中国',lines:['CDG'],addr:'広島県広島市中区袋町6-14',tel:'082-504-3606',lat:34.3952,lng:132.4553},
 ];
 
 let storeAreaFilt='all', storeLineFilt='all';
@@ -2329,6 +2337,7 @@ function setStoreFilter(type,val,el){
   }
   if(el)el.classList.add('active');
   renderStoreList();
+  updateMapMarkers();
 }
 
 function renderStoreList(){
@@ -2433,6 +2442,104 @@ function clearTagSearch(){
   if(clearBtn) clearBtn.style.display='none';
 }
 
+
+/* =====================================================
+   店舗地図（Leaflet.js）
+===================================================== */
+let storeMap = null;
+let storeMapMarkers = [];
+
+function initStoreMap(){
+  if(storeMap) return; // 二重初期化防止
+  const el = document.getElementById('store-map');
+  if(!el || typeof L === 'undefined') return;
+
+  storeMap = L.map('store-map', {
+    center: [36.5, 137.0],
+    zoom: 5,
+    zoomControl: true,
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 18,
+  }).addTo(storeMap);
+
+  STORE_DATA.forEach((s, i) => {
+    if(!s.lat || !s.lng) return;
+    const num = i + 1;
+
+    // 番号付きカスタムアイコン
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="
+        width:22px;height:22px;border-radius:50%;
+        background:#000;color:#fff;
+        font-size:9px;font-weight:600;font-family:sans-serif;
+        display:flex;align-items:center;justify-content:center;
+        border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);
+        cursor:pointer;line-height:1;
+      ">${num}</div>`,
+      iconSize: [22, 22],
+      iconAnchor: [11, 11],
+    });
+
+    const marker = L.marker([s.lat, s.lng], {icon})
+      .addTo(storeMap)
+      .on('click', () => highlightStoreCard(i));
+
+    // ポップアップ
+    marker.bindPopup(`
+      <div style="font-family:sans-serif;font-size:11px;min-width:160px">
+        <div style="font-weight:600;margin-bottom:3px">${num}. ${s.name}</div>
+        <div style="color:#666;font-size:10px">${s.addr||''}</div>
+        ${s.tel?`<div style="color:#666;font-size:10px;margin-top:2px">☎ ${s.tel}</div>`:''}
+      </div>
+    `, {maxWidth: 220});
+
+    storeMapMarkers.push(marker);
+  });
+}
+
+function highlightStoreCard(idx){
+  // 一覧にスクロール＋ハイライト
+  renderStoreList();
+  setTimeout(()=>{
+    const cards = document.querySelectorAll('#store-list .store-card-wrap');
+    // 表示中のカードのうちidxに対応するものを探す
+    const allCards = document.querySelectorAll('#store-list [data-idx]');
+    const target = [...allCards].find(c=>c.dataset.idx===String(idx));
+    if(target){
+      target.scrollIntoView({behavior:'smooth', block:'center'});
+      target.style.background='var(--gry)';
+      setTimeout(()=>{ target.style.background=''; }, 1500);
+    }
+  }, 100);
+}
+
+function updateMapMarkers(){
+  // フィルター適用後に地図マーカーの表示を更新
+  if(!storeMap) return;
+  const filtered = STORE_DATA.filter(s=>{
+    const areaOk = storeAreaFilt==='all' || s.area===storeAreaFilt;
+    return areaOk;
+  });
+  storeMapMarkers.forEach((m,i)=>{
+    const s = STORE_DATA[i];
+    const show = storeAreaFilt==='all' || s.area===storeAreaFilt;
+    if(show){ if(!storeMap.hasLayer(m)) m.addTo(storeMap); }
+    else     { if(storeMap.hasLayer(m)) storeMap.removeLayer(m); }
+  });
+  // 表示マーカーにfitBounds
+  const visible = storeMapMarkers.filter((m,i)=>{
+    return storeAreaFilt==='all' || STORE_DATA[i].area===storeAreaFilt;
+  });
+  if(visible.length){
+    const group = L.featureGroup(visible);
+    storeMap.fitBounds(group.getBounds().pad(0.2));
+  }
+}
+
 function switchSrchTab(mode){
   srchTabMode=mode;
   document.getElementById('tab-ref-btn').classList.toggle('active', mode==='ref');
@@ -2463,7 +2570,13 @@ function switchSrchTab(mode){
     document.getElementById('feed-grid').style.display='none';
     document.getElementById('user-search-results').style.display='none';
     if(mode==='user') doUserSearch();
-    if(mode==='store') renderStoreList();
+    if(mode==='store'){
+      renderStoreList();
+      setTimeout(()=>{
+        initStoreMap();
+        if(storeMap) storeMap.invalidateSize();
+      }, 50);
+    }
     if(mode==='tag'){
       const inp=document.getElementById('srch-tag');
       if(inp&&inp.value.trim()) doTagSearch();
