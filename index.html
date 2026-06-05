@@ -273,6 +273,30 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   border-top-color:#000 !important;
 }
 
+
+/* TAG CHIP INPUT */
+.tag-input-wrap{border:1px solid var(--blk);background:var(--wht);padding:6px 8px;display:flex;flex-wrap:wrap;gap:5px;min-height:44px;cursor:text;align-items:center}
+.tag-chip-item{display:inline-flex;align-items:center;gap:4px;background:var(--blk);color:var(--wht);font-size:10px;letter-spacing:.05em;padding:3px 8px 3px 9px;font-family:var(--sans);white-space:nowrap}
+.tag-chip-rm{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:11px;line-height:1;padding:0 0 0 2px;font-family:var(--sans)}
+.tag-chip-rm:hover{color:var(--wht)}
+.tag-text-input{border:none;outline:none;font-size:11px;font-family:var(--sans);background:transparent;min-width:80px;flex:1;padding:2px 0}
+.tag-text-input::placeholder{color:var(--lgry)}
+.tag-add-btn{font-family:var(--sans);font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--ln);background:transparent;cursor:pointer;color:var(--mgry);margin-top:5px;transition:all .15s;display:block}
+.tag-add-btn:hover{border-color:var(--blk);color:var(--blk)}
+
+
+.notif-setting-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--ln)}
+.notif-setting-row:last-child{border-bottom:none}
+.notif-setting-label{font-size:11px;font-family:var(--jp)}
+.notif-setting-sub{font-size:9px;color:var(--mgry);margin-top:1px}
+.toggle-wrap{position:relative;width:36px;height:20px;flex-shrink:0}
+.toggle-wrap input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:#ccc;border-radius:20px;cursor:pointer;transition:background .2s}
+.toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:2px;top:2px;background:#fff;border-radius:50%;transition:transform .2s}
+.toggle-wrap input:checked + .toggle-slider{background:var(--blk)}
+.toggle-wrap input:checked + .toggle-slider:before{transform:translateX(16px)}
+.notif-sec-ttl{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--mgry);margin:14px 0 6px;padding-bottom:6px;border-bottom:1px solid var(--ln)}
+
 /* SKELETON LOADING */
 @keyframes shimmer{
   0%{background-position:-600px 0}
@@ -1032,6 +1056,21 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <div class="fg"><label class="flbl">X (@ハンドル)</label><input class="fi" type="text" id="ep-x-url" placeholder="tttaichi___"></div>
         <div class="fg"><label class="flbl">Instagram (@ハンドル)</label><input class="fi" type="text" id="ep-ig-url" placeholder="username"></div>
       </div>
+      <div class="notif-sec-ttl">通知設定</div>
+      <div>
+        <div class="notif-setting-row">
+          <div><div class="notif-setting-label">いいね通知</div><div class="notif-setting-sub">自分の投稿にいいねされたとき</div></div>
+          <label class="toggle-wrap"><input type="checkbox" id="ep-notif-likes" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="notif-setting-row">
+          <div><div class="notif-setting-label">コメント通知</div><div class="notif-setting-sub">自分の投稿にコメントされたとき</div></div>
+          <label class="toggle-wrap"><input type="checkbox" id="ep-notif-comments" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="notif-setting-row">
+          <div><div class="notif-setting-label">フォロー通知</div><div class="notif-setting-sub">新しいフォロワーができたとき</div></div>
+          <label class="toggle-wrap"><input type="checkbox" id="ep-notif-follows" checked><span class="toggle-slider"></span></label>
+        </div>
+      </div>
       <button class="sub-btn" id="ep-save-btn" onclick="saveEditProfile()">保存する</button>
     </div>
   </div>
@@ -1045,8 +1084,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       <div class="fg"><label class="flbl">タイトル</label><input class="fi" type="text" id="epost-ttl"></div>
       <div class="fg"><label class="flbl">説明</label><textarea class="fi fta" id="epost-cap"></textarea></div>
       <div class="fg">
-        <label class="flbl">タグ <span style="font-size:9px;color:var(--mgry);letter-spacing:.05em;text-transform:none">スペース区切りで複数入力</span></label>
-        <input class="fi" type="text" id="epost-tags" placeholder="#タグを入力（スペースで区切る）">
+        <label class="flbl">タグ</label>
+        <div class="tag-input-wrap" id="etag-input-wrap" onclick="document.getElementById('etag-text-input').focus()">
+          <div id="etag-chips"></div>
+          <input type="text" class="tag-text-input" id="etag-text-input" placeholder="例: 青山" autocomplete="off"
+            onkeydown="onEtagKeydown(event)" oninput="onEtagInput(event)">
+        </div>
+        <button class="tag-add-btn" onclick="addEtagFromInput()">＋ タグを追加</button>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
         <div class="fg">
@@ -1103,6 +1147,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <!-- 検索タブ -->
     <div class="srch-tabs">
       <button class="srch-tab active" id="tab-ref-btn" onclick="switchSrchTab('ref')">品番検索</button>
+      <button class="srch-tab" id="tab-tag-btn" onclick="switchSrchTab('tag')">タグ検索</button>
       <button class="srch-tab" id="tab-user-btn" onclick="switchSrchTab('user')">ユーザー検索</button>
       <button class="srch-tab" id="tab-store-btn" onclick="switchSrchTab('store')">店舗検索</button>
     </div>
@@ -1116,6 +1161,21 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       <div class="search-note">※ 品番はハイフンなしで入力（自動で大文字・半角に変換）</div>
       <div class="srch-msg" id="srch-msg"></div>
     </div>
+    <!-- タグ検索 -->
+    <div id="srch-pane-tag" class="srch-pane">
+      <div class="search-inner">
+        <span style="padding:8px 6px 8px 12px;font-size:13px;color:var(--mgry);line-height:1;user-select:none">#</span>
+        <input type="text" id="srch-tag" placeholder="タグ名を入力（# 不要）" autocomplete="off"
+          onkeydown="if(event.key==='Enter')doTagSearch()"
+          style="flex:1;font-family:var(--sans);font-size:11px;padding:8px 8px 8px 0;border:none;outline:none;background:transparent">
+        <button class="search-btn" id="srch-tag-clear-btn" onclick="clearTagSearch()" style="display:none;background:var(--mgry);padding:8px 10px">✕</button>
+        <button class="search-btn" onclick="doTagSearch()">検索</button>
+      </div>
+      <div class="search-note">投稿についているタグで検索します</div>
+      <div class="srch-msg" id="srch-tag-msg"></div>
+      <div class="grid" id="srch-tag-grid" style="margin-top:8px"></div>
+    </div>
+
     <!-- ユーザー検索 -->
     <div id="srch-pane-user" class="srch-pane">
       <div class="search-inner">
@@ -2267,9 +2327,11 @@ function updateStoreMapArea(){
 function switchSrchTab(mode){
   srchTabMode=mode;
   document.getElementById('tab-ref-btn').classList.toggle('active', mode==='ref');
+  document.getElementById('tab-tag-btn').classList.toggle('active', mode==='tag');
   document.getElementById('tab-user-btn').classList.toggle('active', mode==='user');
   document.getElementById('tab-store-btn').classList.toggle('active', mode==='store');
   document.getElementById('srch-pane-ref').classList.toggle('active', mode==='ref');
+  document.getElementById('srch-pane-tag').classList.toggle('active', mode==='tag');
   document.getElementById('srch-pane-user').classList.toggle('active', mode==='user');
   document.getElementById('srch-pane-store').classList.toggle('active', mode==='store');
   const filterWrap=document.getElementById('filter-wrap-area');
@@ -2291,6 +2353,10 @@ function switchSrchTab(mode){
     if(suggestSec)suggestSec.style.display='none';
     document.getElementById('feed-grid').style.display='none';
     document.getElementById('user-search-results').style.display='none';
+    if(mode==='tag'){
+      const inp=document.getElementById('srch-tag');
+      if(inp&&inp.value.trim()) doTagSearch();
+    }
     if(mode==='user') doUserSearch();
     if(mode==='store'){
       renderStoreList();
@@ -2596,13 +2662,17 @@ async function openPost(id){
   document.getElementById('save-btn').textContent=isSaved?'★ 保存済み':'□ 保存';
 
   document.getElementById('d-items').innerHTML=(p.post_items||[]).map(i=>`
-    <div class="irow" style="display:flex;flex-wrap:wrap;gap:4px;padding:8px 0;border-bottom:1px solid var(--ln);align-items:center">
-      <span class="iname" style="font-size:11px;flex:1;min-width:80px">${i.name||''}</span>
-      ${i.line?`<span class="ibadge" style="font-size:8px">${i.line}</span>`:''}
-      ${i.season?`<span class="ibadge">${i.season}</span>`:''}
-      ${i.store?`<span class="ibadge" style="font-size:8px;color:var(--mgry)">${i.store}</span>`:''}
-      ${i.size?`<span class="isz">${i.size}</span>`:''}
-      ${i.ref_number?`<span class="ibadge" style="font-family:var(--sans)">${i.ref_number}</span>`:''}
+    <div class="irow" style="padding:9px 0;border-bottom:1px solid var(--ln)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap">
+        <span style="font-size:11px;font-family:var(--jp)">${i.name||''}</span>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;justify-content:flex-end">
+          ${i.season?`<span class="ibadge">${i.season}</span>`:''}
+          ${i.line?`<span class="ibadge" style="font-size:8px">${i.line}</span>`:''}
+          ${i.store?`<span class="ibadge" style="font-size:8px;color:var(--mgry)">${i.store}</span>`:''}
+          ${i.size?`<span class="isz">${i.size}</span>`:''}
+        </div>
+      </div>
+      ${i.ref_number?`<div style="margin-top:3px"><span class="ibadge" style="font-family:var(--sans);font-size:9px;letter-spacing:.08em;cursor:pointer;text-decoration:underline;text-underline-offset:2px" onclick="searchByRef('${i.ref_number}')">${i.ref_number}</span></div>`:''}
     </div>`).join('');
   document.getElementById('d-store').innerHTML=p.store?`<span>📍</span><span>${p.store}</span>`:'';
   // 投稿日・更新日
@@ -2835,7 +2905,7 @@ function openEditPost(){
   if(!curPost)return;editingPostId=curPost.id;
   document.getElementById('epost-ttl').value=curPost.title||'';
   document.getElementById('epost-cap').value=curPost.caption||'';
-  document.getElementById('epost-tags').value=(curPost.tags||[]).join(' ');
+  editPostTags=[...(curPost.tags||[])]; renderEtagChips();
   // ライン・シーズン select を動的生成
   const lineOpts=['COMME des GARÇONS','COMME des GARÇONS COMME des GARÇONS','COMME des GARÇONS GIRL','COMME des GARÇONS HOMME','COMME des GARÇONS HOMME PLUS','COMME des GARÇONS HOMME DEUX','COMME des GARÇONS SHIRT','BLACK COMME des GARÇONS','JUNYA WATANABE','JUNYA WATANABE MAN','tao COMME des GARÇONS','noir kei ninomiya','CDG','PLAY COMME des GARÇONS','THE BEATLES COMME des GARÇONS','Wallet COMME des GARÇONS','COMME des GARÇONS parfums','tricot COMME des GARÇONS','その他','tricot COMME des GARÇONS','その他'];
   const seaOpts=['26AW','26SS','25AW','25SS','24AW','24SS','23AW','23SS','22AW','22SS','21AW','21SS','20AW','20SS','19AW','19SS','18AW','18SS','17AW','17SS','16AW','16SS','15AW','15SS','14AW','14SS','13AW','13SS','12AW','12SS','11AW','11SS','10AW','10SS','09AW','09SS','08AW','08SS','07AW','07SS','06AW','06SS','05AW','05SS','04AW','04SS','03AW','03SS','02AW','02SS','01AW','01SS','00AW','00SS','アーカイブ（2000年以前）'];
@@ -2893,8 +2963,7 @@ async function saveEditPost(){
   const firstEditSels=firstEditRow?[...firstEditRow.querySelectorAll('select')]:[];
   const repLine=firstEditSels[1]?.value||'';
   const repSea=firstEditSels[2]?.value||'';
-  const rawEditTags=document.getElementById('epost-tags').value.trim();
-  const editTagsArr=rawEditTags?rawEditTags.split(/[\s,、]+/).map(t=>t.replace(/^#/,'')).filter(Boolean):[];
+  const pendingEtag=document.getElementById('etag-text-input')?.value.trim().replace(/^#+/,''); if(pendingEtag) commitEtag(pendingEtag); const editTagsArr=[...editPostTags];
   const editLine=document.getElementById('epost-line').value||repLine;
   const editSea=document.getElementById('epost-season').value||repSea;
   await sb.from('posts').update({
@@ -3138,6 +3207,9 @@ function openEditProfileModal(){
   document.getElementById('ep-bio').value=myProfile.bio||'';
   document.getElementById('ep-x-url').value=myProfile.x_url||'';
   document.getElementById('ep-ig-url').value=myProfile.instagram_url||'';
+  document.getElementById('ep-notif-likes').checked    = myProfile.notif_likes    !== false;
+  document.getElementById('ep-notif-comments').checked = myProfile.notif_comments !== false;
+  document.getElementById('ep-notif-follows').checked  = myProfile.notif_follows  !== false;
   openModal('modal-edit-profile');
 }
 
@@ -3174,6 +3246,9 @@ async function saveEditProfile(){
     x_url:document.getElementById('ep-x-url').value.trim().replace(/^@/,'')||null,
     instagram_url:document.getElementById('ep-ig-url').value.trim().replace(/^@/,'')||null,
     avatar_url:avatarUrl,
+    notif_likes:    document.getElementById('ep-notif-likes').checked,
+    notif_comments: document.getElementById('ep-notif-comments').checked,
+    notif_follows:  document.getElementById('ep-notif-follows').checked,
   };
   await sb.from('profiles').update(upd).eq('id',myUser.id);
   myProfile={...myProfile,...upd};
@@ -3506,8 +3581,9 @@ async function doSubmit(){
     const firstSels=firstRow?[...firstRow.querySelectorAll('select')]:[];
     const repLine=firstSels[1]?.value||'';
     const repSea=firstSels[2]?.value||'';
-    const rawTags=document.getElementById('p-tags').value.trim();
-    const tagsArr=rawTags?rawTags.split(/[\s,、]+/).map(t=>t.replace(/^#/,'').trim()).filter(Boolean):[];
+    const pendingTag=document.getElementById('tag-text-input')?.value.trim().replace(/^#+/,'');
+    if(pendingTag) commitTag(pendingTag);
+    const tagsArr=[...postTags];
     const{data:newPost,error}=await sb.from('posts').insert({
       user_id:myUser.id,title:ttl||'無題',caption:cap,tags:tagsArr,line:repLine,season:repSea,store:'',colors
     }).select().single();
@@ -3914,6 +3990,165 @@ function searchByTag(tag){
   document.getElementById('srch').value=raw;
   document.getElementById('srch-clear-btn').style.display='';
   doSearch();
+}
+
+
+/* =====================================================
+   タグ検索
+===================================================== */
+async function doTagSearch(tagOverride){
+  const inp=document.getElementById('srch-tag');
+  const rawVal=tagOverride!==undefined?tagOverride:(inp?inp.value.trim():'');
+  const tag=rawVal.replace(/^#+/,'').trim();
+  const msgEl=document.getElementById('srch-tag-msg');
+  const grid=document.getElementById('srch-tag-grid');
+  const clearBtn=document.getElementById('srch-tag-clear-btn');
+  if(!tag){if(msgEl)msgEl.textContent='';return;}
+  if(inp) inp.value=tag;
+  if(clearBtn) clearBtn.style.display='';
+  if(msgEl) msgEl.textContent='検索中...';
+  if(grid) grid.innerHTML='';
+  try{
+    const{data,error}=await sb.from('posts')
+      .select(`id,user_id,title,caption,tags,line,season,store,colors,created_at,
+        profiles(id,nickname,handle,avatar_url,cdg_history,height),
+        post_images(url,position),
+        post_items(id,name,line,season,store,size,ref_number),
+        likes(count),comments(count)`)
+      .contains('tags',[tag])
+      .order('created_at',{ascending:false})
+      .limit(100);
+    if(error) throw error;
+    const results=data||[];
+    if(msgEl) msgEl.textContent=results.length
+      ?`#${tag} — ${results.length}件`
+      :`#${tag} のタグがついた投稿はまだありません`;
+    if(grid){
+      if(results.length){
+        grid.innerHTML=results.map(card).join('');
+      }else{
+        grid.innerHTML=`<div style="grid-column:1/-1;padding:28px 20px;text-align:center">
+          <div style="font-size:9px;letter-spacing:.2em;color:var(--mgry);text-transform:uppercase;margin-bottom:8px">Nothing here yet.</div>
+          <div style="font-size:10px;color:var(--lgry);font-family:var(--jp)">#${tag} のタグがついた投稿はまだありません</div>
+        </div>`;
+      }
+    }
+  }catch(e){
+    console.error('doTagSearch:',e);
+    if(msgEl) msgEl.textContent='検索に失敗しました';
+  }
+}
+
+function clearTagSearch(){
+  const inp=document.getElementById('srch-tag');
+  const msgEl=document.getElementById('srch-tag-msg');
+  const grid=document.getElementById('srch-tag-grid');
+  const clearBtn=document.getElementById('srch-tag-clear-btn');
+  if(inp) inp.value='';
+  if(msgEl) msgEl.textContent='';
+  if(grid) grid.innerHTML='';
+  if(clearBtn) clearBtn.style.display='none';
+}
+
+function searchByRef(ref){
+  goNav('feed',document.querySelector('.nl'));
+  switchSrchTab('ref');
+  const inp=document.getElementById('srch');
+  if(inp) inp.value=ref;
+  const clearBtn=document.getElementById('srch-clear-btn');
+  if(clearBtn) clearBtn.style.display='';
+  doSearch();
+}
+
+function searchByTag(tag){
+  goNav('feed',document.querySelector('.nl'));
+  switchSrchTab('tag');
+  document.getElementById('tab-tag-btn').classList.add('active');
+  doTagSearch(tag);
+}
+
+
+/* =====================================================
+   タグチップ入力（新規投稿）
+===================================================== */
+let postTags=[];
+function onTagInput(e){
+  const val=e.target.value;
+  if(val.endsWith(' ')||val.endsWith('　')||val.endsWith('、')||val.endsWith(',')){
+    const tag=val.replace(/[\s,、]+$/,'').replace(/^#+/,'').trim();
+    if(tag) commitTag(tag);
+    e.target.value='';
+  }
+}
+function onTagKeydown(e){
+  const inp=e.target;
+  if(e.key==='Enter'){e.preventDefault();addTagFromInput();}
+  if(e.key==='Backspace'&&!inp.value&&postTags.length) removeTag(postTags.length-1);
+}
+function addTagFromInput(){
+  const inp=document.getElementById('tag-text-input');
+  if(!inp) return;
+  const tag=inp.value.replace(/^#+/,'').trim();
+  if(tag) commitTag(tag);
+  inp.value=''; inp.focus();
+}
+function commitTag(raw){
+  const tag=raw.replace(/^#+/,'').trim();
+  if(!tag||tag.length>30) return;
+  if(postTags.includes(tag)) return;
+  if(postTags.length>=10){showToast('タグは最大10個まで');return;}
+  postTags.push(tag); renderTagChips();
+}
+function removeTag(idx){postTags.splice(idx,1);renderTagChips();}
+function renderTagChips(){
+  const wrap=document.getElementById('tag-chips');
+  if(!wrap) return;
+  wrap.innerHTML=postTags.map((t,i)=>
+    `<span class="tag-chip-item">#${t}<button class="tag-chip-rm" onclick="removeTag(${i})" type="button">✕</button></span>`
+  ).join('');
+}
+function resetTagChips(){
+  postTags=[];renderTagChips();
+  const inp=document.getElementById('tag-text-input');
+  if(inp) inp.value='';
+}
+
+/* タグチップ入力（編集モーダル） */
+let editPostTags=[];
+function onEtagInput(e){
+  const val=e.target.value;
+  if(val.endsWith(' ')||val.endsWith('　')||val.endsWith('、')||val.endsWith(',')){
+    const tag=val.replace(/[\s,、]+$/,'').replace(/^#+/,'').trim();
+    if(tag) commitEtag(tag);
+    e.target.value='';
+  }
+}
+function onEtagKeydown(e){
+  const inp=e.target;
+  if(e.key==='Enter'){e.preventDefault();addEtagFromInput();}
+  if(e.key==='Backspace'&&!inp.value&&editPostTags.length) removeEtag(editPostTags.length-1);
+}
+function addEtagFromInput(){
+  const inp=document.getElementById('etag-text-input');
+  if(!inp) return;
+  const tag=inp.value.replace(/^#+/,'').trim();
+  if(tag) commitEtag(tag);
+  inp.value=''; inp.focus();
+}
+function commitEtag(raw){
+  const tag=raw.replace(/^#+/,'').trim();
+  if(!tag||tag.length>30) return;
+  if(editPostTags.includes(tag)) return;
+  if(editPostTags.length>=10){showToast('タグは最大10個まで');return;}
+  editPostTags.push(tag); renderEtagChips();
+}
+function removeEtag(idx){editPostTags.splice(idx,1);renderEtagChips();}
+function renderEtagChips(){
+  const wrap=document.getElementById('etag-chips');
+  if(!wrap) return;
+  wrap.innerHTML=editPostTags.map((t,i)=>
+    `<span class="tag-chip-item">#${t}<button class="tag-chip-rm" onclick="removeEtag(${i})" type="button">✕</button></span>`
+  ).join('');
 }
 
 function parseUrlParams(){
