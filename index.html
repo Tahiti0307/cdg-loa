@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -263,41 +262,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .ai-match-card-ttl{font-size:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ai-match-card-line{font-size:7px;color:var(--mgry);letter-spacing:.08em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-
-/* TAG CHIP INPUT */
-.tag-input-wrap{
-  border:1px solid var(--blk);background:var(--wht);
-  padding:6px 8px;display:flex;flex-wrap:wrap;gap:5px;
-  min-height:44px;cursor:text;align-items:center;
-}
-.tag-chip-item{
-  display:inline-flex;align-items:center;gap:4px;
-  background:var(--blk);color:var(--wht);
-  font-size:10px;letter-spacing:.05em;
-  padding:3px 8px 3px 9px;
-  font-family:var(--sans);white-space:nowrap;
-}
-.tag-chip-rm{
-  background:none;border:none;color:rgba(255,255,255,.6);
-  cursor:pointer;font-size:11px;line-height:1;padding:0 0 0 2px;
-  font-family:var(--sans);
-}
-.tag-chip-rm:hover{color:var(--wht)}
-.tag-text-input{
-  border:none;outline:none;font-size:11px;
-  font-family:var(--sans);background:transparent;
-  min-width:80px;flex:1;padding:2px 0;
-}
-.tag-text-input::placeholder{color:var(--lgry)}
-.tag-add-btn{
-  font-family:var(--sans);font-size:9px;letter-spacing:.12em;
-  text-transform:uppercase;padding:5px 12px;
-  border:1px solid var(--ln);background:transparent;
-  cursor:pointer;color:var(--mgry);margin-top:5px;
-  transition:all .15s;display:block;
-}
-.tag-add-btn:hover{border-color:var(--blk);color:var(--blk)}
-
 /* SKELETON LOADING */
 @keyframes shimmer{
   0%{background-position:-600px 0}
@@ -366,27 +330,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   cursor:pointer;color:var(--blk);transition:all .15s;
 }
 .error-state-retry:hover{background:var(--blk);color:var(--wht)}
-
-
-/* SEARCH HISTORY DROPDOWN */
-.srch-hist-wrap{position:relative;max-width:460px}
-.srch-hist-drop{
-  position:absolute;top:100%;left:0;right:0;
-  background:var(--wht);border:1px solid var(--blk);border-top:none;
-  z-index:200;max-height:320px;overflow-y:auto;display:none;
-}
-.srch-hist-drop.open{display:block}
-.srch-hist-sec{font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:var(--lgry);padding:8px 12px 4px;border-bottom:0.5px solid var(--ln)}
-.srch-hist-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;cursor:pointer;transition:background .1s;border-bottom:0.5px solid var(--ln)}
-.srch-hist-item:last-child{border-bottom:none}
-.srch-hist-item:hover{background:var(--gry)}
-.srch-hist-kw{font-size:11px;letter-spacing:.06em;display:flex;align-items:center;gap:8px}
-.srch-hist-kw .hist-icon{font-size:10px;color:var(--lgry)}
-.srch-hist-kw .sugg-icon{font-size:10px;color:var(--lgry)}
-.srch-hist-del{font-size:10px;color:var(--lgry);padding:2px 6px;line-height:1;cursor:pointer}
-.srch-hist-del:hover{color:var(--blk)}
-.srch-hist-clear{font-size:8px;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;color:var(--mgry);cursor:pointer;text-align:right;border-top:1px solid var(--ln)}
-.srch-hist-clear:hover{color:var(--blk)}
 
 /* PICKUP SECTION */
 .pickup-section{padding:16px 20px;border-bottom:1px solid var(--ln)}
@@ -572,14 +515,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .photo-rm{position:absolute;top:2px;right:2px;background:var(--blk);color:var(--wht);border:none;width:17px;height:17px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .ibldr{border:1px solid var(--ln);padding:11px}
 .ibldr-hd{display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr 0.8fr 0.8fr 0.7fr auto;gap:5px;margin-bottom:5px;border-bottom:1px solid var(--ln);padding-bottom:5px}
-.ir{background:var(--gry);border:1px solid var(--ln);padding:12px;margin-bottom:8px}
+.ir{background:var(--gry);border:1px solid var(--ln);padding:12px;margin-bottom:8px;position:relative}
 .ir-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 .ir-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:0}
 .ir-label{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--mgry);margin-bottom:3px}
 .ir-full{grid-column:1/-1}
-.ir-sel-wrap{position:relative;display:block}
-.ir-sel-wrap::after{content:"▾";position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:11px;color:var(--mgry)}
-.ir-sel-wrap select{padding-right:28px}
 .add-r{font-family:var(--sans);font-size:8px;letter-spacing:.13em;padding:5px 0;color:var(--mgry);cursor:pointer;border:none;background:none;border-top:1px solid var(--ln);width:100%;text-align:left;margin-top:3px;text-transform:uppercase}
 .add-r:hover{color:var(--blk)}
 .rm{font-size:13px;color:var(--lgry);cursor:pointer;border:none;background:none;padding:7px 3px;align-self:end;line-height:1}
@@ -1011,12 +951,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
           <div class="fg"><label class="flbl">Instagram (@ハンドル)</label><input class="fi" type="text" id="reg-ig-url" placeholder="username"></div>
         </div>
         <div class="err-msg" id="reg-err"></div>
-        <div style="margin-bottom:14px;font-size:10px;font-family:var(--jp);color:var(--mgry);line-height:1.7">
-          <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
-            <input type="checkbox" id="reg-consent" style="margin-top:3px;flex-shrink:0">
-            <span><a href="#terms" onclick="goNav('about',null);closeModal('modal-login');setTimeout(()=>{document.getElementById('terms').scrollIntoView({behavior:'smooth'})},300)" style="color:var(--mgry)">利用規約</a>および<a href="#privacy" onclick="goNav('about',null);closeModal('modal-login');setTimeout(()=>{document.getElementById('privacy').scrollIntoView({behavior:'smooth'})},300)" style="color:var(--mgry)">プライバシーポリシー</a>に同意する</span>
-          </label>
-        </div>
         <button class="sub-btn" id="reg-btn" onclick="doRegister()">登録する</button>
       </div>
 
@@ -1100,15 +1034,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       <div class="fg"><label class="flbl">タイトル</label><input class="fi" type="text" id="epost-ttl"></div>
       <div class="fg"><label class="flbl">説明</label><textarea class="fi fta" id="epost-cap"></textarea></div>
       <div class="fg">
-        <label class="flbl">タグ</label>
-        <div class="tag-input-wrap" id="etag-input-wrap" onclick="document.getElementById('etag-text-input').focus()">
-          <div id="etag-chips"></div>
-          <input type="text" class="tag-text-input" id="etag-text-input"
-            placeholder="例: 青山"
-            onkeydown="onEtagKeydown(event)"
-            oninput="onEtagInput(event)">
-        </div>
-        <button class="tag-add-btn" onclick="addEtagFromInput()">＋ タグを追加</button>
+        <label class="flbl">タグ <span style="font-size:9px;color:var(--mgry);letter-spacing:.05em;text-transform:none">スペース区切りで複数入力</span></label>
+        <input class="fi" type="text" id="epost-tags" placeholder="#タグを入力（スペースで区切る）">
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
         <div class="fg">
@@ -1165,42 +1092,19 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <!-- 検索タブ -->
     <div class="srch-tabs">
       <button class="srch-tab active" id="tab-ref-btn" onclick="switchSrchTab('ref')">品番検索</button>
-      <button class="srch-tab" id="tab-tag-btn" onclick="switchSrchTab('tag')">タグ検索</button>
       <button class="srch-tab" id="tab-user-btn" onclick="switchSrchTab('user')">ユーザー検索</button>
       <button class="srch-tab" id="tab-store-btn" onclick="switchSrchTab('store')">店舗検索</button>
     </div>
     <!-- 品番検索 -->
     <div id="srch-pane-ref" class="srch-pane active">
-      <div class="srch-hist-wrap">
-        <div class="search-inner">
-          <input type="text" id="srch" placeholder="品番で検索（例：HJJ050）"
-            onkeydown="onSrchKeydown(event)"
-            oninput="onRefInput(event);renderSrchDrop()"
-            onfocus="renderSrchDrop()"
-            style="text-transform:uppercase">
-          <button class="search-btn" id="srch-clear-btn" onclick="clearSearch()" style="display:none;background:var(--mgry);padding:8px 10px">✕</button>
-          <button class="search-btn" onclick="doSearch()">検索</button>
-        </div>
-        <div class="srch-hist-drop" id="srch-hist-drop"></div>
+      <div class="search-inner">
+        <input type="text" id="srch" placeholder="品番で検索（例：HJJ050）" onkeydown="if(event.key==='Enter')doSearch()" oninput="onRefInput(event)" style="text-transform:uppercase">
+        <button class="search-btn" id="srch-clear-btn" onclick="clearSearch()" style="display:none;background:var(--mgry);padding:8px 10px">✕</button>
+        <button class="search-btn" onclick="doSearch()">検索</button>
       </div>
       <div class="search-note">※ 品番はハイフンなしで入力（自動で大文字・半角に変換）</div>
       <div class="srch-msg" id="srch-msg"></div>
     </div>
-    <!-- タグ検索 -->
-    <div id="srch-pane-tag" class="srch-pane">
-      <div class="search-inner">
-        <span style="padding:8px 6px 8px 12px;font-size:13px;color:var(--mgry);line-height:1;user-select:none">#</span>
-        <input type="text" id="srch-tag" placeholder="タグ名を入力（# 不要）"
-          onkeydown="if(event.key==='Enter')doTagSearch()"
-          style="flex:1;font-family:var(--sans);font-size:11px;padding:8px 8px 8px 0;border:none;outline:none;background:transparent">
-        <button class="search-btn" id="srch-tag-clear-btn" onclick="clearTagSearch()" style="display:none;background:var(--mgry);padding:8px 10px">✕</button>
-        <button class="search-btn" onclick="doTagSearch()">検索</button>
-      </div>
-      <div class="search-note">投稿についているタグで検索します</div>
-      <div class="srch-msg" id="srch-tag-msg"></div>
-      <div class="grid" id="srch-tag-grid" style="margin-top:8px"></div>
-    </div>
-
     <!-- ユーザー検索 -->
     <div id="srch-pane-user" class="srch-pane">
       <div class="search-inner">
@@ -1238,10 +1142,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     </div>
     <!-- 店舗検索 -->
     <div id="srch-pane-store" class="srch-pane">
-      <!-- 地図 -->
-      <div style="margin-bottom:12px;border:1px solid var(--ln)">
-        <div id="store-map" style="height:280px;width:100%"></div>
-      </div>
+      <div id="store-map" style="height:260px;margin-bottom:12px;border:1px solid var(--ln)"></div>
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:center">
         <span class="sort-lbl">エリア</span>
         <span class="sort-chip active" id="sarea-all" onclick="setStoreFilter('area','all',this)">ALL</span>
@@ -1484,22 +1385,19 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     </div>
     <div class="fg"><label class="flbl">タイトル</label><input class="fi" type="text" id="p-ttl" placeholder="例：AW24 非対称シルエット"></div>
     <div class="fg"><label class="flbl">説明</label><textarea class="fi fta" id="p-cap" placeholder="インスピレーションや着用シーンなど..."></textarea></div>
-    <div class="fg">
-      <label class="flbl">タグ</label>
-      <div class="tag-input-wrap" id="tag-input-wrap" onclick="document.getElementById('tag-text-input').focus()">
-        <div id="tag-chips"></div>
-        <input type="text" class="tag-text-input" id="tag-text-input"
-          placeholder="例: 青山"
-          onkeydown="onTagKeydown(event)"
-          oninput="onTagInput(event)">
-      </div>
-      <button class="tag-add-btn" onclick="addTagFromInput()">＋ タグを追加</button>
-      <div class="hint">タグをタップすると同じタグの投稿から発見されやすくなります</div>
-    </div>
 
     <div class="fg">
       <label class="flbl">着用アイテム</label>
       <div class="ibldr">
+        <div class="ibldr-hd" style="display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr 0.8fr 0.8fr 0.7fr auto;gap:5px;margin-bottom:5px;border-bottom:1px solid var(--ln);padding-bottom:5px">
+          <span class="flbl" style="margin-bottom:0">アイテム名</span>
+          <span class="flbl" style="margin-bottom:0">ライン</span>
+          <span class="flbl" style="margin-bottom:0">シーズン</span>
+          <span class="flbl" style="margin-bottom:0">購入店舗</span>
+          <span class="flbl" style="margin-bottom:0">サイズ</span>
+          <span class="flbl" style="margin-bottom:0">品番</span>
+          <span></span>
+        </div>
         <div id="ilist"></div>
         <button class="add-r" onclick="addItem()">＋ アイテムを追加</button>
       </div>
@@ -1534,11 +1432,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   <div id="about-top" style="max-width:560px;margin:0 auto;padding:44px 20px 60px">
 
     <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:32px;padding-bottom:12px;border-bottom:1px solid var(--blk)">About</div>
-    <!-- アンカー -->
-    <div style="display:flex;gap:14px;margin-bottom:32px;flex-wrap:wrap">
-      <a href="#terms" style="font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--mgry);text-decoration:underline;text-underline-offset:3px">利用規約</a>
-      <a href="#privacy" style="font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--mgry);text-decoration:underline;text-underline-offset:3px">プライバシーポリシー</a>
-    </div>
 
     <!-- 開発者 -->
     <div style="margin-bottom:40px">
@@ -1572,115 +1465,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     </div>
 
     <!-- アプリについて -->
-    <div style="margin-bottom:60px">
+    <div>
       <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--mgry);margin-bottom:14px">About This App</div>
       <p style="font-size:10px;line-height:1.9;color:var(--mgry);font-family:var(--jp)">
         CDGLOA（COMME des GARÇONS LOVERS' OUTFIT ARCHIVES）は、ギャルソン愛好家によるコーデアーカイブです。着用アイテムの品番・ライン・シーズンを記録し、フィルタリングや品番検索でギャルソンの着こなしを探せます。
       </p>
-    </div>
-
-    <!-- 区切り -->
-    <div style="border-top:1px solid var(--ln);margin-bottom:48px"></div>
-
-    <!-- 利用規約 -->
-    <div id="terms" style="margin-bottom:60px">
-      <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:24px;padding-bottom:10px;border-bottom:1px solid var(--blk)">利用規約</div>
-      <p style="font-size:9px;color:var(--lgry);font-family:var(--jp);margin-bottom:20px">最終更新日：2025年6月1日</p>
-
-      <div style="font-size:11px;line-height:2;color:var(--mgry);font-family:var(--jp)">
-
-        <p style="margin-bottom:16px">本利用規約（以下「本規約」）は、CDGLOA（以下「本サービス」）の利用条件を定めるものです。ユーザーの皆さまには、本規約に同意いただいたうえで本サービスをご利用いただきます。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">第1条（定義）</p>
-        <p style="margin-bottom:16px">「ユーザー」とは、本サービスに登録した個人をいいます。「コンテンツ」とは、ユーザーが投稿した写真・テキスト・その他の情報をいいます。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">第2条（禁止事項）</p>
-        <p style="margin-bottom:8px">ユーザーは以下の行為をしてはなりません。</p>
-        <ul style="padding-left:16px;margin-bottom:16px">
-          <li style="margin-bottom:6px">他人の著作物を無断で投稿する行為</li>
-          <li style="margin-bottom:6px">他のユーザーへの誹謗・中傷・嫌がらせ</li>
-          <li style="margin-bottom:6px">虚偽の情報を登録・投稿する行為</li>
-          <li style="margin-bottom:6px">本サービスの運営を妨害する行為</li>
-          <li style="margin-bottom:6px">法令または公序良俗に反する行為</li>
-          <li style="margin-bottom:6px">第三者になりすます行為</li>
-          <li style="margin-bottom:6px">スパム・広告目的の投稿</li>
-        </ul>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">第3条（コンテンツの権利）</p>
-        <p style="margin-bottom:16px">ユーザーが投稿したコンテンツの著作権はユーザー本人に帰属します。ただしユーザーは、本サービスの提供・改善・プロモーション目的に限り、当運営者がコンテンツを無償で使用する権利（複製・表示・配信）を許諾するものとします。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">第4条（アカウントの停止・削除）</p>
-        <p style="margin-bottom:16px">当運営者は、ユーザーが本規約に違反した場合、事前通知なくアカウントを停止または削除できるものとします。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">第5条（サービスの変更・終了）</p>
-        <p style="margin-bottom:16px">当運営者は、ユーザーへの事前通知をもって、本サービスの内容を変更または提供を終了できるものとします。これにより生じた損害について、当運営者は責任を負いません。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">第6条（免責事項）</p>
-        <p style="margin-bottom:16px">本サービスは現状のまま提供されます。当運営者は、本サービスに関して生じた損害（ユーザー間のトラブル・データの消失・サービス停止等）について、故意または重大な過失がある場合を除き、一切の責任を負いません。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">第7条（準拠法・管轄）</p>
-        <p style="margin-bottom:16px">本規約は日本法に準拠します。本サービスに関する紛争については、当運営者の住所地を管轄する裁判所を第一審の専属的合意管轄裁判所とします。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">第8条（規約の変更）</p>
-        <p>当運営者は本規約を変更できるものとします。変更後の規約はアプリ内に掲示した時点から効力を生じます。</p>
-      </div>
-    </div>
-
-    <!-- 区切り -->
-    <div style="border-top:1px solid var(--ln);margin-bottom:48px"></div>
-
-    <!-- プライバシーポリシー -->
-    <div id="privacy" style="margin-bottom:60px">
-      <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:24px;padding-bottom:10px;border-bottom:1px solid var(--blk)">プライバシーポリシー</div>
-      <p style="font-size:9px;color:var(--lgry);font-family:var(--jp);margin-bottom:20px">最終更新日：2025年6月1日</p>
-
-      <div style="font-size:11px;line-height:2;color:var(--mgry);font-family:var(--jp)">
-
-        <p style="margin-bottom:16px">CDGLOA運営者（以下「当運営者」）は、ユーザーの個人情報を以下のとおり取り扱います。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">1. 収集する情報</p>
-        <ul style="padding-left:16px;margin-bottom:16px">
-          <li style="margin-bottom:6px"><strong>アカウント情報</strong>：メールアドレス、ハンドル名、ニックネーム</li>
-          <li style="margin-bottom:6px"><strong>プロフィール情報</strong>：身長、生年（年齢の表示目的）、CDG歴、プロフィール文、X/Instagramハンドル（任意）</li>
-          <li style="margin-bottom:6px"><strong>投稿情報</strong>：コーデ写真、着用アイテム情報（品番・ライン・シーズン等）</li>
-          <li style="margin-bottom:6px"><strong>利用情報</strong>：いいね・保存・フォロー等の行動履歴</li>
-        </ul>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">2. 利用目的</p>
-        <ul style="padding-left:16px;margin-bottom:16px">
-          <li style="margin-bottom:6px">本サービスの提供・運営・改善</li>
-          <li style="margin-bottom:6px">ユーザー認証およびアカウント管理</li>
-          <li style="margin-bottom:6px">他ユーザーへのコンテンツ表示（プロフィール・投稿）</li>
-          <li style="margin-bottom:6px">不正利用の防止</li>
-        </ul>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">3. 第三者への提供</p>
-        <p style="margin-bottom:16px">当運営者は、法令に基づく場合を除き、ユーザーの個人情報を第三者に提供しません。ただし、本サービスは以下の外部サービスを利用しています。</p>
-        <ul style="padding-left:16px;margin-bottom:16px">
-          <li style="margin-bottom:6px"><strong>Supabase, Inc.</strong>（データベース・認証・ストレージ）：<a href="https://supabase.com/privacy" target="_blank" rel="noopener" style="color:var(--mgry)">プライバシーポリシー</a></li>
-          <li style="margin-bottom:6px"><strong>Vercel, Inc.</strong>（ホスティング）：<a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener" style="color:var(--mgry)">プライバシーポリシー</a></li>
-        </ul>
-        <p style="margin-bottom:16px">これらのサービスには、サービス提供に必要な範囲でデータが送信されます。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">4. データの保存・管理</p>
-        <p style="margin-bottom:16px">ユーザーデータはSupabaseが管理するサーバー（データセンターはAWS）に保存されます。当運営者は適切なセキュリティ対策を講じますが、完全な安全性を保証するものではありません。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">5. Cookieの使用</p>
-        <p style="margin-bottom:16px">本サービスはログイン状態の維持のためにCookieを使用します。広告目的のCookieは使用しません。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">6. ユーザーの権利</p>
-        <p style="margin-bottom:16px">ユーザーはいつでも、アカウント設定から自身の情報の確認・修正・削除を行うことができます。アカウントを削除した場合、ユーザーの投稿・コメント・いいね等のデータも削除されます。その他の開示・利用停止請求については、お問い合わせフォームよりご連絡ください。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">7. 未成年者のご利用</p>
-        <p style="margin-bottom:16px">本サービスは年齢制限を設けていませんが、18歳未満の方は保護者の同意のもとでご利用ください。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">8. ポリシーの変更</p>
-        <p style="margin-bottom:16px">本ポリシーは変更することがあります。重要な変更がある場合は、本サービス内でお知らせします。</p>
-
-        <p style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blk);margin-bottom:8px;margin-top:24px">9. お問い合わせ</p>
-        <p>個人情報の取り扱いに関するご質問は、本サービスのお問い合わせフォームよりご連絡ください。</p>
-
-      </div>
     </div>
 
   </div>
@@ -2038,7 +1827,7 @@ function skeletonGrid(id, n=6){
         <div class="sk-title sk"></div>
         <div class="sk-meta sk"></div>
       </div>
-    </div>`}).join('');
+    </div>`).join('');
 }
 
 function rg(id,arr){
@@ -2275,7 +2064,6 @@ function resetAllFilters(){
 /* =====================================================
    店舗データ
 ===================================================== */
-// 座標付き店舗データ（番号1〜40はインデックス+1）
 const STORE_DATA=[
   // 東京 — 直営
   {name:'Comme des Garçons 青山店',area:'東京',lines:['CDG'],addr:'東京都港区南青山5-2-1',tel:'03-3406-3951',lat:35.6656,lng:139.7143},
@@ -2337,7 +2125,7 @@ function setStoreFilter(type,val,el){
   }
   if(el)el.classList.add('active');
   renderStoreList();
-  updateMapMarkers();
+  updateStoreMapArea();
 }
 
 function renderStoreList(){
@@ -2356,14 +2144,14 @@ function renderStoreList(){
     Object.entries(groups).map(([area,stores])=>`
       <div style="margin-bottom:18px">
         <div style="font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--mgry);padding:6px 0;border-bottom:1px solid var(--blk);margin-bottom:4px">${area}</div>
-        ${stores.map(s=>`
-          <div class="store-card">
+        ${stores.map(function(s){ var sidx=STORE_DATA.indexOf(s); var snum=sidx+1; return `
+          <div class="store-card" data-sidx="${sidx}">
             <div>
-              <div class="store-name">${s.name}</div>
+              <div class="store-name"><span style="font-size:9px;color:var(--lgry);margin-right:5px;font-family:var(--sans)">${snum}</span>${s.name}</div>
               <div class="store-addr">${s.addr}</div>
             </div>
             <div class="store-tel">Tel<br>${s.tel}</div>
-          </div>`).join('')}
+          </div>`}).join('')}
       </div>`).join('');
 }
 
@@ -2378,176 +2166,76 @@ function setUserSort(mode,el){
 
 
 /* =====================================================
-   タグ検索
-===================================================== */
-async function doTagSearch(tagOverride){
-  const inp=document.getElementById('srch-tag');
-  const rawVal=tagOverride!==undefined ? tagOverride : (inp?inp.value.trim():'');
-  const tag=rawVal.replace(/^#+/,'').trim();
-  const msgEl=document.getElementById('srch-tag-msg');
-  const grid=document.getElementById('srch-tag-grid');
-  const clearBtn=document.getElementById('srch-tag-clear-btn');
-
-  if(!tag){if(msgEl)msgEl.textContent='';return;}
-
-  // 入力欄に反映
-  if(inp) inp.value=tag;
-  if(clearBtn) clearBtn.style.display='';
-  if(msgEl) msgEl.textContent='検索中...';
-  if(grid) grid.innerHTML='';
-
-  addSrchHistory('#'+tag);
-
-  try{
-    const{data,error}=await sb.from('posts')
-      .select(`id,user_id,title,caption,tags,line,season,store,colors,created_at,
-        profiles(id,nickname,handle,avatar_url,cdg_history,height),
-        post_images(url,position),
-        post_items(id,name,line,season,store,size,ref_number),
-        likes(count),comments(count)`)
-      .contains('tags',[tag])
-      .order('created_at',{ascending:false})
-      .limit(100);
-
-    if(error) throw error;
-    const results=data||[];
-    if(msgEl) msgEl.textContent=results.length
-      ? `#${tag} — ${results.length}件`
-      : `#${tag} のタグがついた投稿はまだありません`;
-
-    if(grid){
-      if(results.length){
-        grid.innerHTML=results.map(card).join('');
-      }else{
-        grid.innerHTML=`<div style="grid-column:1/-1;padding:28px 20px;text-align:center">
-          <div style="font-size:9px;letter-spacing:.2em;color:var(--mgry);text-transform:uppercase;margin-bottom:8px">Nothing here yet.</div>
-          <div style="font-size:10px;color:var(--lgry);font-family:var(--jp)">#${tag} のタグがついた投稿はまだありません</div>
-        </div>`;
-      }
-    }
-  }catch(e){
-    console.error('doTagSearch:',e);
-    if(msgEl) msgEl.textContent='検索に失敗しました';
-  }
-}
-
-function clearTagSearch(){
-  const inp=document.getElementById('srch-tag');
-  const msgEl=document.getElementById('srch-tag-msg');
-  const grid=document.getElementById('srch-tag-grid');
-  const clearBtn=document.getElementById('srch-tag-clear-btn');
-  if(inp) inp.value='';
-  if(msgEl) msgEl.textContent='';
-  if(grid) grid.innerHTML='';
-  if(clearBtn) clearBtn.style.display='none';
-}
-
-
-/* =====================================================
    店舗地図（Leaflet.js）
 ===================================================== */
 let storeMap = null;
-let storeMapMarkers = [];
+let storeMarkers = [];
 
 function initStoreMap(){
-  if(storeMap) return; // 二重初期化防止
+  if(storeMap) return;
   const el = document.getElementById('store-map');
   if(!el || typeof L === 'undefined') return;
 
-  storeMap = L.map('store-map', {
-    center: [36.5, 137.0],
-    zoom: 5,
-    zoomControl: true,
-  });
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: 18,
+  storeMap = L.map('store-map', {center:[36.2,137.5], zoom:5, zoomControl:true});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'(c) OpenStreetMap contributors', maxZoom:18
   }).addTo(storeMap);
 
-  STORE_DATA.forEach((s, i) => {
+  STORE_DATA.forEach(function(s,i){
     if(!s.lat || !s.lng) return;
-    const num = i + 1;
-
-    // 番号付きカスタムアイコン
-    const icon = L.divIcon({
-      className: '',
-      html: `<div style="
-        width:22px;height:22px;border-radius:50%;
-        background:#000;color:#fff;
-        font-size:9px;font-weight:600;font-family:sans-serif;
-        display:flex;align-items:center;justify-content:center;
-        border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);
-        cursor:pointer;line-height:1;
-      ">${num}</div>`,
-      iconSize: [22, 22],
-      iconAnchor: [11, 11],
+    var num = i + 1;
+    var icon = L.divIcon({
+      className:'',
+      html:'<div style="width:22px;height:22px;border-radius:50%;background:#000;color:#fff;font-size:9px;font-weight:600;font-family:sans-serif;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);">'+num+'</div>',
+      iconSize:[22,22], iconAnchor:[11,11]
     });
-
-    const marker = L.marker([s.lat, s.lng], {icon})
-      .addTo(storeMap)
-      .on('click', () => highlightStoreCard(i));
-
-    // ポップアップ
-    marker.bindPopup(`
-      <div style="font-family:sans-serif;font-size:11px;min-width:160px">
-        <div style="font-weight:600;margin-bottom:3px">${num}. ${s.name}</div>
-        <div style="color:#666;font-size:10px">${s.addr||''}</div>
-        ${s.tel?`<div style="color:#666;font-size:10px;margin-top:2px">☎ ${s.tel}</div>`:''}
-      </div>
-    `, {maxWidth: 220});
-
-    storeMapMarkers.push(marker);
+    var marker = L.marker([s.lat,s.lng],{icon:icon}).addTo(storeMap);
+    // ポップアップ（特殊文字を避けて安全に生成）
+    var popHtml = '<div style="font-family:sans-serif;font-size:11px;min-width:150px">'
+      + '<b>'+num+'. '+escHtml(s.name)+'</b><br>'
+      + '<span style="color:#666;font-size:10px">'+escHtml(s.addr||'')+'</span>';
+    if(s.tel){ popHtml += '<br><span style="color:#666;font-size:10px">Tel: '+escHtml(s.tel)+'</span>'; }
+    popHtml += '</div>';
+    marker.bindPopup(popHtml, {maxWidth:220});
+    marker.on('click', function(){ highlightStoreItem(i); });
+    storeMarkers.push(marker);
   });
 }
 
-function highlightStoreCard(idx){
-  // 一覧にスクロール＋ハイライト
-  renderStoreList();
-  setTimeout(()=>{
-    const cards = document.querySelectorAll('#store-list .store-card-wrap');
-    // 表示中のカードのうちidxに対応するものを探す
-    const allCards = document.querySelectorAll('#store-list [data-idx]');
-    const target = [...allCards].find(c=>c.dataset.idx===String(idx));
-    if(target){
-      target.scrollIntoView({behavior:'smooth', block:'center'});
-      target.style.background='var(--gry)';
-      setTimeout(()=>{ target.style.background=''; }, 1500);
-    }
-  }, 100);
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-function updateMapMarkers(){
-  // フィルター適用後に地図マーカーの表示を更新
+function highlightStoreItem(idx){
+  var allCards = document.querySelectorAll('#store-list [data-sidx]');
+  var target = Array.prototype.find.call(allCards, function(c){ return c.getAttribute('data-sidx') === String(idx); });
+  if(target){
+    target.scrollIntoView({behavior:'smooth', block:'center'});
+    target.style.background = 'var(--gry)';
+    setTimeout(function(){ target.style.background = ''; }, 1500);
+  }
+}
+
+function updateStoreMapArea(){
   if(!storeMap) return;
-  const filtered = STORE_DATA.filter(s=>{
-    const areaOk = storeAreaFilt==='all' || s.area===storeAreaFilt;
-    return areaOk;
-  });
-  storeMapMarkers.forEach((m,i)=>{
-    const s = STORE_DATA[i];
-    const show = storeAreaFilt==='all' || s.area===storeAreaFilt;
-    if(show){ if(!storeMap.hasLayer(m)) m.addTo(storeMap); }
+  var visible = [];
+  storeMarkers.forEach(function(m,i){
+    var show = storeAreaFilt==='all' || STORE_DATA[i].area===storeAreaFilt;
+    if(show){ if(!storeMap.hasLayer(m)) m.addTo(storeMap); visible.push(m); }
     else     { if(storeMap.hasLayer(m)) storeMap.removeLayer(m); }
   });
-  // 表示マーカーにfitBounds
-  const visible = storeMapMarkers.filter((m,i)=>{
-    return storeAreaFilt==='all' || STORE_DATA[i].area===storeAreaFilt;
-  });
-  if(visible.length){
-    const group = L.featureGroup(visible);
-    storeMap.fitBounds(group.getBounds().pad(0.2));
+  if(visible.length > 0){
+    var grp = L.featureGroup(visible);
+    storeMap.fitBounds(grp.getBounds().pad(0.15));
   }
 }
 
 function switchSrchTab(mode){
   srchTabMode=mode;
   document.getElementById('tab-ref-btn').classList.toggle('active', mode==='ref');
-  document.getElementById('tab-tag-btn').classList.toggle('active', mode==='tag');
   document.getElementById('tab-user-btn').classList.toggle('active', mode==='user');
   document.getElementById('tab-store-btn').classList.toggle('active', mode==='store');
   document.getElementById('srch-pane-ref').classList.toggle('active', mode==='ref');
-  document.getElementById('srch-pane-tag').classList.toggle('active', mode==='tag');
   document.getElementById('srch-pane-user').classList.toggle('active', mode==='user');
   document.getElementById('srch-pane-store').classList.toggle('active', mode==='store');
   const filterWrap=document.getElementById('filter-wrap-area');
@@ -2572,14 +2260,10 @@ function switchSrchTab(mode){
     if(mode==='user') doUserSearch();
     if(mode==='store'){
       renderStoreList();
-      setTimeout(()=>{
+      setTimeout(function(){
         initStoreMap();
         if(storeMap) storeMap.invalidateSize();
-      }, 50);
-    }
-    if(mode==='tag'){
-      const inp=document.getElementById('srch-tag');
-      if(inp&&inp.value.trim()) doTagSearch();
+      }, 60);
     }
   }
 }
@@ -2714,7 +2398,6 @@ function clearUserSearch(){
   document.getElementById('user-search-results').style.display='none';
 }
 function clearSearch(){
-  closeSrchDrop();
   document.getElementById('srch').value='';
   document.getElementById('srch-msg').textContent='';
   document.getElementById('srch-clear-btn').style.display='none';
@@ -2763,27 +2446,7 @@ async function doSearch(){
   const matchedPostIds=[...new Set((matchedItems||[]).map(r=>r.post_id))];
 
   if(!matchedPostIds.length){
-    // 品番マッチなし → タイトル・キャプションでフォールバック検索
-    try{
-      const raw2=document.getElementById('srch').value.trim();
-      const{data:textData}=await sb.from('posts')
-        .select(`id,user_id,title,caption,tags,line,season,store,colors,created_at,
-          profiles(id,nickname,handle,avatar_url,cdg_history,height),
-          post_images(url,position),
-          post_items(id,name,line,season,store,size,ref_number),
-          likes(count),comments(count)`)
-        .or(`title.ilike.%${raw2}%,caption.ilike.%${raw2}%`)
-        .order('created_at',{ascending:false})
-        .limit(50);
-      const textResults=textData||[];
-      if(textResults.length){
-        msgEl.textContent=`「${raw2}」— ${textResults.length}件（タイトル・説明）`;
-        rg('feed-grid',textResults);
-        document.getElementById('feed-cnt').textContent=textResults.length+'件';
-        return;
-      }
-    }catch(e){console.error(e);}
-    msgEl.textContent=`「${srchQ}」に一致するコーデが見つかりませんでした。`;
+    msgEl.textContent=`品番「${srchQ}」に一致するコーデが見つかりませんでした。`;
     rg('feed-grid',[]);
     document.getElementById('feed-cnt').textContent='0件';
     return;
@@ -2899,17 +2562,13 @@ async function openPost(id){
   document.getElementById('save-btn').textContent=isSaved?'★ 保存済み':'□ 保存';
 
   document.getElementById('d-items').innerHTML=(p.post_items||[]).map(i=>`
-    <div class="irow" style="padding:9px 0;border-bottom:1px solid var(--ln)">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap">
-        <span style="font-size:11px;font-family:var(--jp)">${i.name||''}</span>
-        <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;justify-content:flex-end">
-          ${i.season?`<span class="ibadge">${i.season}</span>`:''}
-          ${i.line?`<span class="ibadge" style="font-size:8px">${i.line}</span>`:''}
-          ${i.store?`<span class="ibadge" style="font-size:8px;color:var(--mgry)">${i.store}</span>`:''}
-          ${i.size?`<span class="isz">${i.size}</span>`:''}
-        </div>
-      </div>
-      ${i.ref_number?`<div style="margin-top:3px"><span class="ibadge" style="font-family:var(--sans);font-size:9px;letter-spacing:.08em;cursor:pointer;text-decoration:underline;text-underline-offset:2px" onclick="searchByRef('${i.ref_number}')">${i.ref_number}</span></div>`:''}
+    <div class="irow" style="display:flex;flex-wrap:wrap;gap:4px;padding:8px 0;border-bottom:1px solid var(--ln);align-items:center">
+      <span class="iname" style="font-size:11px;flex:1;min-width:80px">${i.name||''}</span>
+      ${i.line?`<span class="ibadge" style="font-size:8px">${i.line}</span>`:''}
+      ${i.season?`<span class="ibadge">${i.season}</span>`:''}
+      ${i.store?`<span class="ibadge" style="font-size:8px;color:var(--mgry)">${i.store}</span>`:''}
+      ${i.size?`<span class="isz">${i.size}</span>`:''}
+      ${i.ref_number?`<span class="ibadge" style="font-family:var(--sans)">${i.ref_number}</span>`:''}
     </div>`).join('');
   document.getElementById('d-store').innerHTML=p.store?`<span>📍</span><span>${p.store}</span>`:'';
   // 投稿日・更新日
@@ -3142,9 +2801,7 @@ function openEditPost(){
   if(!curPost)return;editingPostId=curPost.id;
   document.getElementById('epost-ttl').value=curPost.title||'';
   document.getElementById('epost-cap').value=curPost.caption||'';
-  // タグチップを初期化
-  editPostTags=[...(curPost.tags||[])];
-  renderEtagChips();
+  document.getElementById('epost-tags').value=(curPost.tags||[]).join(' ');
   // ライン・シーズン select を動的生成
   const lineOpts=['COMME des GARÇONS','COMME des GARÇONS COMME des GARÇONS','COMME des GARÇONS GIRL','COMME des GARÇONS HOMME','COMME des GARÇONS HOMME PLUS','COMME des GARÇONS HOMME DEUX','COMME des GARÇONS SHIRT','BLACK COMME des GARÇONS','JUNYA WATANABE','JUNYA WATANABE MAN','tao COMME des GARÇONS','noir kei ninomiya','CDG','PLAY COMME des GARÇONS','THE BEATLES COMME des GARÇONS','Wallet COMME des GARÇONS','COMME des GARÇONS parfums','tricot COMME des GARÇONS','その他','tricot COMME des GARÇONS','その他'];
   const seaOpts=['26AW','26SS','25AW','25SS','24AW','24SS','23AW','23SS','22AW','22SS','21AW','21SS','20AW','20SS','19AW','19SS','18AW','18SS','17AW','17SS','16AW','16SS','15AW','15SS','14AW','14SS','13AW','13SS','12AW','12SS','11AW','11SS','10AW','10SS','09AW','09SS','08AW','08SS','07AW','07SS','06AW','06SS','05AW','05SS','04AW','04SS','03AW','03SS','02AW','02SS','01AW','01SS','00AW','00SS','アーカイブ（2000年以前）'];
@@ -3202,10 +2859,8 @@ async function saveEditPost(){
   const firstEditSels=firstEditRow?[...firstEditRow.querySelectorAll('select')]:[];
   const repLine=firstEditSels[1]?.value||'';
   const repSea=firstEditSels[2]?.value||'';
-  // 未確定入力も取り込む
-  const pendingEtag=document.getElementById('etag-text-input')?.value.trim().replace(/^#+/,'');
-  if(pendingEtag) commitEtag(pendingEtag);
-  const editTagsArr=[...editPostTags];
+  const rawEditTags=document.getElementById('epost-tags').value.trim();
+  const editTagsArr=rawEditTags?rawEditTags.split(/[\s,、]+/).map(t=>t.replace(/^#/,'')).filter(Boolean):[];
   const editLine=document.getElementById('epost-line').value||repLine;
   const editSea=document.getElementById('epost-season').value||repSea;
   await sb.from('posts').update({
@@ -3309,7 +2964,6 @@ async function doRegister(){
   const bio=document.getElementById('reg-bio').value.trim();
   if(!handle||!history||!height||!age||!email||!pass){showErr('reg-err','必須項目をすべて入力してください。');setLoading('reg-btn',false,'登録する');return;}
   if(pass.length<8){showErr('reg-err','パスワードは8文字以上で入力してください。');setLoading('reg-btn',false,'登録する');return;}
-  if(!document.getElementById('reg-consent')?.checked){showErr('reg-err','利用規約およびプライバシーポリシーへの同意が必要です。');setLoading('reg-btn',false,'登録する');return;}
   // ハンドル重複チェック
   if(!/^[a-zA-Z0-9_]{2,20}$/.test(handle)){showErr('reg-err','ハンドルは半角英数字・アンダーバーで2〜20文字にしてください。');setLoading('reg-btn',false,'登録する');return;}
   const{data:existH}=await sb.from('profiles').select('id').ilike('handle',handle).limit(1);
@@ -3700,7 +3354,7 @@ function makeItemRow(){
     <div class="ir-grid">
       <div class="ir-full">
         <div class="ir-label">アイテム名</div>
-        <div class="ir-sel-wrap"><select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
+        <select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
           <option value="">選択してください</option>
           <option>シャツ</option>
           <option>Tシャツ</option>
@@ -3715,18 +3369,18 @@ function makeItemRow(){
           <option>その他トップス</option>
           <option>その他ボトムス</option>
           <option>その他</option>
-        </select></div>
+        </select>
       </div>
       <div class="ir-full">
         <div class="ir-label">ライン</div>
-        <div class="ir-sel-wrap"><select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
+        <select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
           <option value="">選択してください</option>
-          ${makeItemLineOptions()}
-        </select></div>
+          \${makeItemLineOptions()}
+        </select>
       </div>
       <div>
         <div class="ir-label">シーズン</div>
-        <div class="ir-sel-wrap"><select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
+        <select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
           <option value="">選択</option>
           <option>26AW</option><option>26SS</option>
           <option>25AW</option><option>25SS</option>
@@ -3756,14 +3410,14 @@ function makeItemRow(){
           <option>01AW</option><option>01SS</option>
           <option>00AW</option><option>00SS</option>
           <option>アーカイブ（2000年以前）</option>
-        </select></div>
+        </select>
       </div>
       <div>
         <div class="ir-label">購入店舗</div>
-        <div class="ir-sel-wrap"><select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
+        <select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
           <option value="">選択</option>
-          ${makeItemStoreOptions()}
-        </select></div>
+          \${makeItemStoreOptions()}
+        </select>
       </div>
     </div>
     <div class="ir-grid-3">
@@ -3818,10 +3472,8 @@ async function doSubmit(){
     const firstSels=firstRow?[...firstRow.querySelectorAll('select')]:[];
     const repLine=firstSels[1]?.value||'';
     const repSea=firstSels[2]?.value||'';
-    // addTagFromInputで未確定の入力も取り込む
-    const pendingTag=document.getElementById('tag-text-input')?.value.trim().replace(/^#+/,'');
-    if(pendingTag) commitTag(pendingTag);
-    const tagsArr=[...postTags];
+    const rawTags=document.getElementById('p-tags').value.trim();
+    const tagsArr=rawTags?rawTags.split(/[\s,、]+/).map(t=>t.replace(/^#/,'').trim()).filter(Boolean):[];
     const{data:newPost,error}=await sb.from('posts').insert({
       user_id:myUser.id,title:ttl||'無題',caption:cap,tags:tagsArr,line:repLine,season:repSea,store:'',colors
     }).select().single();
@@ -4191,231 +3843,6 @@ async function findMatchingItems(){
 }
 
 
-
-/* =====================================================
-   検索履歴・サジェスト
-===================================================== */
-const SRCH_HIST_KEY = 'cdgloa_search_history';
-const MAX_HIST = 10;
-
-// よく使われる品番サジェスト（CDG定番）
-const SRCH_SUGGESTIONS = [
-  'HJJ050','OZT311','GS-T104','PO-T106','W28112',
-  'GE-T270','RO-T107','AD-T022','HJJ028','FI-T015',
-];
-
-function getSrchHistory(){
-  try{ return JSON.parse(localStorage.getItem(SRCH_HIST_KEY)||'[]'); }
-  catch(e){ return []; }
-}
-function saveSrchHistory(hist){
-  try{ localStorage.setItem(SRCH_HIST_KEY, JSON.stringify(hist)); }catch(e){}
-}
-function addSrchHistory(kw){
-  if(!kw) return;
-  let hist = getSrchHistory().filter(h=>h!==kw);
-  hist.unshift(kw);
-  if(hist.length>MAX_HIST) hist=hist.slice(0,MAX_HIST);
-  saveSrchHistory(hist);
-}
-function deleteSrchHistory(kw, e){
-  e.stopPropagation();
-  saveSrchHistory(getSrchHistory().filter(h=>h!==kw));
-  renderSrchDrop();
-}
-function clearSrchHistory(){
-  saveSrchHistory([]);
-  renderSrchDrop();
-}
-
-function renderSrchDrop(){
-  const drop = document.getElementById('srch-hist-drop');
-  const inp  = document.getElementById('srch');
-  if(!drop||!inp) return;
-  const val = inp.value.trim();
-  const hist = getSrchHistory();
-
-  // 入力中は履歴・サジェストをキーワードでフィルタ
-  const filtHist = val
-    ? hist.filter(h=>h.includes(val.toUpperCase()))
-    : hist;
-  const filtSugg = val
-    ? SRCH_SUGGESTIONS.filter(s=>s.includes(val.toUpperCase()) && !filtHist.includes(s))
-    : SRCH_SUGGESTIONS.filter(s=>!hist.includes(s)).slice(0,5);
-
-  if(!filtHist.length && !filtSugg.length){
-    drop.classList.remove('open');
-    return;
-  }
-
-  let html = '';
-
-  if(filtHist.length){
-    html += `<div class="srch-hist-sec">最近の検索</div>`;
-    html += filtHist.map(kw=>`
-      <div class="srch-hist-item" onclick="selectSrchHist('${kw}')">
-        <span class="srch-hist-kw"><span class="hist-icon">↺</span>${kw}</span>
-        <span class="srch-hist-del" onclick="deleteSrchHistory('${kw}',event)">✕</span>
-      </div>`).join('');
-    html += `<div class="srch-hist-clear" onclick="clearSrchHistory()">履歴をクリア</div>`;
-  }
-
-  if(filtSugg.length){
-    html += `<div class="srch-hist-sec">よく検索される品番</div>`;
-    html += filtSugg.map(s=>`
-      <div class="srch-hist-item" onclick="selectSrchHist('${s}')">
-        <span class="srch-hist-kw"><span class="sugg-icon">↗</span>${s}</span>
-      </div>`).join('');
-  }
-
-  drop.innerHTML = html;
-  drop.classList.add('open');
-}
-
-function selectSrchHist(kw){
-  const inp = document.getElementById('srch');
-  if(inp){ inp.value = kw; }
-  closeSrchDrop();
-  doSearch();
-}
-
-function closeSrchDrop(){
-  const drop = document.getElementById('srch-hist-drop');
-  if(drop) drop.classList.remove('open');
-}
-
-function onSrchKeydown(e){
-  if(e.key==='Enter'){ closeSrchDrop(); doSearch(); }
-  if(e.key==='Escape'){ closeSrchDrop(); }
-}
-
-// フォーカスが外れたらドロップダウンを閉じる（少し遅延してクリックを処理）
-document.addEventListener('click', e=>{
-  if(!e.target.closest('.srch-hist-wrap')) closeSrchDrop();
-});
-
-
-
-/* =====================================================
-   タグチップ入力
-===================================================== */
-let postTags = [];
-
-function onTagInput(e){
-  const val = e.target.value;
-  // スペース・読点で即時確定
-  if(val.endsWith(' ') || val.endsWith('　') || val.endsWith('、') || val.endsWith(',')){
-    const tag = val.replace(/[\s,、]+$/, '').replace(/^#+/, '').trim();
-    if(tag) commitTag(tag);
-    e.target.value = '';
-  }
-}
-
-function onTagKeydown(e){
-  const inp = e.target;
-  if(e.key === 'Enter'){
-    e.preventDefault();
-    addTagFromInput();
-  }
-  if(e.key === 'Backspace' && !inp.value && postTags.length){
-    removeTag(postTags.length - 1);
-  }
-}
-
-function addTagFromInput(){
-  const inp = document.getElementById('tag-text-input');
-  if(!inp) return;
-  const tag = inp.value.replace(/^#+/, '').trim();
-  if(tag) commitTag(tag);
-  inp.value = '';
-  inp.focus();
-}
-
-function commitTag(raw){
-  const tag = raw.replace(/^#+/, '').trim();
-  if(!tag || tag.length > 30) return;
-  if(postTags.includes(tag)) return; // 重複スキップ
-  if(postTags.length >= 10){ showToast('タグは最大10個まで追加できます'); return; }
-  postTags.push(tag);
-  renderTagChips();
-}
-
-function removeTag(idx){
-  postTags.splice(idx, 1);
-  renderTagChips();
-}
-
-function renderTagChips(){
-  const wrap = document.getElementById('tag-chips');
-  if(!wrap) return;
-  wrap.innerHTML = postTags.map((t, i) =>
-    `<span class="tag-chip-item">#${t}<button class="tag-chip-rm" onclick="removeTag(${i})" type="button">✕</button></span>`
-  ).join('');
-}
-
-function resetTagChips(){
-  postTags = [];
-  renderTagChips();
-  const inp = document.getElementById('tag-text-input');
-  if(inp) inp.value = '';
-}
-
-/* =====================================================
-   編集モーダル タグチップ
-===================================================== */
-let editPostTags = [];
-
-function onEtagInput(e){
-  const val = e.target.value;
-  if(val.endsWith(' ') || val.endsWith('　') || val.endsWith('、') || val.endsWith(',')){
-    const tag = val.replace(/[\s,、]+$/, '').replace(/^#+/, '').trim();
-    if(tag) commitEtag(tag);
-    e.target.value = '';
-  }
-}
-
-function onEtagKeydown(e){
-  const inp = e.target;
-  if(e.key === 'Enter'){ e.preventDefault(); addEtagFromInput(); }
-  if(e.key === 'Backspace' && !inp.value && editPostTags.length){
-    removeEtag(editPostTags.length - 1);
-  }
-}
-
-function addEtagFromInput(){
-  const inp = document.getElementById('etag-text-input');
-  if(!inp) return;
-  const tag = inp.value.replace(/^#+/, '').trim();
-  if(tag) commitEtag(tag);
-  inp.value = '';
-  inp.focus();
-}
-
-function commitEtag(raw){
-  const tag = raw.replace(/^#+/, '').trim();
-  if(!tag || tag.length > 30) return;
-  if(editPostTags.includes(tag)) return;
-  if(editPostTags.length >= 10){ showToast('タグは最大10個まで追加できます'); return; }
-  editPostTags.push(tag);
-  renderEtagChips();
-}
-
-function removeEtag(idx){
-  editPostTags.splice(idx, 1);
-  renderEtagChips();
-}
-
-function renderEtagChips(){
-  const wrap = document.getElementById('etag-chips');
-  if(!wrap) return;
-  wrap.innerHTML = editPostTags.map((t, i) =>
-    `<span class="tag-chip-item">#${t}<button class="tag-chip-rm" onclick="removeEtag(${i})" type="button">✕</button></span>`
-  ).join('');
-}
-
-
-
-
 // URLパラメータ処理
 function calcCdgStats(posts, gridId, linesId, sectionId){
   const section=document.getElementById(sectionId);
@@ -4445,77 +3872,14 @@ function calcCdgStats(posts, gridId, linesId, sectionId){
   section.style.display='';
 }
 
-function searchByRef(ref){
+function searchByTag(tag){
   goNav('feed', document.querySelector('.nl'));
-  // 品番検索タブに切り替え
-  switchSrchTab('ref');
-  const inp = document.getElementById('srch');
-  if(inp){ inp.value = ref; }
-  const clearBtn = document.getElementById('srch-clear-btn');
-  if(clearBtn) clearBtn.style.display = '';
-  addSrchHistory(ref);
+  // タグで検索（キャプション・タグフィールドをOR検索）
+  const raw=tag;
+  srchQ=raw;
+  document.getElementById('srch').value=raw;
+  document.getElementById('srch-clear-btn').style.display='';
   doSearch();
-}
-
-async function searchByTag(tag){
-  goNav('feed', document.querySelector('.nl'));
-  addSrchHistory('#'+tag);
-  // タグ検索タブに切り替えて検索
-  switchSrchTab('tag');
-  document.getElementById('tab-tag-btn').classList.add('active');
-  await doTagSearch(tag);
-  return;
-  // 以下は旧実装（参照しない）
-
-  const el=document.getElementById('feed-grid');
-  const msgEl=document.getElementById('srch-msg');
-  const inp=document.getElementById('srch');
-  const clearBtn=document.getElementById('srch-clear-btn');
-
-  // UI更新
-  if(inp){ inp.value='#'+tag; }
-  if(clearBtn) clearBtn.style.display='';
-  if(msgEl) msgEl.textContent='検索中...';
-  skeletonGrid('feed-grid',6);
-  _setDiscoverySections(false);
-  document.getElementById('load-more-wrap').style.display='none';
-
-  try{
-    // posts.tags（text[]）に対してcontains検索
-    const{data,error}=await sb.from('posts')
-      .select(`
-        id,user_id,title,caption,tags,line,season,store,colors,created_at,
-        profiles(id,nickname,handle,avatar_url,cdg_history,height),
-        post_images(url,position),
-        post_items(id,name,line,season,store,size,ref_number),
-        likes(count),
-        comments(count)
-      `)
-      .contains('tags',[tag])
-      .order('created_at',{ascending:false})
-      .limit(100);
-
-    if(error) throw error;
-
-    const results=data||[];
-    if(msgEl) msgEl.textContent=results.length
-      ? `#${tag} — ${results.length}件`
-      : `#${tag} のタグがついた投稿はまだありません`;
-
-    rg('feed-grid', results);
-    const cntEl=document.getElementById('feed-cnt');
-    if(cntEl) cntEl.textContent=results.length+'件';
-
-  }catch(e){
-    console.error('searchByTag:',e);
-    if(msgEl) msgEl.textContent='';
-    if(el) el.innerHTML=`<div class="error-state">
-      <div class="error-state-code">Search Error</div>
-      <div class="error-state-msg">Tag search failed.</div>
-      <div class="error-state-sub">タグ検索に失敗しました。</div>
-      <button class="error-state-retry" onclick="clearSearch()">Reset</button>
-    </div>`;
-  }
 }
 
 function parseUrlParams(){
