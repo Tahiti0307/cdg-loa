@@ -469,7 +469,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .dttl{font-size:19px;margin-bottom:5px;font-weight:400;line-height:1.3}
 .dsea{font-size:9px;letter-spacing:.15em;color:var(--mgry);margin-bottom:2px;text-transform:uppercase}
 .dline{font-size:9px;color:var(--mgry);margin-bottom:13px}
-.dcap{font-size:11px;color:var(--mgry);line-height:1.85;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--ln);font-family:var(--jp)}
+.dcap{font-size:11px;color:var(--mgry);line-height:1.85;margin-bottom:0;font-family:var(--jp)}
 .slbl{font-size:8px;letter-spacing:.2em;color:var(--mgry);margin-bottom:6px;text-transform:uppercase}
 .isec{border-top:1px solid var(--ln);padding-top:12px;margin-bottom:12px}
 .irow{display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:5px;padding:6px 0;border-bottom:1px solid var(--ln)}
@@ -1329,7 +1329,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <button class="fbtn-d" id="detail-fol-btn" onclick="toggleFollowDetail()">フォロー</button>
       </div>
       <div class="dsea" id="d-sea"></div><div class="dline" id="d-line"></div><div class="dttl" id="d-ttl"></div><div class="dcap" id="d-cap"></div>
-      <div id="d-tags" style="display:none;flex-wrap:wrap;gap:5px;margin-bottom:8px"></div>
+      <div id="d-tags" style="display:none;flex-wrap:wrap;gap:6px;margin-top:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--ln)"></div>
       <div class="isec"><div class="slbl">着用アイテム</div><div id="d-items"></div></div>
       <div class="store-row" id="d-store"></div>
       <div id="d-date" style="font-size:8px;color:var(--mgry);letter-spacing:.05em;padding-bottom:10px;font-family:var(--sans)"></div>
@@ -2651,7 +2651,12 @@ async function openPost(id){
   if(tagsEl){
     const tags=p.tags||[];
     tagsEl.innerHTML=tags.length?tags.map(t=>`<span class="post-tag" onclick="searchByTag('${t}')">#${t}</span>`).join(''):'';
-    tagsEl.style.display=tags.length?'':'none';
+    tagsEl.style.display=tags.length?'flex':'none';
+    // タグなしのとき dcap に border-bottom を付ける
+    const capEl=document.getElementById('d-cap');
+    if(capEl) capEl.style.cssText=tags.length
+      ?'margin-bottom:0'
+      :'margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--ln)';
   }
 
   const isLiked=likedPostIds.has(p.id);
@@ -2662,7 +2667,7 @@ async function openPost(id){
   document.getElementById('save-btn').textContent=isSaved?'★ 保存済み':'□ 保存';
 
   document.getElementById('d-items').innerHTML=(p.post_items||[]).map(i=>`
-    <div class="irow" style="padding:9px 0;border-bottom:1px solid var(--ln)">
+    <div class="irow" style="display:block;padding:9px 0;border-bottom:1px solid var(--ln)">
       <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap">
         <span style="font-size:11px;font-family:var(--jp)">${i.name||''}</span>
         <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;justify-content:flex-end">
@@ -2672,7 +2677,7 @@ async function openPost(id){
           ${i.size?`<span class="isz">${i.size}</span>`:''}
         </div>
       </div>
-      ${i.ref_number?`<div style="margin-top:3px"><span class="ibadge" style="font-family:var(--sans);font-size:9px;letter-spacing:.08em;cursor:pointer;text-decoration:underline;text-underline-offset:2px" onclick="searchByRef('${i.ref_number}')">${i.ref_number}</span></div>`:''}
+      ${i.ref_number?`<div style="margin-top:4px"><span class="ibadge" style="font-family:var(--sans);font-size:9px;letter-spacing:.08em;cursor:pointer;text-decoration:underline;text-underline-offset:2px" onclick="searchByRef('${i.ref_number}')">${i.ref_number}</span></div>`:''}
     </div>`).join('');
   document.getElementById('d-store').innerHTML=p.store?`<span>📍</span><span>${p.store}</span>`:'';
   // 投稿日・更新日
