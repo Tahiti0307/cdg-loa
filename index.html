@@ -297,6 +297,53 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .toggle-wrap input:checked + .toggle-slider:before{transform:translateX(16px)}
 .notif-sec-ttl{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--mgry);margin:14px 0 6px;padding-bottom:6px;border-bottom:1px solid var(--ln)}
 
+
+/* POPULAR TAGS / USERS */
+.pop-tag{
+  font-family:var(--sans);font-size:10px;letter-spacing:.05em;
+  padding:5px 12px;border:1px solid var(--ln);background:var(--gry);
+  cursor:pointer;transition:all .15s;color:var(--mgry);display:inline-flex;
+  align-items:center;gap:5px;
+}
+.pop-tag:hover{background:var(--blk);color:var(--wht);border-color:var(--blk)}
+.pop-tag-cnt{font-size:8px;color:var(--lgry);transition:color .15s}
+.pop-tag:hover .pop-tag-cnt{color:rgba(255,255,255,.6)}
+.pop-user-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--ln);cursor:pointer}
+.pop-user-row:last-child{border-bottom:none}
+.pop-user-row:hover .pop-user-name{text-decoration:underline;text-underline-offset:2px}
+.pop-user-av{width:36px;height:36px;border-radius:50%;background:var(--gry);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+.pop-user-av img{width:100%;height:100%;object-fit:cover}
+.pop-user-info{flex:1;min-width:0}
+.pop-user-name{font-size:12px;font-weight:500}
+.pop-user-handle{font-size:9px;color:var(--mgry);margin-top:1px}
+.pop-user-stats{font-size:8px;color:var(--lgry);margin-top:2px}
+
+
+/* REALTIME NEW POST BANNER */
+.rt-banner{
+  position:sticky;top:44px;z-index:20;
+  background:var(--blk);color:var(--wht);
+  padding:8px 16px;
+  display:none;
+  align-items:center;justify-content:center;
+  gap:8px;cursor:pointer;
+  font-family:var(--sans);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  transition:all .2s;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.rt-banner:hover{opacity:.85}
+.rt-banner.show{display:flex}
+.rt-banner-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:#4ade80;
+  animation:rtPulse 1.5s ease-in-out infinite;
+  flex-shrink:0;
+}
+@keyframes rtPulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.5;transform:scale(1.4)}
+}
+
 /* SKELETON LOADING */
 @keyframes shimmer{
   0%{background-position:-600px 0}
@@ -1072,6 +1119,27 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         </div>
       </div>
       <button class="sub-btn" id="ep-save-btn" onclick="saveEditProfile()">保存する</button>
+
+      <!-- パスワード変更 -->
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--ln)">
+        <div class="notif-sec-ttl">パスワード変更</div>
+        <div class="fg" style="margin-bottom:8px">
+          <label class="flbl">新しいパスワード</label>
+          <input class="fi" type="password" id="ep-new-pass" placeholder="8文字以上" autocomplete="new-password">
+        </div>
+        <div class="fg" style="margin-bottom:8px">
+          <label class="flbl">確認</label>
+          <input class="fi" type="password" id="ep-new-pass-confirm" placeholder="もう一度入力" autocomplete="new-password">
+        </div>
+        <button class="sub-btn" id="ep-pass-btn" onclick="changePassword()" style="background:var(--mgry)">パスワードを変更する</button>
+      </div>
+
+      <!-- アカウント削除 -->
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--ln)">
+        <div class="notif-sec-ttl" style="color:#c00">危険な操作</div>
+        <p style="font-size:10px;color:var(--mgry);font-family:var(--jp);line-height:1.8;margin-bottom:12px">アカウントを削除すると、投稿・コメント・いいね・フォロー情報がすべて削除されます。この操作は取り消せません。</p>
+        <button class="sub-btn" id="ep-del-btn" onclick="deleteAccount()" style="background:#c00">アカウントを削除する</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1173,7 +1241,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       </div>
       <div class="search-note">投稿についているタグで検索します</div>
       <div class="srch-msg" id="srch-tag-msg"></div>
-      <div class="grid" id="srch-tag-grid" style="margin-top:8px"></div>
+      <!-- 人気タグ -->
+      <div id="popular-tags-sec" style="margin-top:14px">
+        <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--mgry);margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid var(--ln)">人気のタグ</div>
+        <div id="popular-tags-list" style="display:flex;flex-wrap:wrap;gap:6px">
+          <span style="font-size:9px;color:var(--lgry)">読み込み中...</span>
+        </div>
+      </div>
+      <div class="grid" id="srch-tag-grid" style="margin-top:16px"></div>
     </div>
 
     <!-- ユーザー検索 -->
@@ -1206,6 +1281,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <span class="sort-chip" id="usort-popular" onclick="setUserSort('popular',this)">人気順</span>
       </div>
       <div class="srch-msg" id="srch-user-msg"></div>
+      <!-- 人気ユーザー -->
+      <div id="popular-users-sec" style="margin-top:14px">
+        <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--mgry);margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid var(--ln)">人気ユーザー</div>
+        <div id="popular-users-list"></div>
+      </div>
       <!-- ユーザー検索結果 -->
       <div id="user-search-results" style="display:none">
         <div id="user-search-list"></div>
@@ -1274,7 +1354,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       <div class="chips" id="chips-color" style="align-items:center;gap:5px;overflow:visible"><span class="chip active" onclick="setFilt('color','all',this)">ALL</span></div>
     </div>
     <div class="filter-row">
-      <span class="filter-lbl">ユーザー</span>
+      <span class="filter-lbl">表示</span>
       <div class="chips">
         <span class="chip active" id="chip-following-all" onclick="setFollowFilt('all',this)">ALL</span>
         <span class="chip" id="chip-following-only" onclick="setFollowFilt('following',this)">フォロー中</span>
@@ -1295,9 +1375,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   <div class="marquee-wrap" id="feed-marquee">
     <div class="marquee-track"><span class="marquee-item">COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS HOMME PLUS<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS HOMME DEUX<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS HOMME<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS SHIRT<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS GIRL<span class="marquee-sep"> · </span></span><span class="marquee-item">BLACK COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">JUNYA WATANABE COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">JUNYA WATANABE COMME des GARÇONS MAN<span class="marquee-sep"> · </span></span><span class="marquee-item">tao COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">noir kei ninomiya<span class="marquee-sep"> · </span></span><span class="marquee-item">CDG<span class="marquee-sep"> · </span></span><span class="marquee-item">PLAY COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">Wallet COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS parfums<span class="marquee-sep"> · </span></span><span class="marquee-item">tricot COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS HOMME PLUS<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS HOMME DEUX<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS HOMME<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS SHIRT<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS GIRL<span class="marquee-sep"> · </span></span><span class="marquee-item">BLACK COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">JUNYA WATANABE COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">JUNYA WATANABE COMME des GARÇONS MAN<span class="marquee-sep"> · </span></span><span class="marquee-item">tao COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">noir kei ninomiya<span class="marquee-sep"> · </span></span><span class="marquee-item">CDG<span class="marquee-sep"> · </span></span><span class="marquee-item">PLAY COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">Wallet COMME des GARÇONS<span class="marquee-sep"> · </span></span><span class="marquee-item">COMME des GARÇONS parfums<span class="marquee-sep"> · </span></span><span class="marquee-item">tricot COMME des GARÇONS<span class="marquee-sep"> · </span></span></div>
   </div>
-  <div class="feed-tabs-wrap">
-    <button class="feed-tab active" id="ftab-all" onclick="setFeedTab('all',this)">すべて</button>
-    <button class="feed-tab" id="ftab-following" onclick="setFeedTab('following',this)">フォロー中</button>
+
+  <div class="rt-banner" id="rt-banner" onclick="loadNewPosts()">
+    <span class="rt-banner-dot"></span>
+    <span id="rt-banner-text">新着を読み込む</span>
+    <span style="opacity:.6">↑</span>
   </div>
   <div class="feed-toolbar">
     <div class="sort-wrap">
@@ -1709,6 +1791,7 @@ async function fetchPosts(opts={}){
     .order('created_at',{ascending:false});
   if(opts.userId) q=q.eq('user_id',opts.userId);
   if(opts.line) q=q.eq('line',opts.line);
+  if(_blockedIds&&_blockedIds.size) q=q.not('user_id','in',`(${[..._blockedIds].join(',')})`).not('user_id','is',null);
   if(opts.sea){
     if(opts.sea==='SS') q=q.ilike('season','%SS%');
     else if(opts.sea==='AW') q=q.ilike('season','%AW%');
@@ -2088,18 +2171,7 @@ function setFilt(type,val,el){
   checkFilterActive();
   updateFeed();
 }
-function setFeedTab(tab, el){
-  document.querySelectorAll('.feed-tab').forEach(t=>t.classList.remove('active'));
-  if(el) el.classList.add('active');
-  if(tab==='following'){
-    if(!myUser){openLoginModal();document.getElementById('ftab-all').classList.add('active');return;}
-    filtFollowing='following';
-  } else {
-    filtFollowing='all';
-  }
-  checkFilterActive();
-  updateFeed();
-}
+
 
 function setSort(val,el){
   curSort=val;
@@ -2324,6 +2396,104 @@ function updateStoreMapArea(){
   }
 }
 
+
+/* =====================================================
+   人気タグ・人気ユーザー
+===================================================== */
+async function loadPopularTags(){
+  const listEl=document.getElementById('popular-tags-list');
+  if(!listEl) return;
+  try{
+    // 全投稿のtagsを取得してカウント
+    const{data}=await sb.from('posts')
+      .select('tags')
+      .not('tags','eq','{}')
+      .limit(500);
+    if(!data||!data.length){
+      listEl.innerHTML='<span style="font-size:9px;color:var(--lgry)">まだタグがありません</span>';
+      return;
+    }
+    const cnt={};
+    data.forEach(p=>{
+      (p.tags||[]).forEach(t=>{
+        if(t) cnt[t]=(cnt[t]||0)+1;
+      });
+    });
+    const sorted=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,20);
+    if(!sorted.length){
+      listEl.innerHTML='<span style="font-size:9px;color:var(--lgry)">まだタグがありません</span>';
+      return;
+    }
+    listEl.innerHTML=sorted.map(([tag,n])=>
+      `<span class="pop-tag" onclick="doTagSearch('${tag.replace(/'/g,'\'').replace(/"/g,'&quot;')}')">
+        #${tag}<span class="pop-tag-cnt">${n}</span>
+      </span>`
+    ).join('');
+  }catch(e){
+    console.error('loadPopularTags:',e);
+    listEl.innerHTML='<span style="font-size:9px;color:var(--lgry)">読み込みに失敗しました</span>';
+  }
+}
+
+async function loadPopularUsers(){
+  const listEl=document.getElementById('popular-users-list');
+  if(!listEl||listEl.dataset.loaded) return;
+  listEl.innerHTML='<div style="font-size:9px;color:var(--lgry);padding:8px 0">読み込み中...</div>';
+  try{
+    // いいね数の合計が多い順でユーザーを取得
+    const{data:likesData}=await sb.from('likes')
+      .select('posts(user_id)')
+      .limit(2000);
+    const likeCnt={};
+    (likesData||[]).forEach(l=>{
+      const uid=l.posts?.user_id;
+      if(uid) likeCnt[uid]=(likeCnt[uid]||0)+1;
+    });
+    const topIds=Object.entries(likeCnt)
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0,12)
+      .map(([id])=>id);
+
+    if(!topIds.length){
+      listEl.innerHTML='<div style="font-size:9px;color:var(--lgry);padding:8px 0">まだユーザーがいません</div>';
+      return;
+    }
+
+    const{data:profiles}=await sb.from('profiles')
+      .select('id,handle,nickname,avatar_url,cdg_history')
+      .in('id',topIds);
+
+    if(!profiles||!profiles.length){
+      listEl.innerHTML='<div style="font-size:9px;color:var(--lgry);padding:8px 0">読み込みに失敗しました</div>';
+      return;
+    }
+
+    // 投稿数順に並べ直す
+    const sorted=topIds
+      .map(id=>profiles.find(p=>p.id===id))
+      .filter(Boolean);
+
+    listEl.innerHTML=sorted.map(p=>{
+      const av=p.avatar_url
+        ?`<img src="${p.avatar_url}" loading="lazy">`
+        :`<span>${(p.handle||'?').charAt(0).toUpperCase()}</span>`;
+      const posts=postCnt[p.id]||0;
+      return`<div class="pop-user-row" onclick="openUserProfile('${p.id}')">
+        <div class="pop-user-av">${av}</div>
+        <div class="pop-user-info">
+          <div class="pop-user-name">${p.nickname||p.handle||''}</div>
+          <div class="pop-user-handle">@${p.handle||''}</div>
+          <div class="pop-user-stats">${likeCnt[p.id]||0}いいね${p.cdg_history?` · CDG歴 ${p.cdg_history}`:''}</div>
+        </div>
+      </div>`;
+    }).join('');
+    listEl.dataset.loaded='1';
+  }catch(e){
+    console.error('loadPopularUsers:',e);
+    listEl.innerHTML='<div style="font-size:9px;color:var(--lgry);padding:8px 0">読み込みに失敗しました</div>';
+  }
+}
+
 function switchSrchTab(mode){
   srchTabMode=mode;
   document.getElementById('tab-ref-btn').classList.toggle('active', mode==='ref');
@@ -2354,8 +2524,12 @@ function switchSrchTab(mode){
     document.getElementById('feed-grid').style.display='none';
     document.getElementById('user-search-results').style.display='none';
     if(mode==='tag'){
+      loadPopularTags();
       const inp=document.getElementById('srch-tag');
       if(inp&&inp.value.trim()) doTagSearch();
+    }
+    if(mode==='user'){
+      loadPopularUsers();
     }
     if(mode==='user') doUserSearch();
     if(mode==='store'){
@@ -2373,6 +2547,9 @@ function switchSrchTab(mode){
 ===================================================== */
 async function doUserSearch(){
   const q=document.getElementById('srch-user').value.trim();
+  // 検索時は人気ユーザーを非表示、未入力時は表示
+  const pu=document.getElementById('popular-users-sec');
+  if(pu) pu.style.display=q?'none':'';
   const heightMin=parseInt(document.getElementById('srch-height-min').value)||null;
   const heightMax=parseInt(document.getElementById('srch-height-max').value)||null;
   const ageMinVal=parseInt(document.getElementById('srch-age-min').value)||null;
@@ -4053,6 +4230,9 @@ function clearTagSearch(){
   if(msgEl) msgEl.textContent='';
   if(grid) grid.innerHTML='';
   if(clearBtn) clearBtn.style.display='none';
+  // 人気タグを再表示
+  const ps=document.getElementById('popular-tags-sec');
+  if(ps) ps.style.display='';
 }
 
 function searchByRef(ref){
@@ -4169,6 +4349,230 @@ function updateUrlParam(key, val){
   if(val) url.searchParams.set(key, val);
   else url.searchParams.delete(key);
   window.history.replaceState({}, '', url.toString());
+}
+
+
+/* =====================================================
+   パスワード変更
+===================================================== */
+async function changePassword(){
+  const newPass=document.getElementById('ep-new-pass').value;
+  const confirm=document.getElementById('ep-new-pass-confirm').value;
+  if(!newPass){showToast('新しいパスワードを入力してください');return;}
+  if(newPass.length<8){showToast('パスワードは8文字以上にしてください');return;}
+  if(newPass!==confirm){showToast('パスワードが一致しません');return;}
+  setLoading('ep-pass-btn',true,'変更中...');
+  try{
+    const{error}=await sb.auth.updateUser({password:newPass});
+    if(error) throw error;
+    document.getElementById('ep-new-pass').value='';
+    document.getElementById('ep-new-pass-confirm').value='';
+    showToast('パスワードを変更しました');
+  }catch(e){
+    console.error('changePassword:',e);
+    showToast('パスワードの変更に失敗しました: '+e.message);
+  }
+  setLoading('ep-pass-btn',false,'パスワードを変更する');
+}
+
+/* =====================================================
+   アカウント削除
+===================================================== */
+async function deleteAccount(){
+  if(!myUser) return;
+  const confirm1=window.confirm('アカウントを削除しますか？\n投稿・コメント・いいね・フォロー情報がすべて削除されます。');
+  if(!confirm1) return;
+  const confirm2=window.confirm('本当に削除しますか？この操作は取り消せません。');
+  if(!confirm2) return;
+
+  setLoading('ep-del-btn',true,'削除中...');
+  try{
+    const uid=myUser.id;
+    // カスケード削除: posts → post_items, post_images は FK cascade
+    await sb.from('posts').delete().eq('user_id',uid);
+    // その他のデータを削除
+    await sb.from('likes').delete().eq('user_id',uid);
+    await sb.from('saves').delete().eq('user_id',uid);
+    await sb.from('follows').delete().eq('follower_id',uid);
+    await sb.from('follows').delete().eq('following_id',uid);
+    await sb.from('comments').delete().eq('user_id',uid);
+    await sb.from('comment_likes').delete().eq('user_id',uid);
+    await sb.from('notifications').delete().eq('user_id',uid);
+    // プロフィールを匿名化
+    await sb.from('profiles').update({
+      nickname:'削除済みユーザー',
+      handle:'deleted_'+uid.slice(0,8),
+      bio:'',avatar_url:null,
+    }).eq('id',uid);
+    // サインアウト
+    await sb.auth.signOut();
+    showToast('アカウントを削除しました');
+    closeModal('modal-edit-profile');
+    goNav('feed',document.querySelector('.nl'));
+  }catch(e){
+    console.error('deleteAccount:',e);
+    showToast('削除に失敗しました: '+e.message);
+    setLoading('ep-del-btn',false,'アカウントを削除する');
+  }
+}
+
+/* =====================================================
+   通報機能
+===================================================== */
+let _reportTarget={type:null,id:null};
+
+function openReportModal(type, id){
+  if(!myUser){showToast('通報するにはログインが必要です');openLoginModal();return;}
+  _reportTarget={type, id:id||curPost?.id};
+  const info=document.getElementById('report-target-info');
+  if(info){
+    if(type==='post') info.textContent='投稿: '+(curPost?.title||'');
+    else if(type==='user') info.textContent='ユーザー: @'+(id||'');
+    else info.textContent='';
+  }
+  // ラジオをリセット
+  document.querySelectorAll('input[name="report-reason"]').forEach(r=>r.checked=false);
+  const detail=document.getElementById('report-detail');
+  if(detail) detail.value='';
+  openModal('modal-report');
+}
+
+async function submitReport(){
+  const reason=[...document.querySelectorAll('input[name="report-reason"]')]
+    .find(r=>r.checked)?.value;
+  if(!reason){showToast('通報理由を選んでください');return;}
+  setLoading('report-submit-btn',true,'送信中...');
+  try{
+    await sb.from('reports').insert({
+      reporter_id:myUser.id,
+      target_type:_reportTarget.type,
+      target_id:_reportTarget.id,
+      reason,
+      detail:document.getElementById('report-detail').value.trim()||null,
+    });
+    closeModal('modal-report');
+    showToast('通報を送信しました。ありがとうございます。');
+  }catch(e){
+    console.error('submitReport:',e);
+    showToast('送信に失敗しました');
+  }
+  setLoading('report-submit-btn',false,'通報する');
+}
+
+/* =====================================================
+   ブロック機能
+===================================================== */
+let _blockTargetId=null;
+let _blockedIds=new Set();
+
+async function fetchBlockedIds(){
+  if(!myUser) return;
+  try{
+    const{data}=await sb.from('blocks').select('blocked_id').eq('blocker_id',myUser.id);
+    _blockedIds=new Set((data||[]).map(r=>r.blocked_id));
+  }catch(e){console.error('fetchBlockedIds:',e);}
+}
+
+function openBlockModal(userId, handle){
+  if(!myUser){showToast('ブロックするにはログインが必要です');openLoginModal();return;}
+  if(userId===myUser.id){showToast('自分をブロックすることはできません');return;}
+  _blockTargetId=userId;
+  const isBlocked=_blockedIds.has(userId);
+  const msg=document.getElementById('block-confirm-msg');
+  const btn=document.getElementById('block-confirm-btn');
+  if(msg) msg.textContent=isBlocked
+    ?`@${handle||userId} のブロックを解除しますか？`
+    :`@${handle||userId} をブロックしますか？ブロックすると互いの投稿が非表示になります。`;
+  if(btn) btn.textContent=isBlocked?'ブロックを解除する':'ブロックする';
+  openModal('modal-block');
+}
+
+async function confirmBlock(){
+  if(!_blockTargetId||!myUser) return;
+  const isBlocked=_blockedIds.has(_blockTargetId);
+  setLoading('block-confirm-btn',true,'処理中...');
+  try{
+    if(isBlocked){
+      await sb.from('blocks').delete()
+        .eq('blocker_id',myUser.id).eq('blocked_id',_blockTargetId);
+      _blockedIds.delete(_blockTargetId);
+      showToast('ブロックを解除しました');
+    }else{
+      await sb.from('blocks').insert({blocker_id:myUser.id,blocked_id:_blockTargetId});
+      _blockedIds.add(_blockTargetId);
+      showToast('ブロックしました');
+    }
+    closeModal('modal-block');
+    updateFeed();
+  }catch(e){
+    console.error('confirmBlock:',e);
+    showToast('処理に失敗しました');
+  }
+  setLoading('block-confirm-btn',false,isBlocked?'ブロックを解除する':'ブロックする');
+}
+
+
+/* =====================================================
+   Supabase Realtime — リアルタイムフィード更新
+===================================================== */
+let _rtChannel = null;
+let _rtNewCount = 0;
+let _rtLatestCreatedAt = null; // フィード初回ロード時の最新投稿日時
+
+function initRealtime(){
+  if(_rtChannel) return; // 二重登録防止
+
+  _rtChannel = sb.channel('public:posts')
+    .on('postgres_changes', {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'posts'
+    }, function(payload){
+      const newPost = payload.new;
+      // 自分の投稿・ブロックユーザーの投稿は無視
+      if(myUser && newPost.user_id === myUser.id) return;
+      if(_blockedIds && _blockedIds.has(newPost.user_id)) return;
+      // フォロー中フィルターで自分のフォロー外は無視
+      if(filtFollowing === 'following'){
+        const followingIds = myProfile?.following || [];
+        if(!followingIds.includes(newPost.user_id)) return;
+      }
+      // ライン/シーズンフィルターとの照合
+      if(filtLine !== 'all' && newPost.line !== filtLine) return;
+      if(filtSea  !== 'all' && newPost.season !== filtSea)  return;
+
+      _rtNewCount++;
+      showRtBanner();
+    })
+    .subscribe();
+}
+
+function stopRealtime(){
+  if(_rtChannel){
+    sb.removeChannel(_rtChannel);
+    _rtChannel = null;
+  }
+}
+
+function showRtBanner(){
+  const banner = document.getElementById('rt-banner');
+  const text   = document.getElementById('rt-banner-text');
+  if(!banner) return;
+  if(text) text.textContent = `新着 ${_rtNewCount}件 `;
+  banner.classList.add('show');
+}
+
+function hideRtBanner(){
+  const banner = document.getElementById('rt-banner');
+  if(banner) banner.classList.remove('show');
+  _rtNewCount = 0;
+}
+
+async function loadNewPosts(){
+  hideRtBanner();
+  // フィードをトップにスクロールしてリロード
+  window.scrollTo({top:0, behavior:'smooth'});
+  await updateFeed();
 }
 
 function goBack(){
@@ -4417,5 +4821,41 @@ if('serviceWorker' in navigator){
   });
 }
 </script>
+
+<!-- 通報モーダル -->
+<div class="modal-bg" id="modal-report">
+  <div class="modal">
+    <div class="modal-hd"><span class="modal-ttl">通報</span><button class="modal-close" onclick="closeModal('modal-report')">×</button></div>
+    <div class="modal-bd">
+      <p style="font-size:11px;font-family:var(--jp);color:var(--mgry);margin-bottom:14px;line-height:1.8">通報理由を選んでください。内容を確認のうえ対応します。</p>
+      <div id="report-target-info" style="font-size:10px;color:var(--mgry);margin-bottom:12px;padding:8px;background:var(--gry)"></div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:11px;cursor:pointer"><input type="radio" name="report-reason" value="inappropriate">不適切なコンテンツ</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:11px;cursor:pointer"><input type="radio" name="report-reason" value="spam">スパム・宣伝</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:11px;cursor:pointer"><input type="radio" name="report-reason" value="copyright">著作権侵害</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:11px;cursor:pointer"><input type="radio" name="report-reason" value="harassment">誹謗・中傷</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:11px;cursor:pointer"><input type="radio" name="report-reason" value="other">その他</label>
+      </div>
+      <div class="fg">
+        <label class="flbl">詳細（任意）</label>
+        <textarea class="fi fta" id="report-detail" placeholder="補足があれば..." rows="3" style="height:auto"></textarea>
+      </div>
+      <button class="sub-btn" id="report-submit-btn" onclick="submitReport()">通報する</button>
+    </div>
+  </div>
+</div>
+
+<!-- ブロック確認モーダル -->
+<div class="modal-bg" id="modal-block">
+  <div class="modal">
+    <div class="modal-hd"><span class="modal-ttl">ブロック</span><button class="modal-close" onclick="closeModal('modal-block')">×</button></div>
+    <div class="modal-bd">
+      <p id="block-confirm-msg" style="font-size:11px;font-family:var(--jp);color:var(--mgry);line-height:1.8;margin-bottom:16px"></p>
+      <button class="sub-btn" id="block-confirm-btn" onclick="confirmBlock()" style="background:#c00">ブロックする</button>
+      <button class="sub-btn" onclick="closeModal('modal-block')" style="background:var(--mgry);margin-top:8px">キャンセル</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
