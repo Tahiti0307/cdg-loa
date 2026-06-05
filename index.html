@@ -86,7 +86,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 .cdg-line-chip:hover{border-color:var(--blk);color:var(--blk)}
 
 /* NOTIFICATION BELL */
-.notif-bell{position:relative;background:none;border:none;cursor:pointer;font-size:16px;padding:4px 6px;line-height:1}
+.notif-bell{position:relative;background:none;border:none;cursor:pointer;font-size:16px;padding:4px 6px;line-height:1;color:var(--blk);-webkit-appearance:none;appearance:none}
 .notif-badge{position:absolute;top:0;right:0;background:#c00;color:#fff;font-size:8px;min-width:14px;height:14px;border-radius:7px;display:flex;align-items:center;justify-content:center;padding:0 3px;font-family:var(--sans);pointer-events:none}
 /* NOTIFICATION PANEL */
 .notif-panel{position:fixed;top:52px;right:20px;width:320px;background:var(--wht);border:1px solid var(--blk);z-index:400;max-height:440px;display:flex;flex-direction:column;box-shadow:0 4px 20px rgba(0,0,0,.12)}
@@ -903,7 +903,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   <div class="nav-right">
     <button class="btn-login" id="nav-login-btn" onclick="openLoginModal()">ログイン</button>
     <button class="notif-bell" id="notif-bell-btn" onclick="toggleNotifPanel()" title="通知" style="display:none">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-badge" id="notif-badge" style="display:none"></span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-badge" id="notif-badge" style="display:none"></span>
     </button>
     <button class="btn-primary" id="nav-post-btn" onclick="tryPost()" disabled>＋ 投稿</button>
     <!-- ハンバーガーボタン（スマホのみ表示） -->
@@ -1154,7 +1154,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <!-- 品番検索 -->
     <div id="srch-pane-ref" class="srch-pane active">
       <div class="search-inner">
-        <input type="text" id="srch" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" placeholder="品番で検索（例：HJJ050）" onkeydown="if(event.key==='Enter')doSearch()" oninput="onRefInput(event)" style="text-transform:uppercase">
+        <input type="text" id="srch" name="cdgloa-ref-m2p" autocomplete="new-password" onfocus="this.removeAttribute('readonly')" readonly placeholder="品番で検索（例：HJJ050）" onkeydown="if(event.key==='Enter')doSearch()" oninput="onRefInput(event)" style="text-transform:uppercase">
         <button class="search-btn" id="srch-clear-btn" onclick="clearSearch()" style="display:none;background:var(--mgry);padding:8px 10px">✕</button>
         <button class="search-btn" onclick="doSearch()">検索</button>
       </div>
@@ -1165,7 +1165,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <div id="srch-pane-tag" class="srch-pane">
       <div class="search-inner">
         <span style="padding:8px 6px 8px 12px;font-size:13px;color:var(--mgry);line-height:1;user-select:none">#</span>
-        <input type="text" id="srch-tag" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" placeholder="タグ名を入力（# 不要）" autocomplete="off"
+        <input type="text" id="srch-tag" name="cdgloa-tag-q7w" autocomplete="new-password" onfocus="this.removeAttribute('readonly')" readonly placeholder="タグ名を入力（# 不要）" autocomplete="off"
           onkeydown="if(event.key==='Enter')doTagSearch()"
           style="flex:1;font-family:var(--sans);font-size:11px;padding:8px 8px 8px 0;border:none;outline:none;background:transparent">
         <button class="search-btn" id="srch-tag-clear-btn" onclick="clearTagSearch()" style="display:none;background:var(--mgry);padding:8px 10px">✕</button>
@@ -1179,7 +1179,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <!-- ユーザー検索 -->
     <div id="srch-pane-user" class="srch-pane">
       <div class="search-inner">
-        <input type="text" id="srch-user" placeholder="@ハンドルで検索（空欄でフィルターのみ可）" onkeydown="if(event.key==='Enter')doUserSearch()" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')">
+        <input type="text" id="srch-user" name="cdgloa-usr-x9k" placeholder="@ハンドルで検索（空欄でフィルターのみ可）" onkeydown="if(event.key==='Enter')doUserSearch()" autocomplete="new-password" onfocus="this.removeAttribute('readonly')" readonly>
         <button class="search-btn" id="srch-user-clear-btn" onclick="clearUserSearch()" style="display:none;background:var(--mgry);padding:8px 10px">✕</button>
         <button class="search-btn" onclick="doUserSearch()">検索</button>
       </div>
