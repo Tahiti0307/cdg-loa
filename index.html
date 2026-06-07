@@ -17,7 +17,7 @@
 <meta property="og:url" content="https://cdg-loa.vercel.app/">
 <meta property="og:title" content="CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES">
 <meta property="og:description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
-<meta property="og:image" content="https://cdg-loa.vercel.app/og-image.svg">
+<meta property="og:image" content="https://cdg-loa.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ja_JP">
@@ -29,7 +29,7 @@
 <meta name="twitter:creator" content="@tttaichi___">
 <meta name="twitter:title" content="CDGLOA — COMME des GARÇONS LOVERS' OUTFIT ARCHIVES">
 <meta name="twitter:description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
-<meta name="twitter:image" content="https://cdg-loa.vercel.app/og-image.svg">
+<meta name="twitter:image" content="https://cdg-loa.vercel.app/og-image.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='white'/%3E%3Ctext x='40' y='50' text-anchor='middle' font-family='Helvetica Neue,Helvetica,Arial,sans-serif' font-size='26' font-weight='600' letter-spacing='4' fill='black'%3ELOA%3C/text%3E%3C/svg%3E">
 <link rel="alternate icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
@@ -51,6 +51,31 @@
   --blk:#000;--wht:#fff;--gry:#f0f0f0;--mgry:#888;--lgry:#ccc;--ln:#e0e0e0;
   --sans:'Helvetica Neue',Helvetica,Arial,sans-serif;
   --jp:'Noto Sans JP','Helvetica Neue',sans-serif
+}
+@media(prefers-color-scheme:dark){
+  :root{--blk:#f0f0f0;--wht:#111;--gry:#1e1e1e;--mgry:#999;--lgry:#555;--ln:#2a2a2a}
+  body{background:#111;color:#f0f0f0}
+  .modal{background:#1a1a1a;border-color:#2a2a2a}
+  .modal-bg{background:rgba(0,0,0,.85)}
+  .drawer{background:#111;border-color:#2a2a2a}
+  .nav{background:#111;border-color:#2a2a2a}
+  .feed-toolbar{background:#111;border-color:#2a2a2a}
+  .filter-wrap{background:#111;border-color:#2a2a2a}
+  input,textarea,select{background:#1e1e1e;color:#f0f0f0;border-color:#2a2a2a}
+  input::placeholder,textarea::placeholder{color:#555}
+  .sort-chip,.chip{background:#1e1e1e;border-color:#2a2a2a;color:#999}
+  .sort-chip.active,.chip.active{background:#f0f0f0;color:#111;border-color:#f0f0f0}
+  .tag-input-wrap{background:#1e1e1e;border-color:#2a2a2a}
+  .tag-chip-item{background:#f0f0f0;color:#111}
+  .sub-btn{background:#f0f0f0;color:#111}
+  .sk{background:linear-gradient(90deg,#1e1e1e 25%,#2a2a2a 50%,#1e1e1e 75%);background-size:600px 100%}
+  .sk-card{background:#111}
+  .srch-hist-drop{background:#1a1a1a;border-color:#2a2a2a}
+  .srch-hist-item:hover{background:#222}
+  .notif-panel{background:#1a1a1a;border-color:#2a2a2a}
+  .pop-tag{background:#1e1e1e;border-color:#2a2a2a;color:#999}
+  .pop-tag:hover{background:#f0f0f0;color:#111}
+  .store-map-tooltip{background:#f0f0f0;color:#111}
 }
 body{background:var(--wht);color:var(--blk);font-family:var(--sans);min-height:100vh;font-size:13px}
 
@@ -438,6 +463,20 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   font-size:9px;color:var(--lgry);text-align:center;padding:4px;
   font-family:var(--sans);letter-spacing:.1em;
 }
+
+
+.srch-hist-wrap{position:relative}
+.srch-hist-drop{position:absolute;top:100%;left:0;right:0;background:var(--wht);border:1px solid var(--blk);border-top:none;z-index:200;max-height:320px;overflow-y:auto;display:none}
+.srch-hist-drop.open{display:block}
+.srch-hist-sec{font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:var(--lgry);padding:8px 12px 4px;border-bottom:0.5px solid var(--ln)}
+.srch-hist-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;cursor:pointer;transition:background .1s;border-bottom:0.5px solid var(--ln)}
+.srch-hist-item:last-child{border-bottom:none}
+.srch-hist-item:hover{background:var(--gry)}
+.srch-hist-kw{font-size:11px;letter-spacing:.06em;display:flex;align-items:center;gap:8px}
+.srch-hist-del{font-size:10px;color:var(--lgry);padding:2px 6px;cursor:pointer}
+.srch-hist-del:hover{color:var(--blk)}
+.srch-hist-clear{font-size:8px;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;color:var(--mgry);cursor:pointer;text-align:right;border-top:1px solid var(--ln)}
+.srch-hist-clear:hover{color:var(--blk)}
 
 /* SKELETON LOADING */
 @keyframes shimmer{
@@ -1128,6 +1167,12 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
           <div class="fg"><label class="flbl">Instagram (@ハンドル)</label><input class="fi" type="text" id="reg-ig-url" placeholder="username"></div>
         </div>
         <div class="err-msg" id="reg-err"></div>
+        <div style="margin-bottom:14px;font-size:10px;font-family:var(--jp);color:var(--mgry);line-height:1.7">
+          <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <input type="checkbox" id="reg-consent" style="margin-top:3px;flex-shrink:0">
+            <span><a href="#" onclick="goNav('about',null);closeModal('modal-login');setTimeout(function(){document.getElementById('terms').scrollIntoView({behavior:'smooth'});},300);return false" style="color:var(--mgry)">利用規約</a>および<a href="#" onclick="goNav('about',null);closeModal('modal-login');setTimeout(function(){document.getElementById('privacy').scrollIntoView({behavior:'smooth'});},300);return false" style="color:var(--mgry)">プライバシーポリシー</a>に同意する</span>
+          </label>
+        </div>
         <button class="sub-btn" id="reg-btn" onclick="doRegister()">登録する</button>
       </div>
 
@@ -1316,10 +1361,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     </div>
     <!-- 品番検索 -->
     <div id="srch-pane-ref" class="srch-pane active">
+      <div class="srch-hist-wrap">
       <div class="search-inner">
-        <input type="text" id="srch" name="cdgloa-ref-m2p" autocomplete="new-password" onfocus="this.removeAttribute('readonly')" readonly placeholder="品番で検索（例：HJJ050）" onkeydown="if(event.key==='Enter')doSearch()" oninput="onRefInput(event)" style="text-transform:uppercase">
+        <input type="text" id="srch" name="cdgloa-ref-m2p" autocomplete="new-password" onfocus="this.removeAttribute('readonly');renderSrchDrop()" readonly placeholder="品番で検索（例：HJJ050）" onkeydown="if(event.key==='Enter')doSearch()" oninput="onRefInput(event)" style="text-transform:uppercase">
         <button class="search-btn" id="srch-clear-btn" onclick="clearSearch()" style="display:none;background:var(--mgry);padding:8px 10px">✕</button>
         <button class="search-btn" onclick="doSearch()">検索</button>
+      </div>
+      <div class="srch-hist-drop" id="srch-hist-drop"></div>
       </div>
       <div class="search-note">※ 品番はハイフンなしで入力（自動で大文字・半角に変換）</div>
       <div class="srch-msg" id="srch-msg"></div>
@@ -1439,7 +1487,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       </div>
     </div>
     <div class="filter-row"><span class="filter-lbl">カラー</span>
-      <div class="chips" id="chips-color" style="align-items:center;gap:5px;overflow:visible"><span class="chip active" onclick="setFilt('color','all',this)">ALL</span></div>
+      <div class="chips" id="chips-color" style="align-items:center;gap:5px;overflow:visible"><span class="chip active" id="chip-color-all" onclick="setFilt('color','all',this)">ALL</span></div>
     </div>
     <div class="filter-row">
       <span class="filter-lbl">表示</span>
@@ -1596,6 +1644,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
         <div class="prof-bio" id="vp-bio"></div>
         <div id="vp-sns" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
         <button class="fol-btn" id="vp-fol-btn" style="margin-top:10px" onclick="toggleFollowUser(curVisitedUserId)">フォロー</button>
+        <div style="display:flex;gap:12px;margin-top:8px">
+          <button class="abtn" onclick="openBlockModal(curVisitedUserId,document.getElementById('vp-name').textContent)" style="font-size:8px;color:var(--mgry)">ブロック</button>
+          <button class="abtn" onclick="openReportModal('user',curVisitedUserId)" style="font-size:8px;color:var(--mgry)">通報</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1613,7 +1665,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
   <div class="pw">
     <div class="pttl">新しいコーデを投稿</div>
     <div class="fg">
-      <label class="flbl">写真（複数枚可）</label>
+      <label class="flbl" style="display:flex;justify-content:space-between">写真<span id="photo-count" style="font-weight:400;color:var(--lgry)">0 / 8</span></label>
       <div class="photo-zone" id="photo-zone">
         <div class="photo-add" onclick="document.getElementById('fi-up').click()"><span style="font-size:22px">＋</span><span>写真を追加</span></div>
         <input type="file" id="fi-up" accept="image/*" multiple style="display:none" onchange="addPhotos(event)">
@@ -1624,8 +1676,22 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
       <div id="color-picker" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
       <div class="hint">メインカラーを選んでください（フィード絞り込みに使用）</div>
     </div>
-    <div class="fg"><label class="flbl">タイトル</label><input class="fi" type="text" id="p-ttl" placeholder="例：AW24 非対称シルエット"></div>
+    <div class="fg"><label class="flbl" style="display:flex;justify-content:space-between">タイトル<span id="ttl-count" style="font-weight:400;color:var(--lgry)">0/50</span></label><input class="fi" type="text" id="p-ttl" placeholder="例：AW24 非対称シルエット" maxlength="50" oninput="document.getElementById('ttl-count').textContent=this.value.length+'/50'"></div>
     <div class="fg"><label class="flbl">説明</label><textarea class="fi fta" id="p-cap" placeholder="インスピレーションや着用シーンなど..."></textarea></div>
+
+    <div class="fg">
+      <label class="flbl">タグ</label>
+      <div class="tag-input-wrap" id="tag-input-wrap" onclick="document.getElementById('tag-text-input').focus()">
+        <div id="tag-chips"></div>
+        <input type="text" class="tag-text-input" id="tag-text-input"
+          placeholder="例: 青山"
+          onkeydown="onTagKeydown(event)"
+          oninput="onTagInput(event)"
+          autocomplete="off">
+      </div>
+      <button class="tag-add-btn" onclick="addTagFromInput()">＋ タグを追加</button>
+      <div class="hint">タグをタップすると同じタグの投稿から発見されやすくなります</div>
+    </div>
 
     <div class="fg">
       <label class="flbl">着用アイテム</label>
@@ -1706,13 +1772,47 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     </div>
 
     <!-- アプリについて -->
-    <div>
+    <div style="margin-bottom:60px">
       <div style="font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--mgry);margin-bottom:14px">About This App</div>
       <p style="font-size:10px;line-height:1.9;color:var(--mgry);font-family:var(--jp)">
         CDGLOA（COMME des GARÇONS LOVERS' OUTFIT ARCHIVES）は、ギャルソン愛好家によるコーデアーカイブです。着用アイテムの品番・ライン・シーズンを記録し、フィルタリングや品番検索でギャルソンの着こなしを探せます。
       </p>
     </div>
-
+    <div style="border-top:1px solid var(--ln);margin-bottom:48px"></div>
+    <div id="terms" style="margin-bottom:60px">
+      <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:24px;padding-bottom:10px;border-bottom:1px solid var(--blk)">利用規約</div>
+      <p style="font-size:9px;color:var(--lgry);margin-bottom:20px">最終更新日：2025年6月1日</p>
+      <div style="font-size:11px;line-height:2;color:var(--mgry);font-family:var(--jp)">
+        <p style="margin-bottom:16px">本利用規約は、CDGLOA（以下「本サービス」）の利用条件を定めるものです。ユーザーの皆さまには、本規約に同意いただいたうえで本サービスをご利用いただきます。</p>
+        <p style="font-size:10px;letter-spacing:.12em;color:var(--blk);margin:24px 0 8px">第1条（禁止事項）</p>
+        <p style="margin-bottom:16px">他人の著作物の無断投稿、誹謗中傷、虚偽情報の登録、サービス運営の妨害、法令違反、なりすまし、スパム投稿を禁止します。</p>
+        <p style="font-size:10px;letter-spacing:.12em;color:var(--blk);margin:24px 0 8px">第2条（コンテンツの権利）</p>
+        <p style="margin-bottom:16px">投稿コンテンツの著作権はユーザー本人に帰属します。ただし、サービスの提供・改善・プロモーション目的に限り、運営者がコンテンツを無償で使用する権利を許諾するものとします。</p>
+        <p style="font-size:10px;letter-spacing:.12em;color:var(--blk);margin:24px 0 8px">第3条（アカウントの停止・削除）</p>
+        <p style="margin-bottom:16px">運営者は、規約違反があった場合、事前通知なくアカウントを停止・削除できます。</p>
+        <p style="font-size:10px;letter-spacing:.12em;color:var(--blk);margin:24px 0 8px">第4条（免責事項）</p>
+        <p style="margin-bottom:16px">本サービスは現状のまま提供されます。サービスに関して生じた損害について、故意または重大な過失がある場合を除き、運営者は責任を負いません。</p>
+        <p style="font-size:10px;letter-spacing:.12em;color:var(--blk);margin:24px 0 8px">第5条（準拠法）</p>
+        <p>本規約は日本法に準拠します。</p>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--ln);margin-bottom:48px"></div>
+    <div id="privacy" style="margin-bottom:60px">
+      <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:24px;padding-bottom:10px;border-bottom:1px solid var(--blk)">プライバシーポリシー</div>
+      <p style="font-size:9px;color:var(--lgry);margin-bottom:20px">最終更新日：2025年6月1日</p>
+      <div style="font-size:11px;line-height:2;color:var(--mgry);font-family:var(--jp)">
+        <p style="font-size:10px;letter-spacing:.12em;color:var(--blk);margin:24px 0 8px">1. 収集する情報</p>
+        <p style="margin-bottom:16px">アカウント情報（メールアドレス、ハンドル名）、プロフィール情報（身長、生年、CDG歴）、投稿情報（写真、アイテム情報）、利用情報（いいね・フォロー等）を収集します。</p>
+        <p style="font-size:10px;letter-spacing:.12em;color:var(--blk);margin:24px 0 8px">2. 利用目的</p>
+        <p style="margin-bottom:16px">サービスの提供・運営・改善、ユーザー認証、コンテンツ表示、不正利用の防止に使用します。</p>
+        <p style="font-size:10px;letter-spacing:.12em;color:var(--blk);margin:24px 0 8px">3. 第三者への提供</p>
+        <p style="margin-bottom:16px">法令に基づく場合を除き第三者に提供しません。外部サービスとしてSupabase（DB・認証）、Vercel（ホスティング）を利用しています。</p>
+        <p style="font-size:10px;letter-spacing:.12em;color:var(--blk);margin:24px 0 8px">4. ユーザーの権利</p>
+        <p style="margin-bottom:16px">アカウント設定から情報の確認・修正・削除がいつでも可能です。アカウント削除時は全データが削除されます。</p>
+        <p style="font-size:10px;letter-spacing:.12em;color:var(--blk);margin:24px 0 8px">5. Cookie</p>
+        <p>ログイン状態維持のためにCookieを使用します。広告目的のCookieは使用しません。</p>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2195,7 +2295,11 @@ async function updateFeed(){
   posts=fetched;
   feedHasMore=!isPopular&&fetched.length===PAGE_SIZE;
   const res=getFiltered();
-  rg('feed-grid',res);
+  if(!res.length && filtFollowing==='following'){
+    document.getElementById('feed-grid').innerHTML='<div style="grid-column:1/-1;padding:48px 20px;text-align:center"><div style="font-size:9px;letter-spacing:.2em;color:var(--mgry);text-transform:uppercase;margin-bottom:10px">No posts yet.</div><div style="font-size:11px;color:var(--lgry);font-family:var(--jp);line-height:1.8;margin-bottom:16px">フォロー中のユーザーの投稿がまだありません。</div></div>';
+  } else {
+    rg('feed-grid',res);
+  }
   document.getElementById('feed-cnt').textContent=res.length+(feedHasMore?'+':'')+'件';
   document.getElementById('load-more-wrap').style.display=feedHasMore?'':'none';
   initInfiniteScroll();
@@ -3036,7 +3140,7 @@ async function openPost(id){
   // ブラウザ履歴にdetailページを追加
   const postTitle=`${p.title||'コーデ'} — CDGLOA`;
   document.title=postTitle;
-  history.pushState({page:'detail',postId:p.id},postTitle,'?post='+p.id);
+  history.pushState({page:'detail',postId:p.id},postTitle,'/post/'+p.id);
   // モバイルでボトムアクションバーを表示
   if(window.innerWidth<=600){
     document.querySelector('.dact').classList.add('mobile-visible');
@@ -3183,7 +3287,7 @@ function shareToX(){
 
 async function shareGeneral(){
   if(!curPost)return;
-  const postUrl=location.origin+location.pathname+'?post='+curPost.id;
+  const postUrl=location.origin+'/post/'+curPost.id;
   const shareData={title:curPost.title||'コーデ',text:(curPost.title||'コーデ')+' — CDGLOA',url:postUrl};
   if(navigator.share){
     try{await navigator.share(shareData);}catch(e){}
@@ -3401,6 +3505,7 @@ async function doRegister(){
   const bio=document.getElementById('reg-bio').value.trim();
   if(!handle||!history||!height||!age||!email||!pass){showErr('reg-err','必須項目をすべて入力してください。');setLoading('reg-btn',false,'登録する');return;}
   if(pass.length<8){showErr('reg-err','パスワードは8文字以上で入力してください。');setLoading('reg-btn',false,'登録する');return;}
+  if(!document.getElementById('reg-consent')?.checked){showErr('reg-err','利用規約およびプライバシーポリシーへの同意が必要です。');setLoading('reg-btn',false,'登録する');return;}
   // ハンドル重複チェック
   if(!/^[a-zA-Z0-9_]{2,20}$/.test(handle)){showErr('reg-err','ハンドルは半角英数字・アンダーバーで2〜20文字にしてください。');setLoading('reg-btn',false,'登録する');return;}
   const{data:existH}=await sb.from('profiles').select('id').ilike('handle',handle).limit(1);
@@ -3726,6 +3831,8 @@ function tryPost(){
   document.body.scrollTop=0;
 }
 
+const MAX_PHOTOS = 8;
+
 async function addPhotos(e){
   const files=[...(e.target.files||[])].slice(0, MAX_PHOTOS - uploadedPhotos.length);
   if(!files.length){e.target.value='';return;}
@@ -3908,7 +4015,7 @@ function makeItemRow(){
         <div class="ir-label">ライン</div>
         <select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
           <option value="">選択してください</option>
-          \${makeItemLineOptions()}
+          ${makeItemLineOptions()}
         </select>
       </div>
       <div>
@@ -3921,7 +4028,7 @@ function makeItemRow(){
         <div class="ir-label">購入店舗</div>
         <select class="fi" style="appearance:none;cursor:pointer;font-size:12px;width:100%">
           <option value="">選択</option>
-          \${makeItemStoreOptions()}
+          ${makeItemStoreOptions()}
         </select>
       </div>
     </div>
@@ -4553,9 +4660,9 @@ function renderEtagChips(){
 function parseUrlParams(){
   const params=new URLSearchParams(window.location.search);
   const postId=params.get('post');
-  if(postId){
-    openPost(postId);
-  }
+  if(postId){openPost(postId);return;}
+  const m=location.pathname.match(/^\/post\/([a-f0-9-]{36})$/i);
+  if(m){openPost(m[1]);}
 }
 
 function updateUrlParam(key, val){
@@ -5207,6 +5314,42 @@ async function openProfileByHandle(handle){
     else showToast('@'+handle+' が見つかりませんでした');
   }catch(e){ showToast('プロフィールを開けませんでした'); }
 }
+
+
+const SRCH_HIST_KEY='cdgloa_search_history';
+const MAX_HIST=10;
+const SRCH_SUGGESTIONS=['HJJ050','OZT311','GS-T104','PO-T106','W28112','GE-T270','RO-T107','AD-T022','HJJ028','FI-T015'];
+
+function getSrchHistory(){try{return JSON.parse(localStorage.getItem(SRCH_HIST_KEY)||'[]');}catch(e){return[];}}
+function saveSrchHistory(h){try{localStorage.setItem(SRCH_HIST_KEY,JSON.stringify(h));}catch(e){}}
+function addSrchHistory(kw){if(!kw)return;var h=getSrchHistory().filter(function(x){return x!==kw;});h.unshift(kw);if(h.length>MAX_HIST)h=h.slice(0,MAX_HIST);saveSrchHistory(h);}
+function deleteSrchHistory(kw,e){e.stopPropagation();saveSrchHistory(getSrchHistory().filter(function(x){return x!==kw;}));renderSrchDrop();}
+function clearSrchHistory(){saveSrchHistory([]);renderSrchDrop();}
+
+function renderSrchDrop(){
+  var drop=document.getElementById('srch-hist-drop');
+  var inp=document.getElementById('srch');
+  if(!drop||!inp)return;
+  var val=inp.value.trim().toUpperCase();
+  var hist=getSrchHistory();
+  var fh=val?hist.filter(function(h){return h.includes(val);}):hist;
+  var fs=val?SRCH_SUGGESTIONS.filter(function(s){return s.includes(val)&&fh.indexOf(s)<0;}):SRCH_SUGGESTIONS.filter(function(s){return hist.indexOf(s)<0;}).slice(0,5);
+  if(!fh.length&&!fs.length){drop.classList.remove('open');return;}
+  var html='';
+  if(fh.length){
+    html+='<div class="srch-hist-sec">最近の検索</div>';
+    fh.forEach(function(kw){html+='<div class="srch-hist-item" data-kw="'+kw+'" onclick="selectSrchHist(this.dataset.kw)"><span class="srch-hist-kw">'+kw+'</span><span class="srch-hist-del" onclick="event.stopPropagation();deleteSrchHistory(this.parentNode.dataset.kw,event)">x</span></div>';});
+    html+='<div class="srch-hist-clear" onclick="clearSrchHistory()">履歴をクリア</div>';
+  }
+  if(fs.length){
+    html+='<div class="srch-hist-sec">よく検索される品番</div>';
+    fs.forEach(function(s){html+='<div class="srch-hist-item" data-kw="'+s+'" onclick="selectSrchHist(this.dataset.kw)"><span class="srch-hist-kw">'+s+'</span></div>';});
+  }
+  drop.innerHTML=html;drop.classList.add('open');
+}
+function selectSrchHist(kw){var inp=document.getElementById('srch');if(inp)inp.value=kw;closeSrchDrop();doSearch();}
+function closeSrchDrop(){var d=document.getElementById('srch-hist-drop');if(d)d.classList.remove('open');}
+document.addEventListener('click',function(e){if(!e.target.closest('.srch-hist-wrap'))closeSrchDrop();});
 
 function goBack(){
   updateUrlParam('post', null);
