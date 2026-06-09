@@ -2,13 +2,16 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="GRAIL">
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png">
 <title>GRAIL — Designers' Fashion Outfit Archives</title>
 <meta name="description" content="ギャルソンラバーのためのコーデアーカイブ。着用アイテムを品番・ライン・シーズンで記録し、共有する。">
 
@@ -77,10 +80,17 @@
   .pop-tag:hover{background:#f0f0f0;color:#111}
   .store-map-tooltip{background:#f0f0f0;color:#111}
 }
-body{background:var(--wht);color:var(--blk);font-family:var(--sans);min-height:100vh;font-size:13px}
+body{background:var(--wht);color:var(--blk);font-family:var(--sans);min-height:100vh;font-size:13px;
+  /* iPhoneのノッチ・ホームバー対応 */
+  padding-bottom: env(safe-area-inset-bottom);
+}
 
 /* NAV */
-nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;border-bottom:1px solid var(--blk);background:var(--wht);position:sticky;top:0;z-index:200}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;border-bottom:1px solid var(--blk);background:var(--wht);position:sticky;top:0;z-index:200;
+  /* iPhoneノッチ対応 */
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
+}
 .logo-wrap{display:flex;flex-direction:column;line-height:1.2;cursor:pointer}
 .logo-main{font-size:13px;letter-spacing:.18em;font-weight:600;text-transform:uppercase}
 .logo-sub{font-size:8px;letter-spacing:.15em;color:var(--mgry)}
@@ -504,6 +514,22 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 }
 .pull-indicator.show{opacity:1}
 
+/* NEWS PAGE */
+.news-item{padding:18px 0;border-bottom:1px solid var(--ln);cursor:default}
+.news-item:last-child{border-bottom:none}
+.news-item.unread{background:transparent}
+.news-item-hd{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.news-badge{font-size:7px;letter-spacing:.15em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--blk);color:var(--blk);white-space:nowrap;font-family:var(--sans)}
+.news-badge.important{background:var(--blk);color:var(--wht);border-color:var(--blk)}
+.news-unread-dot{width:6px;height:6px;border-radius:50%;background:#c00;flex-shrink:0}
+.news-date{font-size:9px;letter-spacing:.1em;color:var(--mgry)}
+.news-title{font-size:13px;font-weight:500;margin-bottom:5px;line-height:1.4}
+.news-body{font-size:11px;color:var(--mgry);line-height:1.9;font-family:var(--jp);white-space:pre-wrap}
+@media(prefers-color-scheme:dark){
+  .news-badge{border-color:var(--blk);color:var(--blk)}
+  .news-badge.important{background:var(--blk);color:var(--wht)}
+}
+
 /* SKELETON LOADING */
 @keyframes shimmer{
   0%{background-position:-600px 0}
@@ -886,6 +912,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     position:fixed;bottom:0;left:0;right:0;
     background:var(--wht);border-top:1px solid var(--ln);
     padding:10px 16px 14px;
+    padding-bottom: max(14px, env(safe-area-inset-bottom));
     flex-wrap:nowrap;gap:6px;z-index:50;
     display:none;
   }
@@ -1104,6 +1131,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <span class="nl" onclick="goNav('ranking',this)">ランキング</span>
     <span class="nl" onclick="goNav('mypage',this)">マイページ</span>
     <span class="nl" onclick="goNav('saved',this)">保存済み</span>
+    <span class="nl" id="nav-news-tab" onclick="goNav('news',this)" style="position:relative">お知らせ<span id="nav-news-badge" style="display:none;position:absolute;top:-4px;right:-10px;background:#c00;color:#fff;font-size:7px;min-width:13px;height:13px;border-radius:7px;display:none;align-items:center;justify-content:center;padding:0 2px;font-family:var(--sans);pointer-events:none"></span></span>
     <span class="nl" onclick="goNav('contact',this)">お問い合わせ</span>
     <span class="nl" onclick="goNav('about',this)" style="text-transform:none;letter-spacing:.06em">このアプリについて</span>
   </div>
@@ -1137,6 +1165,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
     <span class="drawer-nl" onclick="goNav('ranking',null);closeMenu()">ランキング</span>
     <span class="drawer-nl" onclick="goNav('mypage',null);closeMenu()">マイページ</span>
     <span class="drawer-nl" onclick="goNav('saved',null);closeMenu()">保存済み</span>
+    <span class="drawer-nl" id="drawer-news-tab" onclick="goNav('news',null);closeMenu()" style="display:flex;align-items:center;justify-content:space-between">お知らせ<span id="drawer-news-badge" style="display:none;background:#c00;color:#fff;font-size:8px;min-width:16px;height:16px;border-radius:8px;align-items:center;justify-content:center;padding:0 3px;font-family:var(--sans)"></span></span>
     <span class="drawer-nl" onclick="goNav('contact',null);closeMenu()">お問い合わせ</span>
     <span class="drawer-nl" onclick="goNav('about',null);closeMenu()">このアプリについて</span>
   </div>
@@ -1759,6 +1788,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px
 <div id="page-saved" class="page">
   <div style="padding:16px 20px 8px;display:flex;align-items:baseline;justify-content:space-between"><span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500">保存済み</span><span id="saved-cnt" style="font-size:10px;color:var(--mgry)"></span></div>
   <div class="grid" id="saved-grid"></div>
+</div>
+
+<!-- NEWS PAGE -->
+<div id="page-news" class="page">
+  <div style="max-width:640px;margin:0 auto;padding:28px 20px">
+    <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--blk)">お知らせ</div>
+    <div id="news-list">
+      <div class="loading"><div class="spinner"></div>読み込み中...</div>
+    </div>
+  </div>
 </div>
 
 <!-- ABOUT PAGE -->
@@ -3627,8 +3666,12 @@ async function doLogout(){
 
 function updateAuthUI(){
   const lb=document.getElementById('nav-login-btn');const pb=document.getElementById('nav-post-btn');
-  if(myUser){lb.style.display='none';pb.disabled=false;showNotifBell(true);fetchUnreadNotifs();}
-  else{lb.style.display='';pb.disabled=true;showNotifBell(false);unreadNotifCount=0;updateNotifBadge();}
+  const bell=document.getElementById('notif-bell-btn');
+  if(myUser){lb.style.display='none';pb.disabled=false;if(bell)bell.style.display='';fetchUnreadNotifs();}
+  else{lb.style.display='';pb.disabled=true;unreadNotifCount=0;}
+  // ベルは常に表示（お知らせバッジのため）
+  if(bell) bell.style.display='';
+  updateNotifBadgeWithNews();
 }
 
 /* =====================================================
@@ -4321,14 +4364,8 @@ async function fetchUnreadNotifs(){
 }
 
 function updateNotifBadge(){
-  const badge=document.getElementById('notif-badge');
-  if(!badge)return;
-  if(unreadNotifCount>0){
-    badge.style.display='flex';
-    badge.textContent=unreadNotifCount>9?'9+':unreadNotifCount;
-  }else{
-    badge.style.display='none';
-  }
+  // news未読も合算して表示
+  updateNotifBadgeWithNews();
 }
 
 function showNotifBell(show){
@@ -5472,6 +5509,7 @@ function goNav(name,el,pushHistory=true){
   if(name==='ranking')loadRanking();
   if(name==='mypage')renderMyPage();
   if(name==='saved')loadSavedPage();
+  if(name==='news')loadNewsPage();
   if(name==='contact'){
     if(myProfile){
       const nameEl=document.getElementById('contact-name');
@@ -5666,9 +5704,118 @@ async function sendContact(){
   });
 }
 
+/* =====================================================
+   お知らせ機能
+   Supabaseの announcements テーブルから取得
+   カラム: id, title, body, category('info'|'important'), created_at
+===================================================== */
+const NEWS_READ_KEY = 'grail_news_read';
+
+function getReadNewsIds(){
+  try{ return new Set(JSON.parse(localStorage.getItem(NEWS_READ_KEY)||'[]')); }
+  catch(e){ return new Set(); }
+}
+function markNewsRead(ids){
+  try{
+    const current = getReadNewsIds();
+    ids.forEach(id => current.add(id));
+    localStorage.setItem(NEWS_READ_KEY, JSON.stringify([...current]));
+  }catch(e){}
+}
+
+async function loadNewsPage(){
+  const listEl = document.getElementById('news-list');
+  if(!listEl) return;
+  listEl.innerHTML = '<div class="loading"><div class="spinner"></div>読み込み中...</div>';
+
+  try{
+    const {data, error} = await sb.from('announcements')
+      .select('*')
+      .order('created_at', {ascending: false});
+
+    if(error || !data || !data.length){
+      listEl.innerHTML = '<div style="padding:32px 0;text-align:center;font-size:10px;color:var(--mgry);font-family:var(--jp)">お知らせはありません</div>';
+      return;
+    }
+
+    const readIds = getReadNewsIds();
+    const unreadIds = data.filter(n => !readIds.has(String(n.id))).map(n => String(n.id));
+
+    listEl.innerHTML = data.map(n => {
+      const unread = !readIds.has(String(n.id));
+      const isImportant = n.category === 'important';
+      const dateStr = new Date(n.created_at).toLocaleDateString('ja-JP', {year:'numeric',month:'long',day:'numeric'});
+      return `<div class="news-item${unread?' unread':''}">
+        <div class="news-item-hd">
+          ${unread ? '<div class="news-unread-dot"></div>' : ''}
+          <span class="news-badge${isImportant?' important':''}">${isImportant ? '重要' : 'お知らせ'}</span>
+          <span class="news-date">${dateStr}</span>
+        </div>
+        <div class="news-title">${escHtml(n.title||'')}</div>
+        <div class="news-body">${escHtml(n.body||'')}</div>
+      </div>`;
+    }).join('');
+
+    // 既読にマーク
+    if(unreadIds.length){
+      markNewsRead(unreadIds);
+      updateNewsBadge();
+    }
+  }catch(e){
+    console.error('loadNewsPage:', e);
+    listEl.innerHTML = '<div style="padding:32px 0;text-align:center;font-size:10px;color:var(--mgry);font-family:var(--jp)">読み込みに失敗しました</div>';
+  }
+}
+
+async function fetchUnreadNewsCount(){
+  try{
+    const {data} = await sb.from('announcements').select('id').order('created_at', {ascending:false});
+    if(!data || !data.length) return 0;
+    const readIds = getReadNewsIds();
+    return data.filter(n => !readIds.has(String(n.id))).length;
+  }catch(e){ return 0; }
+}
+
+async function updateNewsBadge(){
+  const count = await fetchUnreadNewsCount();
+  const navBadge = document.getElementById('nav-news-badge');
+  const drawerBadge = document.getElementById('drawer-news-badge');
+
+  if(count > 0){
+    const txt = count > 9 ? '9+' : String(count);
+    if(navBadge){ navBadge.textContent = txt; navBadge.style.display = 'inline-flex'; }
+    if(drawerBadge){ drawerBadge.textContent = txt; drawerBadge.style.display = 'inline-flex'; }
+    // 通知ベルのバッジにも合算
+    _newsUnreadCount = count;
+    updateNotifBadgeWithNews();
+  }else{
+    if(navBadge) navBadge.style.display = 'none';
+    if(drawerBadge) drawerBadge.style.display = 'none';
+    _newsUnreadCount = 0;
+    updateNotifBadgeWithNews();
+  }
+}
+
+let _newsUnreadCount = 0;
+
+// 通知ベルバッジをnotif未読 + news未読の合算で更新
+function updateNotifBadgeWithNews(){
+  const badge = document.getElementById('notif-badge');
+  if(!badge) return;
+  const total = unreadNotifCount + _newsUnreadCount;
+  if(total > 0){
+    badge.style.display = 'flex';
+    badge.textContent = total > 9 ? '9+' : total;
+  }else{
+    badge.style.display = 'none';
+  }
+}
+
 buildColorChips();
 buildColorPicker();
 updateFeed();
+// お知らせ未読バッジを初期化
+updateNewsBadge();
 // ピックアップ・おすすめユーザーをロード
 Promise.all([loadPickup(),loadSuggestUsers()]).then(()=>{
   ['pickup-section','suggest-section'].forEach(id=>{
