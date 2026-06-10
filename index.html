@@ -3355,7 +3355,7 @@ function shareToX(){
 
 async function shareGeneral(){
   if(!curPost)return;
-  const postUrl=location.origin+'/post/'+curPost.id;
+  const postUrl=location.origin+location.pathname+'?post='+curPost.id;
   const shareData={title:curPost.title||'コーデ',text:(curPost.title||'コーデ')+' — GRAIL',url:postUrl};
   if(navigator.share){
     try{await navigator.share(shareData);}catch(e){}
