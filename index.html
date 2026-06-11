@@ -5818,6 +5818,8 @@ buildColorPicker();
 updateFeed();
 // お知らせ未読バッジを初期化
 updateNewsBadge();
+// URLパラメータ（?post= / ?user=）を処理して共有リンクから直接開けるように
+parseUrlParams();
 // ピックアップ・おすすめユーザーをロード
 Promise.all([loadPickup(),loadSuggestUsers()]).then(()=>{
   ['pickup-section','suggest-section'].forEach(id=>{
