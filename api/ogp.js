@@ -1,6 +1,6 @@
 const SUPABASE_URL='https://gzvfjzixkjbdwbzrhbdd.supabase.co';
 const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6dmZqeml4a2piZHdienJoYmRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMDQ5OTEsImV4cCI6MjA5NTU4MDk5MX0.oEk8K5angcmu-tR5AOF3lTYOzmI_9o01Y7qxidtzPAY';
-const SITE_URL='https://cdg-loa.vercel.app';
+const SITE_URL='https://grail-archive.vercel.app';
 const DEFAULT_OG_IMAGE=SITE_URL+'/og-image.png';
 const DEFAULT_TITLE="GRAIL — Designer Fashion Outfit Archives";
 const DEFAULT_DESC='Designer fashion outfit archive. Record and discover outfits by reference number, line, and season.';
